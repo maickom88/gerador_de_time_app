@@ -125,7 +125,11 @@ class WelcomePage extends StatelessWidget {
                               width: 250,
                               height: 66,
                               child: ElevatedButton(
-                                onPressed: () => HapticFeedback.lightImpact(),
+                                onPressed: () {
+                                  HapticFeedback.lightImpact();
+                                  AppDefault.navigateTo(context,
+                                      routeName: '/login', withReturn: false);
+                                },
                                 child: Text(
                                   'Começar',
                                   style: AppTypography.t16()
