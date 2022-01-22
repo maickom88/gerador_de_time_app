@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:micro_core/core/base_app.dart';
 import 'package:micro_core/core/core_app.dart';
+import 'package:micro_core/core/theme/theme.dart';
 import 'package:micro_core/utils/core_utils.dart';
 
 import 'resolvers/resolvers.dart';
@@ -16,8 +17,9 @@ class GeradorDeTimes extends StatelessWidget with BaseApp {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Gerador de Times',
-      theme: ThemeData.dark(),
+      theme: ThemeApp.theme(),
       navigatorKey: navigatorKey,
       onGenerateRoute: generateRoute,
       initialRoute: BaseRoutes.login,

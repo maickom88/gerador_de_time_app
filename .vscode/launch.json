@@ -29,14 +29,14 @@
             "flutterMode": "profile"
         },
         {
-            "name": "micro_app_login",
-            "cwd": "packages/micro_app_login",
+            "name": "micro_app_welcome",
+            "cwd": "packages/micro_app_welcome",
             "request": "launch",
             "type": "dart"
         },
         {
-            "name": "micro_app_login (profile mode)",
-            "cwd": "packages/micro_app_login",
+            "name": "micro_app_welcome (profile mode)",
+            "cwd": "packages/micro_app_welcome",
             "request": "launch",
             "type": "dart",
             "flutterMode": "profile"

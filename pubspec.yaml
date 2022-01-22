@@ -14,8 +14,8 @@ dependencies:
 
   micro_core:
     path: packages/micro_core
-  micro_app_login:
-    path: packages/micro_app_login
+  micro_app_welcome:
+    path: packages/micro_app_welcome
 
   
 
@@ -28,3 +28,7 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+
+  assets:
+    - assets/
+    - assets/images/

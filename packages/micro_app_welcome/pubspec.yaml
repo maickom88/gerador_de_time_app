@@ -1,4 +1,4 @@
-name: micro_app_login
+name: micro_app_welcome
 description: A new Flutter package project.
 version: 0.0.1
 publish_to: "none"
@@ -22,5 +22,8 @@ dev_dependencies:
   flutter_lints: ^1.0.4
 
 flutter:
+  uses-material-design: true
+
   assets:
-    - lib/assets/images/
+    - assets/
+    - assets/images/
