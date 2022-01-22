@@ -14,7 +14,6 @@ dependencies:
   extended_image: ^4.1.0
   lottie: ^1.1.0
   iconsax: ^0.0.8
-  either_dart: ^0.1.2
   modal_bottom_sheet: ^2.0.0
 
 dev_dependencies:

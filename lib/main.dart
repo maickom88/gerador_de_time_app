@@ -4,6 +4,7 @@ import 'package:micro_core/core/core_app.dart';
 import 'package:micro_core/utils/core_utils.dart';
 
 import 'resolvers/resolvers.dart';
+import 'routes/routes.dart';
 
 void main() {
   runApp(GeradorDeTimes()..registerRoutes());
@@ -19,7 +20,7 @@ class GeradorDeTimes extends StatelessWidget with BaseApp {
       theme: ThemeData.dark(),
       navigatorKey: navigatorKey,
       onGenerateRoute: generateRoute,
-      initialRoute: '/login',
+      initialRoute: BaseRoutes.login,
     );
   }
 
