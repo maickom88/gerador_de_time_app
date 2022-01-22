@@ -39,9 +39,12 @@ class ThemeApp {
   static ElevatedButtonThemeData buildElevatedButtonThemeData() {
     return ElevatedButtonThemeData(
       style: ButtonStyle(
-        textStyle: MaterialStateProperty.all(AppTypography.t18()),
+        textStyle: MaterialStateProperty.all(
+          AppTypography.t18(fontName: 'Inter'),
+        ),
         padding: MaterialStateProperty.all(
-            const EdgeInsets.symmetric(horizontal: 15, vertical: 13)),
+          const EdgeInsets.symmetric(horizontal: 12, vertical: 13),
+        ),
         shape: MaterialStateProperty.all(
           RoundedRectangleBorder(
             borderRadius: AppDefault.defaultBorderRadius(radius: 10),

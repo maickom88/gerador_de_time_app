@@ -1,3 +1,3 @@
 class BaseRoutes {
-  static const String login = '/login';
+  static const String login = '/welcome';
 }
