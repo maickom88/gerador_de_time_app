@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class AppDefault {
   static const double hPadding = 10;
-  static const double vPadding = 12;
+  static const double vPadding = 16;
 
   static BorderRadius defaultBorderRadiusOnly(
           {double topLeft = 17, double topRight = 17}) =>
@@ -41,12 +41,15 @@ class AppDefault {
   static double width(BuildContext context) =>
       MediaQuery.of(context).size.width;
 
-  static Future<T?> navigateTo<T extends Object?>(
-    BuildContext context, {
-    required String routeName,
-    Object? arguments,
-  }) =>
-      Navigator.of(context).pushNamed<T>(routeName);
+  static Future<T?> navigateTo<T extends Object?>(BuildContext context,
+      {required String routeName, Object? arguments, bool withReturn = true}) {
+    if (withReturn) {
+      return Navigator.of(context)
+          .pushNamed<T>(routeName, arguments: arguments);
+    }
+    return Navigator.of(context)
+        .pushReplacementNamed(routeName, arguments: arguments);
+  }
 }
 
 extension AppDefaultPadding on Widget {

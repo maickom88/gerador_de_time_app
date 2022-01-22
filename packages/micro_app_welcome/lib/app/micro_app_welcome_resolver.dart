@@ -10,6 +10,6 @@ class MicroAppWelcomeResolver implements MicroApp {
   @override
   Map<String, WidgetBuildArgs> get routes => {
         '/welcome': (_, args) =>
-            WelcomePage(controller: builWelcomeController()),
+            WelcomePage(controller: buildWelcomeController()),
       };
 }

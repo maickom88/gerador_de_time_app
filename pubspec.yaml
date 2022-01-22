@@ -16,6 +16,8 @@ dependencies:
     path: packages/micro_core
   micro_app_welcome:
     path: packages/micro_app_welcome
+  micro_app_login:
+    path: packages/micro_app_login
 
   
 
