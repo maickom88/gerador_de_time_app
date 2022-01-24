@@ -18,6 +18,8 @@ dependencies:
     path: packages/micro_app_welcome
   micro_app_login:
     path: packages/micro_app_login
+  micro_app_register:
+    path: packages/micro_app_register
 
   
 
@@ -34,3 +36,4 @@ flutter:
   assets:
     - assets/
     - assets/images/
+    - assets/animations/

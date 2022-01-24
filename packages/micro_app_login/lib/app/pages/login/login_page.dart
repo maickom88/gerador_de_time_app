@@ -19,6 +19,7 @@ class LoginPage extends StatelessWidget with KeyboardManager {
 
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light);
     return GestureDetector(
       onTap: () => hideKeyboard(context),
       child: Scaffold(
@@ -142,8 +143,8 @@ class LoginPage extends StatelessWidget with KeyboardManager {
                                   ),
                                   onPressed: () {
                                     HapticFeedback.lightImpact();
-                                    // AppDefault.navigateTo(context,
-                                    //     routeName: '/login', withReturn: false);
+                                    AppDefault.navigateTo(context,
+                                        routeName: '/register');
                                   },
                                   child: Text(
                                     'Eu não tenho uma conta',

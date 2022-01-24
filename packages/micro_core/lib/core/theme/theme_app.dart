@@ -31,6 +31,12 @@ class ThemeApp {
   static InputDecorationTheme buildInputDecorationTheme() {
     return InputDecorationTheme(
       fillColor: Colors.white,
+      errorMaxLines: 3,
+      errorStyle: AppTypography.t14().copyWith(color: AppColor.primaryColor),
+      errorBorder: OutlineInputBorder(
+        borderSide: const BorderSide(width: 1, color: AppColor.primaryColor),
+        borderRadius: BorderRadius.circular(5),
+      ),
       filled: true,
       labelStyle: AppTypography.t16(fontName: 'Inter')
           .copyWith(color: AppColor.textLight),

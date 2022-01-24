@@ -1,4 +1,4 @@
-name: micro_app_login
+name: micro_app_register
 description: A new Flutter package project.
 version: 0.0.1
 
@@ -27,3 +27,4 @@ flutter:
   assets:
     - assets/
     - assets/images/
+    - assets/animations/
