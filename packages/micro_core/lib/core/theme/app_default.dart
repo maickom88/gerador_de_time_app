@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class AppDefault {
-  static const double hPadding = 10;
+  static const double hPadding = 12;
   static const double vPadding = 16;
 
   static BorderRadius defaultBorderRadiusOnly(
@@ -49,6 +49,20 @@ class AppDefault {
     }
     return Navigator.of(context)
         .pushReplacementNamed(routeName, arguments: arguments);
+  }
+
+  static Future<T?> navigateToWidget<T extends Object?>(BuildContext context,
+      {required Widget widget, Object? arguments, bool withReturn = true}) {
+    final settings = RouteSettings(arguments: arguments);
+    if (withReturn) {
+      return Navigator.push<T>(
+        context,
+        MaterialPageRoute(builder: (context) => widget, settings: settings),
+      );
+    }
+    return Navigator.of(context).pushReplacement(
+      MaterialPageRoute(builder: (context) => widget, settings: settings),
+    );
   }
 }
 
