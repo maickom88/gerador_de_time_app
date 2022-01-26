@@ -11,12 +11,23 @@ import '../verification_email/verification_email_page.dart';
 import '../components/form_widget.dart';
 import 'register_controller.dart';
 
-class RegisterPage extends StatelessWidget with KeyboardManager {
+class RegisterPage extends StatefulWidget {
   final RegisterController controller;
   const RegisterPage({
     Key? key,
     required this.controller,
   }) : super(key: key);
+
+  @override
+  _RegisterPageState createState() => _RegisterPageState();
+}
+
+class _RegisterPageState extends State<RegisterPage> with KeyboardManager {
+  @override
+  void dispose() {
+    widget.controller.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +36,7 @@ class RegisterPage extends StatelessWidget with KeyboardManager {
       onTap: () => hideKeyboard(context),
       child: Scaffold(
         body: ValueListenableBuilder(
-          valueListenable: controller,
+          valueListenable: widget.controller,
           builder: (BuildContext _, __, Widget? child) => Stack(
             children: [
               Container(
@@ -34,7 +45,7 @@ class RegisterPage extends StatelessWidget with KeyboardManager {
                 height: AppDefault.height(context),
                 clipBehavior: Clip.none,
                 decoration: BoxDecoration(
-                  image: controller.page > 1
+                  image: widget.controller.page > 1
                       ? const DecorationImage(
                           image: AssetImage(LocalImage.wallpaper04),
                           fit: BoxFit.cover,
@@ -70,7 +81,7 @@ class RegisterPage extends StatelessWidget with KeyboardManager {
                                 padding: const EdgeInsets.symmetric(
                                     vertical: 20, horizontal: 28),
                                 decoration: BoxDecoration(
-                                  color: controller.isFocus
+                                  color: widget.controller.isFocus
                                       ? const Color(0xFF2B2B2B).withOpacity(0.3)
                                       : const Color(0xffACACAC)
                                           .withOpacity(0.26),
@@ -91,38 +102,46 @@ class RegisterPage extends StatelessWidget with KeyboardManager {
                                               MainAxisAlignment.spaceBetween,
                                           children: [
                                             IconButton(
-                                              onPressed: controller.page > 0
-                                                  ? () {
-                                                      SystemSound.play(
-                                                          SystemSoundType
-                                                              .click);
-                                                      controller.previousPage();
-                                                    }
-                                                  : null,
+                                              onPressed:
+                                                  widget.controller.page > 0
+                                                      ? () {
+                                                          SystemSound.play(
+                                                              SystemSoundType
+                                                                  .click);
+                                                          widget.controller
+                                                              .previousPage();
+                                                        }
+                                                      : null,
                                               icon: Icon(
                                                 Iconsax.arrow_square_left,
                                                 size: 28,
-                                                color: controller.page == 0
-                                                    ? Colors.white
-                                                        .withOpacity(0.2)
-                                                    : Colors.white,
+                                                color:
+                                                    widget.controller.page == 0
+                                                        ? Colors.white
+                                                            .withOpacity(0.2)
+                                                        : Colors.white,
                                               ),
                                             ),
                                             IconButton(
-                                              onPressed: controller.page < 3 &&
-                                                      controller.isNextPage
-                                                  ? () {
-                                                      SystemSound.play(
-                                                          SystemSoundType
-                                                              .click);
-                                                      controller.nextPage();
-                                                    }
-                                                  : null,
+                                              onPressed:
+                                                  widget.controller.page < 3 &&
+                                                          widget.controller
+                                                              .isNextPage
+                                                      ? () {
+                                                          SystemSound.play(
+                                                              SystemSoundType
+                                                                  .click);
+                                                          widget.controller
+                                                              .nextPage();
+                                                        }
+                                                      : null,
                                               icon: Icon(
                                                 Iconsax.arrow_right,
                                                 size: 28,
-                                                color: controller.page == 3 ||
-                                                        !controller.isNextPage
+                                                color: widget.controller.page ==
+                                                            3 ||
+                                                        !widget.controller
+                                                            .isNextPage
                                                     ? Colors.white
                                                         .withOpacity(0.2)
                                                     : Colors.white,
@@ -135,74 +154,77 @@ class RegisterPage extends StatelessWidget with KeyboardManager {
                                     Flexible(
                                       child: PageView(
                                         onPageChanged: (page) =>
-                                            controller.setPage(page),
-                                        physics: controller.isNextPage
+                                            widget.controller.setPage(page),
+                                        physics: widget.controller.isNextPage
                                             ? const BouncingScrollPhysics()
                                             : const NeverScrollableScrollPhysics(),
-                                        controller:
-                                            controller.pageViewController,
+                                        controller: widget
+                                            .controller.pageViewController,
                                         children: [
                                           FormWidget(
                                             labelButton: 'Sim, esse é meu nome',
                                             label:
                                                 'Informe seu nome ou apelido',
                                             onEnter: (value) {
-                                              controller.name = value;
-                                              controller.nextPage();
+                                              widget.controller.name = value;
+                                              widget.controller.nextPage();
                                             },
                                             title: 'Qual é o seu nome?',
-                                            onFocus: (bool focus) =>
-                                                controller.isFocus = focus,
+                                            onFocus: (bool focus) => widget
+                                                .controller.isFocus = focus,
                                             onChanged: (String value) =>
-                                                controller.name = value,
+                                                widget.controller.name = value,
                                           ),
                                           FormWidget(
                                             labelButton:
                                                 'Sim, esse é meu email',
                                             label: 'Informe o seu email',
                                             onEnter: (value) {
-                                              controller.email = value;
-                                              controller.nextPage();
+                                              widget.controller.email = value;
+                                              widget.controller.nextPage();
                                             },
                                             title: 'Qual é o seu email?',
-                                            onFocus: (bool focus) =>
-                                                controller.isFocus = focus,
+                                            onFocus: (bool focus) => widget
+                                                .controller.isFocus = focus,
                                             onChanged: (String value) =>
-                                                controller.email = value,
+                                                widget.controller.email = value,
                                           ),
                                           FormWidget(
                                             labelButton:
                                                 'Essa será minha senha',
                                             label: 'Informe sua senha',
                                             onEnter: (value) {
-                                              controller.password = value;
-                                              controller.nextPage();
+                                              widget.controller.password =
+                                                  value;
+                                              widget.controller.nextPage();
                                             },
                                             title: 'Digite sua senha',
-                                            onFocus: (bool focus) =>
-                                                controller.isFocus = focus,
-                                            onChanged: (String value) =>
-                                                controller.password = value,
+                                            onFocus: (bool focus) => widget
+                                                .controller.isFocus = focus,
+                                            onChanged: (String value) => widget
+                                                .controller.password = value,
                                           ),
                                           FormWidget(
                                             labelButton:
                                                 'Confirmar e criar conta',
                                             label: 'Informe a senha anterior',
                                             onEnter: (value) {
-                                              controller.confirmPassword =
-                                                  value;
+                                              widget.controller
+                                                  .confirmPassword = value;
                                               AppDefault.navigateToWidget(
                                                 context,
                                                 withReturn: false,
                                                 widget: VerificationEmailPage(
-                                                  email: controller.email,
+                                                  email:
+                                                      widget.controller.email,
                                                 ),
                                               );
                                             },
                                             title: 'Confirme sua senha',
-                                            onFocus: (bool focus) =>
-                                                controller.isFocus = focus,
-                                            password: controller.password,
+                                            onFocus: (bool focus) => widget
+                                                .controller.isFocus = focus,
+                                            password:
+                                                widget.controller.password,
                                             onChanged: (String value) {},
                                           ),
                                         ],

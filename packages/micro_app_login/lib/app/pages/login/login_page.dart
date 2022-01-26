@@ -10,12 +10,23 @@ import '../../../core/constants/local_image.dart';
 
 import 'login_controller.dart';
 
-class LoginPage extends StatelessWidget with KeyboardManager {
+class LoginPage extends StatefulWidget {
   final LoginController controller;
   const LoginPage({
     Key? key,
     required this.controller,
   }) : super(key: key);
+
+  @override
+  _LoginPageState createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> with KeyboardManager {
+  @override
+  void dispose() {
+    widget.controller.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {

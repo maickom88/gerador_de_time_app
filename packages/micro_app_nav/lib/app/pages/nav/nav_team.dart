@@ -63,6 +63,7 @@ class _NavTeamState extends State<NavTeam> {
                         setState(() {
                           isEditing = !isEditing;
                         });
+                        ScaffoldMessenger.of(context).hideCurrentSnackBar();
                       },
                       child: FadeAnimation(
                         delay: 0,
@@ -81,6 +82,61 @@ class _NavTeamState extends State<NavTeam> {
                         SystemSound.play(SystemSoundType.click);
                         setState(() {
                           isEditing = !isEditing;
+
+                          ScaffoldMessenger.of(context)
+                              .showSnackBar(
+                                SnackBar(
+                                  behavior: SnackBarBehavior.fixed,
+                                  backgroundColor: AppColor.secondaryColor,
+                                  duration: const Duration(days: 365),
+                                  content: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      const Icon(Iconsax.trash4,
+                                          color: Colors.white),
+                                      const Spacer(),
+                                      GestureDetector(
+                                        onTap: () {
+                                          SystemSound.play(
+                                              SystemSoundType.click);
+                                          ScaffoldMessenger.of(context)
+                                              .hideCurrentSnackBar();
+                                          setState(() {
+                                            isEditing = !isEditing;
+                                          });
+                                        },
+                                        child: const Text('Excluir marcados'),
+                                      ).withRightPadding(),
+                                      GestureDetector(
+                                        onTap: () {
+                                          HapticFeedback.lightImpact();
+                                          ScaffoldMessenger.of(context)
+                                              .hideCurrentSnackBar();
+                                          setState(() {
+                                            isEditing = !isEditing;
+                                          });
+                                        },
+                                        child: Container(
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 20, vertical: 5),
+                                          decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(100),
+                                              color: Colors.red[300]),
+                                          child: const Text('Excluir todos'),
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                ),
+                              )
+                              .closed
+                              .then((value) {
+                            setState(() {
+                              isEditing = false;
+                            });
+                          });
                         });
                       },
                       child: Text(
