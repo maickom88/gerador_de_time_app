@@ -9,12 +9,23 @@ import 'welcome_controller.dart';
 import '../../../core/constants/local_image.dart';
 import '../widgets/widgets.dart';
 
-class WelcomePage extends StatelessWidget {
+class WelcomePage extends StatefulWidget {
   final WelcomeController controller;
   const WelcomePage({
     Key? key,
     required this.controller,
   }) : super(key: key);
+
+  @override
+  _WelcomePageState createState() => _WelcomePageState();
+}
+
+class _WelcomePageState extends State<WelcomePage> {
+  @override
+  void dispose() {
+    widget.controller.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -52,7 +63,7 @@ class WelcomePage extends StatelessWidget {
                         borderRadius: AppDefault.defaultBorderRadius(),
                       ),
                       child: ValueListenableBuilder(
-                        valueListenable: controller,
+                        valueListenable: widget.controller,
                         builder: (BuildContext _, __, Widget? child) => Column(
                           children: [
                             FittedBox(
@@ -63,33 +74,33 @@ class WelcomePage extends StatelessWidget {
                                       MainAxisAlignment.spaceBetween,
                                   children: [
                                     IconButton(
-                                      onPressed: controller.page > 0
+                                      onPressed: widget.controller.page > 0
                                           ? () {
                                               SystemSound.play(
                                                   SystemSoundType.click);
-                                              controller.previousPage();
+                                              widget.controller.previousPage();
                                             }
                                           : null,
                                       icon: Icon(
                                         Iconsax.arrow_square_left,
                                         size: 28,
-                                        color: controller.page == 0
+                                        color: widget.controller.page == 0
                                             ? Colors.white.withOpacity(0.2)
                                             : Colors.white,
                                       ),
                                     ),
                                     IconButton(
-                                      onPressed: controller.page < 2
+                                      onPressed: widget.controller.page < 2
                                           ? () {
                                               SystemSound.play(
                                                   SystemSoundType.click);
-                                              controller.nextPage();
+                                              widget.controller.nextPage();
                                             }
                                           : null,
                                       icon: Icon(
                                         Iconsax.arrow_right,
                                         size: 28,
-                                        color: controller.page == 2
+                                        color: widget.controller.page == 2
                                             ? Colors.white.withOpacity(0.2)
                                             : Colors.white,
                                       ),
@@ -100,8 +111,10 @@ class WelcomePage extends StatelessWidget {
                             ),
                             Expanded(
                               child: PageView(
-                                controller: controller.pageViewController,
-                                onPageChanged: (page) => controller.page = page,
+                                controller:
+                                    widget.controller.pageViewController,
+                                onPageChanged: (page) =>
+                                    widget.controller.page = page,
                                 children: const [
                                   WelcomeWidget(
                                     title: 'Bem vindo ao\nGerador de times',
@@ -142,9 +155,12 @@ class WelcomePage extends StatelessWidget {
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  DotWidget(isActive: controller.page == 0),
-                                  DotWidget(isActive: controller.page == 1),
-                                  DotWidget(isActive: controller.page == 2),
+                                  DotWidget(
+                                      isActive: widget.controller.page == 0),
+                                  DotWidget(
+                                      isActive: widget.controller.page == 1),
+                                  DotWidget(
+                                      isActive: widget.controller.page == 2),
                                 ],
                               ),
                             )
