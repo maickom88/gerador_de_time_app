@@ -20,6 +20,8 @@ dependencies:
     path: packages/micro_app_login
   micro_app_register:
     path: packages/micro_app_register
+  micro_app_nav:
+    path: packages/micro_app_nav
 
   
 
