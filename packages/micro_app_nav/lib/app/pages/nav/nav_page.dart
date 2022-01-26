@@ -43,6 +43,12 @@ class _NavPageState extends State<NavPage> {
   }
 
   @override
+  void dispose() {
+    widget.controller.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark);
     return Scaffold(
@@ -62,6 +68,7 @@ class _NavPageState extends State<NavPage> {
           onTap: (current) {
             HapticFeedback.lightImpact();
             SystemSound.play(SystemSoundType.click);
+            ScaffoldMessenger.of(context).hideCurrentSnackBar();
             setState(() {
               currentIndex = current;
             });
