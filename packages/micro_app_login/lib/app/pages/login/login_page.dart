@@ -113,8 +113,8 @@ class LoginPage extends StatelessWidget with KeyboardManager {
                                 child: ElevatedButton(
                                   onPressed: () {
                                     HapticFeedback.lightImpact();
-                                    // AppDefault.navigateTo(context,
-                                    //     routeName: '/login', withReturn: false);
+                                    AppDefault.navigateTo(context,
+                                        routeName: '/nav', withReturn: false);
                                   },
                                   child: Text(
                                     'Entrar',
