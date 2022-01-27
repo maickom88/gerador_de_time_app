@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:iconsax/iconsax.dart';
+import '../details/details_page.dart';
 import 'package:micro_core/core/components/animation.dart';
 import 'package:micro_core/core/theme/theme.dart';
 
@@ -160,7 +161,7 @@ class CardHistoric extends StatelessWidget {
                       ],
                     ),
                     Text(
-                      '🏆 ${nameWinner}',
+                      '🏆 $nameWinner',
                       style: AppTypography.t22WithW300()
                           .copyWith(color: AppColor.textLight),
                     ),
@@ -184,9 +185,15 @@ class CardHistoric extends StatelessWidget {
                             backgroundColor: MaterialStateProperty.all(
                                 AppColor.secondaryColor),
                           ),
-                          onPressed: () => HapticFeedback.lightImpact(),
+                          onPressed: () {
+                            HapticFeedback.lightImpact();
+                            AppDefault.navigateToWidget(
+                              context,
+                              widget: const DetailsPage(),
+                            );
+                          },
                           child: Text(
-                            'Ver jogos',
+                            'Ver detalhes',
                             style: AppTypography.t14()
                                 .copyWith(color: Colors.white),
                           ),
