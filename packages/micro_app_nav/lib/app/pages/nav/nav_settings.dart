@@ -4,7 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:iconsax/iconsax.dart';
-import 'package:micro_app_nav/app/pages/components/avatar_photo.dart';
+import '../components/avatar_photo.dart';
 import 'package:micro_core/core/components/animation.dart';
 import 'package:micro_core/core/theme/theme.dart';
 
