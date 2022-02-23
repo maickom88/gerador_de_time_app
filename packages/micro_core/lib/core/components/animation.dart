@@ -41,3 +41,31 @@ class FadeAnimation extends StatelessWidget {
 enum AniProps { opacity, translateY, translatey }
 
 enum DirectionType { translateY, translateX }
+
+class LoopAnimation extends StatelessWidget {
+  final Widget child;
+  LoopAnimation({
+    Key? key,
+    required this.child,
+  }) : super(key: key);
+
+  final tween = MultiTween<AniProps>()
+    ..add(AniProps.opacity, 0.4.tweenTo(1.0), 400.milliseconds)
+    ..add(AniProps.translateY, (0.0).tweenTo(5.0), 800.milliseconds,
+        Curves.easeOut);
+
+  @override
+  Widget build(BuildContext context) {
+    return MirrorAnimation<MultiTweenValues<AniProps>>(
+      duration: tween.duration,
+      tween: tween,
+      curve: Curves.fastOutSlowIn,
+      child: child,
+      builder: (context, child, value) => Opacity(
+        opacity: value.get(AniProps.opacity),
+        child: Transform.translate(
+            offset: Offset(value.get(AniProps.translateY), 0), child: child),
+      ),
+    );
+  }
+}
