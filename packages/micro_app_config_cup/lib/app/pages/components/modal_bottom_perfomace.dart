@@ -13,7 +13,6 @@ class ModelBottomPerformance extends StatelessWidget {
   Widget build(BuildContext context) {
     return Material(
       type: MaterialType.transparency,
-      color: Colors.transparent,
       child: Container(
         height: AppDefault.height(context).percent(50),
         padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 12),
