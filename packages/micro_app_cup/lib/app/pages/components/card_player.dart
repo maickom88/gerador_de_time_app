@@ -1,20 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:iconsax/iconsax.dart';
+import 'avatar_photo.dart';
 import 'package:micro_core/core/theme/theme.dart';
+import 'package:iconsax/iconsax.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
-import 'avatar_photo.dart';
 import 'model_bottom_performace.dart';
 
 class CardPlayer extends StatelessWidget {
-  final String name;
-  final String photo;
-  final String position;
   const CardPlayer({
     Key? key,
-    required this.name,
-    required this.position,
-    required this.photo,
   }) : super(key: key);
 
   @override
@@ -33,7 +27,8 @@ class CardPlayer extends StatelessWidget {
         children: [
           AvatarPhoto(
             icon: Iconsax.trend_up,
-            photo: photo,
+            photo:
+                'https://images.unsplash.com/photo-1521572267360-ee0c2909d518?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80',
             onTap: () {
               showCupertinoModalBottomSheet(
                 context: context,
@@ -47,7 +42,7 @@ class CardPlayer extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  name,
+                  'Gabriel Silva',
                   overflow: TextOverflow.ellipsis,
                   style: AppTypography.t22WithW800(),
                 ),
@@ -93,9 +88,9 @@ class CardPlayer extends StatelessWidget {
                               AppTypography.t14().copyWith(color: Colors.white),
                         )),
                       ).withRightPadding(rightPadding: 5),
-                      Flexible(
+                      const Flexible(
                         child: Text(
-                          position.toUpperCase(),
+                          'ALA DIREITA',
                           overflow: TextOverflow.ellipsis,
                         ),
                       )

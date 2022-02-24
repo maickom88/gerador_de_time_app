@@ -22,9 +22,78 @@ class NavTeam extends StatefulWidget {
 class _NavTeamState extends State<NavTeam> {
   late bool isEditing;
   late List<Map> listChecked;
+  late List<Map<String, String>> players;
   @override
   void initState() {
     listChecked = [];
+    players = [
+      {
+        'image':
+            'https://images.unsplash.com/photo-1521572267360-ee0c2909d518?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80',
+        'name': 'Gabriel Silva',
+        'position': 'Pivô',
+      },
+      {
+        'image':
+            'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80',
+        'name': 'Fabricio Santos',
+        'position': 'Pivô',
+      },
+      {
+        'image':
+            'https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=880&q=80',
+        'name': 'Marcos Paulo',
+        'position': 'Goleiro'
+      },
+      {
+        'image':
+            'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80',
+        'name': 'José',
+        'position': 'Ala esquerda'
+      },
+      {
+        'image':
+            'https://images.unsplash.com/photo-1560250097-0b93528c311a?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80',
+        'name': 'Betão',
+        'position': 'Pivô'
+      },
+      {
+        'image':
+            'https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=880&q=80',
+        'name': 'Santiago',
+        'position': 'Ala Direita'
+      },
+      {
+        'image':
+            'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80',
+        'name': 'Rodrigo C.',
+        'position': 'Defensor'
+      },
+      {
+        'image':
+            'https://images.unsplash.com/photo-1531891437562-4301cf35b7e4?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=764&q=80',
+        'name': 'Weverton',
+        'position': 'Defensor'
+      },
+      {
+        'image':
+            'https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1148&q=80',
+        'name': 'Julio C.',
+        'position': 'Defensor'
+      },
+      {
+        'image':
+            'https://images.unsplash.com/photo-1603415526960-f7e0328c63b1?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80',
+        'name': 'Pedro Paulo',
+        'position': 'Atacante'
+      },
+      {
+        'image':
+            'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=880&q=80',
+        'name': 'Pedrinho',
+        'position': 'Atacante'
+      }
+    ];
     isEditing = false;
     super.initState();
   }
@@ -68,11 +137,13 @@ class _NavTeamState extends State<NavTeam> {
                       child: FadeAnimation(
                         delay: 0,
                         directionType: DirectionType.translateX,
-                        child: Text(
-                          'Cancelar',
-                          style: AppTypography.t16().copyWith(
-                            height: 2.0,
-                            color: Colors.red[400],
+                        child: Material(
+                          child: Text(
+                            'Cancelar',
+                            style: AppTypography.t16().copyWith(
+                              height: 2.0,
+                              color: Colors.red[400],
+                            ),
                           ),
                         ),
                       ),
@@ -139,11 +210,13 @@ class _NavTeamState extends State<NavTeam> {
                           });
                         });
                       },
-                      child: Text(
-                        'Editar',
-                        style: AppTypography.t16().copyWith(
-                          height: 2.0,
-                          color: AppColor.secondaryColor,
+                      child: Material(
+                        child: Text(
+                          'Editar',
+                          style: AppTypography.t16().copyWith(
+                            height: 2.0,
+                            color: AppColor.secondaryColor,
+                          ),
                         ),
                       ),
                     ),
@@ -184,13 +257,17 @@ class _NavTeamState extends State<NavTeam> {
               Align(
                 alignment: Alignment.topRight,
                 child: GestureDetector(
-                  onTap: () => SystemSound.play(SystemSoundType.click),
+                  onTap: () {
+                    SystemSound.play(SystemSoundType.click);
+                    ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                    AppDefault.navigateTo(context, routeName: '/cup');
+                  },
                   child: Text.rich(
                     TextSpan(
                       style: AppTypography.t16()
                           .copyWith(color: AppColor.secondaryColor),
                       children: const [
-                        TextSpan(text: 'Iniciar copinha'),
+                        TextSpan(text: 'Iniciar copinha '),
                         WidgetSpan(
                           alignment: PlaceholderAlignment.middle,
                           child: Icon(
@@ -206,8 +283,9 @@ class _NavTeamState extends State<NavTeam> {
               ListView.builder(
                   shrinkWrap: true,
                   physics: const NeverScrollableScrollPhysics(),
-                  itemCount: 10,
+                  itemCount: players.length,
                   itemBuilder: (_, index) {
+                    final player = players[index];
                     return FadeAnimation(
                       delay: (1.0 + index) / 4,
                       child: ListTile(
@@ -244,7 +322,11 @@ class _NavTeamState extends State<NavTeam> {
                                 ),
                               )
                             : null,
-                        title: const CardPlayer(),
+                        title: CardPlayer(
+                          photo: player['image']!,
+                          name: player['name']!,
+                          position: player['position']!,
+                        ),
                       ),
                     );
                   }),
