@@ -11,8 +11,27 @@ import '../components/scoreboard.dart';
 import '../components/row_data_table.dart';
 import '../components/card_view_team.dart';
 
-class GamePage extends StatelessWidget {
+class GamePage extends StatefulWidget {
   const GamePage({Key? key}) : super(key: key);
+
+  @override
+  _GamePageState createState() => _GamePageState();
+}
+
+class _GamePageState extends State<GamePage> {
+  late ScrollController _controller;
+  late bool _showOnlyIcon;
+
+  @override
+  void initState() {
+    _showOnlyIcon = false;
+    _controller = ScrollController();
+    super.initState();
+    _controller.addListener(() {
+      _showOnlyIcon = _controller.position.pixels >= 60;
+      setState(() {});
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -20,6 +39,7 @@ class GamePage extends StatelessWidget {
     return Scaffold(
       body: SafeArea(
         child: NestedScrollView(
+          controller: _controller,
           physics: const BouncingScrollPhysics(),
           headerSliverBuilder: (_, inner) {
             return <Widget>[
@@ -28,7 +48,7 @@ class GamePage extends StatelessWidget {
                 height: 20,
               )),
               CupertinoSliverNavigationBar(
-                backgroundColor: Colors.transparent,
+                backgroundColor: Colors.white.withOpacity(0.8),
                 trailing: Material(
                   type: MaterialType.transparency,
                   color: Colors.transparent,
@@ -36,9 +56,10 @@ class GamePage extends StatelessWidget {
                     TextSpan(
                       style: AppTypography.t16()
                           .copyWith(color: AppColor.secondaryColor),
-                      children: const [
-                        TextSpan(text: 'Finalizar partida '),
-                        WidgetSpan(
+                      children: [
+                        TextSpan(
+                            text: _showOnlyIcon ? '' : 'Finalizar partida '),
+                        const WidgetSpan(
                           alignment: PlaceholderAlignment.middle,
                           child: Icon(
                             Iconsax.flag,
@@ -77,6 +98,7 @@ class GamePage extends StatelessWidget {
                     );
                   },
                   child: Material(
+                    color: Colors.transparent,
                     child: Text(
                       'Cancelar',
                       style: AppTypography.t16().copyWith(

@@ -23,7 +23,7 @@ class NavHistoric extends StatelessWidget {
               height: 20,
             )),
             CupertinoSliverNavigationBar(
-              backgroundColor: Colors.transparent,
+              backgroundColor: Colors.white.withOpacity(0.8),
               largeTitle: Text(
                 'Historico',
                 style: AppTypography.t28WithW800(),

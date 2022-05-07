@@ -5,15 +5,35 @@ import 'package:iconsax/iconsax.dart';
 import 'package:micro_core/core/components/animation.dart';
 import 'package:micro_core/core/theme/theme.dart';
 
-class NavNotification extends StatelessWidget {
+class NavNotification extends StatefulWidget {
   const NavNotification({
     Key? key,
   }) : super(key: key);
 
   @override
+  _NavNotificationState createState() => _NavNotificationState();
+}
+
+class _NavNotificationState extends State<NavNotification> {
+  late ScrollController _controller;
+  late bool _showOnlyIcon;
+
+  @override
+  void initState() {
+    _showOnlyIcon = false;
+    _controller = ScrollController();
+    super.initState();
+    _controller.addListener(() {
+      _showOnlyIcon = _controller.position.pixels >= 60;
+      setState(() {});
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: NestedScrollView(
+        controller: _controller,
         physics: const BouncingScrollPhysics(),
         headerSliverBuilder: (_, inner) {
           return <Widget>[
@@ -22,7 +42,7 @@ class NavNotification extends StatelessWidget {
               height: 20,
             )),
             CupertinoSliverNavigationBar(
-              backgroundColor: Colors.transparent,
+              backgroundColor: Colors.white.withOpacity(0.8),
               trailing: GestureDetector(
                 onTap: () {
                   SystemSound.play(SystemSoundType.click);
@@ -32,9 +52,9 @@ class NavNotification extends StatelessWidget {
                     height: 2.0,
                     color: AppColor.secondaryColor,
                   ),
-                  children: const [
-                    TextSpan(text: 'Limpar tudo'),
-                    WidgetSpan(
+                  children: [
+                    TextSpan(text: _showOnlyIcon ? '' : 'Limpar tudo'),
+                    const WidgetSpan(
                       child: Icon(
                         Iconsax.broom,
                         color: AppColor.secondaryColor,
