@@ -20,13 +20,15 @@ class DetailsPage extends StatelessWidget {
                 height: 20,
               )),
               CupertinoSliverNavigationBar(
-                backgroundColor: Colors.white,
+                backgroundColor: Colors.transparent,
                 leading: GestureDetector(
                   onTap: () {
                     SystemSound.play(SystemSoundType.click);
                     AppDefault.close(context);
                   },
                   child: Material(
+                    color: Colors.transparent,
+                    type: MaterialType.transparency,
                     child: Text(
                       'Voltar',
                       style: AppTypography.t16().copyWith(

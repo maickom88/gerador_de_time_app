@@ -31,7 +31,7 @@ class _ConfigCupPageState extends State<ConfigCupPage> {
                 height: 20,
               )),
               CupertinoSliverNavigationBar(
-                backgroundColor: Colors.white,
+                backgroundColor: Colors.transparent,
                 leading: GestureDetector(
                   onTap: () {
                     SystemSound.play(SystemSoundType.click);
@@ -60,6 +60,7 @@ class _ConfigCupPageState extends State<ConfigCupPage> {
                     );
                   },
                   child: Material(
+                    type: MaterialType.transparency,
                     child: Text(
                       'Cancelar',
                       style: AppTypography.t16().copyWith(
@@ -226,6 +227,8 @@ class _ConfigCupPageState extends State<ConfigCupPage> {
           ),
           onPressed: () {
             HapticFeedback.lightImpact();
+            AppDefault.navigateTo(context,
+                routeName: '/resume-game', withReturn: false);
           },
         ),
       ).withSymPadding(),
