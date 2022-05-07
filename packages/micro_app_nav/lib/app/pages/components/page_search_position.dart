@@ -25,7 +25,7 @@ class PageSearchPosition extends StatelessWidget with KeyboardManager {
                 height: 20,
               )),
               CupertinoSliverNavigationBar(
-                backgroundColor: Colors.transparent,
+                backgroundColor: Colors.white.withOpacity(0.8),
                 padding: const EdgeInsetsDirectional.only(top: 5),
                 largeTitle: SizedBox(
                   height: 40,

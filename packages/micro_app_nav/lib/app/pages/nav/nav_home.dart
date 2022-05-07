@@ -67,7 +67,7 @@ class NavHome extends StatelessWidget {
               ),
             ),
             CupertinoSliverNavigationBar(
-              backgroundColor: Colors.transparent,
+              backgroundColor: Colors.white.withOpacity(0.8),
               largeTitle: Text(
                 'Esportes',
                 style: AppTypography.t28WithW800(),

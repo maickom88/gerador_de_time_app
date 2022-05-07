@@ -12,8 +12,26 @@ import 'package:flutter/services.dart';
 import '../../../core/colors/colors.dart';
 import '../game/game_page.dart';
 
-class ResumeGamePage extends StatelessWidget {
+class ResumeGamePage extends StatefulWidget {
   const ResumeGamePage({Key? key}) : super(key: key);
+
+  @override
+  _ResumeGamePageState createState() => _ResumeGamePageState();
+}
+
+class _ResumeGamePageState extends State<ResumeGamePage> {
+  late ScrollController _controller;
+  late bool _showOnlyIcon;
+  @override
+  void initState() {
+    _showOnlyIcon = false;
+    _controller = ScrollController();
+    super.initState();
+    _controller.addListener(() {
+      _showOnlyIcon = _controller.position.pixels >= 60;
+      setState(() {});
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -22,6 +40,7 @@ class ResumeGamePage extends StatelessWidget {
       child: Scaffold(
         body: SafeArea(
           child: NestedScrollView(
+            controller: _controller,
             physics: const BouncingScrollPhysics(),
             headerSliverBuilder: (_, inner) {
               return <Widget>[
@@ -30,7 +49,7 @@ class ResumeGamePage extends StatelessWidget {
                   height: 20,
                 )),
                 CupertinoSliverNavigationBar(
-                  backgroundColor: Colors.transparent,
+                  backgroundColor: Colors.white.withOpacity(0.8),
                   trailing: Material(
                     type: MaterialType.transparency,
                     color: Colors.transparent,
@@ -38,9 +57,10 @@ class ResumeGamePage extends StatelessWidget {
                       TextSpan(
                         style: AppTypography.t16()
                             .copyWith(color: AppColor.secondaryColor),
-                        children: const [
-                          TextSpan(text: 'Finalizar copinha '),
-                          WidgetSpan(
+                        children: [
+                          TextSpan(
+                              text: _showOnlyIcon ? '' : 'Finalizar copinha '),
+                          const WidgetSpan(
                             alignment: PlaceholderAlignment.middle,
                             child: Icon(
                               Iconsax.cup,

@@ -110,7 +110,7 @@ class _NavTeamState extends State<NavTeam> {
               height: 20,
             )),
             CupertinoSliverNavigationBar(
-              backgroundColor: Colors.transparent,
+              backgroundColor: Colors.white.withOpacity(0.8),
               trailing: GestureDetector(
                 onTap: () {
                   HapticFeedback.lightImpact();

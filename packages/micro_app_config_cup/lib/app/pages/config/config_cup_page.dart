@@ -31,7 +31,7 @@ class _ConfigCupPageState extends State<ConfigCupPage> {
                 height: 20,
               )),
               CupertinoSliverNavigationBar(
-                backgroundColor: Colors.transparent,
+                backgroundColor: Colors.white.withOpacity(0.8),
                 leading: GestureDetector(
                   onTap: () {
                     SystemSound.play(SystemSoundType.click);

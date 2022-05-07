@@ -39,7 +39,7 @@ class _NavSettingsState extends State<NavSettings> {
               height: 20,
             )),
             CupertinoSliverNavigationBar(
-              backgroundColor: Colors.transparent,
+              backgroundColor: Colors.white.withOpacity(0.8),
               largeTitle: Text(
                 'Ajustes',
                 style: AppTypography.t28WithW800(),
