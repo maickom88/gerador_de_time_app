@@ -25,6 +25,7 @@ class PageSearchPosition extends StatelessWidget with KeyboardManager {
                 height: 20,
               )),
               CupertinoSliverNavigationBar(
+                backgroundColor: Colors.transparent,
                 padding: const EdgeInsetsDirectional.only(top: 5),
                 largeTitle: SizedBox(
                   height: 40,
@@ -49,6 +50,7 @@ class PageSearchPosition extends StatelessWidget with KeyboardManager {
             ];
           },
           body: Material(
+            type: MaterialType.transparency,
             child: ListView.builder(
                 shrinkWrap: true,
                 itemCount: 22,

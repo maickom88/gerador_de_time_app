@@ -1,6 +1,8 @@
-name: dependencies
+name: micro_app_game
 description: A new Flutter package project.
 version: 0.0.1
+
+publish_to: "none"
 
 environment:
   sdk: ">=2.12.0 <3.0.0"
@@ -10,14 +12,10 @@ dependencies:
   flutter:
     sdk: flutter
 
-  dio: ^4.0.3
-  extended_image: ^4.1.0
-  lottie: ^1.1.0
-  iconsax: ^0.0.8
-  modal_bottom_sheet: ^2.0.0
-  adaptive_action_sheet: ^2.0.0
-  carousel_slider: ^4.0.0
-  countdown_progress_indicator: ^0.1.2
+  micro_core:
+    path: ../micro_core
+  dependencies:
+    path: ../dependencies
 
 dev_dependencies:
   flutter_test:
@@ -25,3 +23,8 @@ dev_dependencies:
   flutter_lints: ^1.0.4
 
 flutter:
+  uses-material-design: true
+
+  assets:
+    - assets/
+    - assets/images/

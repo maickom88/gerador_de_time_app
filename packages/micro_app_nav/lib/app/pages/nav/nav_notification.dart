@@ -22,6 +22,7 @@ class NavNotification extends StatelessWidget {
               height: 20,
             )),
             CupertinoSliverNavigationBar(
+              backgroundColor: Colors.transparent,
               trailing: GestureDetector(
                 onTap: () {
                   SystemSound.play(SystemSoundType.click);
@@ -43,7 +44,6 @@ class NavNotification extends StatelessWidget {
                   ],
                 )),
               ),
-              backgroundColor: Colors.white,
               largeTitle: Text(
                 'Notificações',
                 style: AppTypography.t28WithW800(),

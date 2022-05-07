@@ -29,6 +29,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.1.0"
+  carousel_slider:
+    dependency: transitive
+    description:
+      name: carousel_slider
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "4.0.0"
   characters:
     dependency: transitive
     description:
@@ -57,6 +64,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.15.0"
+  countdown_progress_indicator:
+    dependency: transitive
+    description:
+      name: countdown_progress_indicator
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.1.2"
   crypto:
     dependency: transitive
     description:
@@ -211,6 +225,13 @@ packages:
     dependency: "direct main"
     description:
       path: "packages/micro_app_cup"
+      relative: true
+    source: path
+    version: "0.0.1"
+  micro_app_game:
+    dependency: "direct main"
+    description:
+      path: "packages/micro_app_game"
       relative: true
     source: path
     version: "0.0.1"

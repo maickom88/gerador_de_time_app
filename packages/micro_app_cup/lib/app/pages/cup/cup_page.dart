@@ -53,7 +53,7 @@ class _CupPageState extends State<CupPage> {
                 height: 20,
               )),
               CupertinoSliverNavigationBar(
-                backgroundColor: Colors.white,
+                backgroundColor: Colors.transparent,
                 trailing: GestureDetector(
                   onTap: () {
                     HapticFeedback.lightImpact();
@@ -70,6 +70,7 @@ class _CupPageState extends State<CupPage> {
                     AppDefault.close(context);
                   },
                   child: Material(
+                    type: MaterialType.transparency,
                     child: Text(
                       'Voltar',
                       style: AppTypography.t16().copyWith(

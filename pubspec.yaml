@@ -26,6 +26,8 @@ dependencies:
     path: packages/micro_app_cup
   micro_app_config_cup:
     path: packages/micro_app_config_cup
+  micro_app_game:
+    path: packages/micro_app_game
 
   
 

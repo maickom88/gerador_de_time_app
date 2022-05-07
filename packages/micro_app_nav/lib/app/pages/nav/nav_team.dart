@@ -110,7 +110,7 @@ class _NavTeamState extends State<NavTeam> {
               height: 20,
             )),
             CupertinoSliverNavigationBar(
-              backgroundColor: Colors.white,
+              backgroundColor: Colors.transparent,
               trailing: GestureDetector(
                 onTap: () {
                   HapticFeedback.lightImpact();
@@ -138,6 +138,7 @@ class _NavTeamState extends State<NavTeam> {
                         delay: 0,
                         directionType: DirectionType.translateX,
                         child: Material(
+                          type: MaterialType.transparency,
                           child: Text(
                             'Cancelar',
                             style: AppTypography.t16().copyWith(
@@ -211,6 +212,7 @@ class _NavTeamState extends State<NavTeam> {
                         });
                       },
                       child: Material(
+                        type: MaterialType.transparency,
                         child: Text(
                           'Editar',
                           style: AppTypography.t16().copyWith(
