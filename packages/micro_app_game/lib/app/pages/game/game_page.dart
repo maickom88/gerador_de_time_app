@@ -37,6 +37,7 @@ class _GamePageState extends State<GamePage> {
   Widget build(BuildContext context) {
     final countdownController = CountDownController();
     return Scaffold(
+      backgroundColor: Colors.white,
       body: SafeArea(
         child: NestedScrollView(
           controller: _controller,

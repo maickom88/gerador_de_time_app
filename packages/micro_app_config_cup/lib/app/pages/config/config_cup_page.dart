@@ -21,6 +21,7 @@ class _ConfigCupPageState extends State<ConfigCupPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       body: SafeArea(
         child: NestedScrollView(
           physics: const BouncingScrollPhysics(),
