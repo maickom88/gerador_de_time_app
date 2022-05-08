@@ -10,6 +10,7 @@ class DetailsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       body: SafeArea(
         child: NestedScrollView(
           physics: const BouncingScrollPhysics(),
@@ -20,7 +21,7 @@ class DetailsPage extends StatelessWidget {
                 height: 20,
               )),
               CupertinoSliverNavigationBar(
-                backgroundColor: Colors.transparent,
+                backgroundColor: Colors.white.withOpacity(0.8),
                 leading: GestureDetector(
                   onTap: () {
                     SystemSound.play(SystemSoundType.click);

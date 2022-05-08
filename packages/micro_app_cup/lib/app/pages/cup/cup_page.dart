@@ -43,6 +43,7 @@ class _CupPageState extends State<CupPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       body: SafeArea(
         child: NestedScrollView(
           physics: const BouncingScrollPhysics(),

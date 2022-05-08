@@ -38,6 +38,7 @@ class _ResumeGamePageState extends State<ResumeGamePage> {
     return Material(
       type: MaterialType.transparency,
       child: Scaffold(
+        backgroundColor: Colors.white,
         body: SafeArea(
           child: NestedScrollView(
             controller: _controller,
