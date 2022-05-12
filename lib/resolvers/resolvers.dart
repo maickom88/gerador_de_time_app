@@ -10,7 +10,7 @@ import 'package:micro_core/micro_core.dart';
 class Resolvers {
   static List<MicroApp> apps = [
     MicroAppWelcomeResolver(),
-    MicroAppLoginResolver()..onExecute(),
+    MicroAppLoginResolver(),
     MicroAppRegisterResolver(),
     MicroAppNavResolver(),
     MicroAppCupResolver(),

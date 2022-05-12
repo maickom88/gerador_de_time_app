@@ -11,9 +11,12 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  either_dart: ^0.1.2
-
+  firebase_remote_config: ^2.0.6
+  firebase_auth: ^3.3.17
+  firebase_core: ^1.16.0
   simple_animations: ^3.0.0
+  dio: ^4.0.6
+  either_dart: ^0.1.2
 
 dev_dependencies:
   flutter_test:
