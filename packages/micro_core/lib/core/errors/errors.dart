@@ -1,1 +1,3 @@
-class Failure implements Exception {}
+class Failure implements Exception {
+  String get message => '';
+}

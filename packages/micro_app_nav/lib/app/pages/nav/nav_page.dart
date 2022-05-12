@@ -1,11 +1,8 @@
-import 'dart:ui';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:micro_core/core/components/animation.dart';
 import 'package:micro_core/core/helpers/keyboard_manenger.dart';
-import 'package:micro_core/core/theme/app_typography.dart';
 import 'package:micro_core/core/theme/theme.dart';
 import 'package:iconsax/iconsax.dart';
 

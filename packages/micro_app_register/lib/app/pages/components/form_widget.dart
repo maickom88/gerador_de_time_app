@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:loading_indicator/loading_indicator.dart';
 import 'package:micro_core/core/helpers/keyboard_manenger.dart';
 import 'package:micro_core/core/theme/theme.dart';
 import 'package:iconsax/iconsax.dart';
@@ -9,6 +10,8 @@ class FormWidget extends StatefulWidget with KeyboardManager {
   final String label;
   final String? password;
   final String labelButton;
+  final String? errorMessage;
+  final bool load;
   final Function(String value) onEnter;
   final Function(String value) onChanged;
   final Function(bool focus) onFocus;
@@ -16,8 +19,10 @@ class FormWidget extends StatefulWidget with KeyboardManager {
   const FormWidget({
     Key? key,
     required this.title,
+    this.load = false,
     required this.onChanged,
     this.password,
+    this.errorMessage,
     required this.label,
     required this.labelButton,
     required this.onEnter,
@@ -110,6 +115,7 @@ class _FormWidgetState extends State<FormWidget>
                   hintText: widget.label,
                   suffixIcon: const Icon(Iconsax.personalcard,
                       color: AppColor.textLight),
+                  errorText: widget.errorMessage,
                 ),
               ).withBottomPadding(bottomPadding: 50),
             ),
@@ -129,9 +135,23 @@ class _FormWidgetState extends State<FormWidget>
                 HapticFeedback.vibrate();
               }
             },
-            child: Text(
-              widget.labelButton,
-              style: AppTypography.t16().copyWith(color: Colors.white),
+            child: Visibility(
+              replacement: const SizedBox(
+                height: 50,
+                child: Center(
+                  child: LoadingIndicator(
+                    indicatorType: Indicator.ballPulseSync,
+                    colors: [
+                      Colors.white,
+                    ],
+                  ),
+                ),
+              ),
+              visible: !widget.load,
+              child: Text(
+                widget.labelButton,
+                style: AppTypography.t16().copyWith(color: Colors.white),
+              ),
             ),
           ),
         ).withBottomPadding(bottomPadding: 35),

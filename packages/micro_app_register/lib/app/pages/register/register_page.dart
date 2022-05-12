@@ -7,7 +7,6 @@ import 'package:micro_core/core/helpers/keyboard_manenger.dart';
 import 'package:micro_core/core/theme/theme.dart';
 
 import '../../../core/constants/local_image.dart';
-import '../verification_email/verification_email_page.dart';
 import '../components/form_widget.dart';
 import 'register_controller.dart';
 
@@ -205,20 +204,15 @@ class _RegisterPageState extends State<RegisterPage> with KeyboardManager {
                                                 .controller.password = value,
                                           ),
                                           FormWidget(
+                                            load: widget.controller.isLoad,
                                             labelButton:
                                                 'Confirmar e criar conta',
                                             label: 'Informe a senha anterior',
                                             onEnter: (value) {
                                               widget.controller
                                                   .confirmPassword = value;
-                                              AppDefault.navigateToWidget(
-                                                context,
-                                                withReturn: false,
-                                                widget: VerificationEmailPage(
-                                                  email:
-                                                      widget.controller.email,
-                                                ),
-                                              );
+                                              widget.controller
+                                                  .registerAccount(context);
                                             },
                                             title: 'Confirme sua senha',
                                             onFocus: (bool focus) => widget
@@ -226,6 +220,8 @@ class _RegisterPageState extends State<RegisterPage> with KeyboardManager {
                                             password:
                                                 widget.controller.password,
                                             onChanged: (String value) {},
+                                            errorMessage:
+                                                widget.controller.error,
                                           ),
                                         ],
                                       ),

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-import 'app_typography.dart';
 import 'theme.dart';
 
 class ThemeApp {

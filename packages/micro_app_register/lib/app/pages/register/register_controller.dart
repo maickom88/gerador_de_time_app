@@ -1,18 +1,27 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:micro_core/core/theme/theme.dart';
+
+import '../../domain/usecases/register_account.dart';
+import '../verification_email/verification_email_page.dart';
 
 class RegisterController extends ValueNotifier {
+  final RegisterAccount _registerAccount;
+
   final PageController pageViewController = PageController();
 
-  RegisterController() : super(null);
+  RegisterController(
+    this._registerAccount,
+  ) : super(null);
 
   final ValueNotifier<int> _page = ValueNotifier<int>(0);
   final ValueNotifier<String> _name = ValueNotifier<String>('');
   final ValueNotifier<String> _email = ValueNotifier<String>('');
+  final ValueNotifier<String> _error = ValueNotifier<String>('');
   final ValueNotifier<String> _password = ValueNotifier<String>('');
   final ValueNotifier<String> _confirmPassword = ValueNotifier<String>('');
   final ValueNotifier<bool> _isNextPage = ValueNotifier<bool>(false);
   final ValueNotifier<bool> _isFocus = ValueNotifier<bool>(false);
+  final ValueNotifier<bool> _isLoad = ValueNotifier<bool>(false);
 
   int get page => _page.value;
   String get email => _email.value;
@@ -21,6 +30,26 @@ class RegisterController extends ValueNotifier {
   String get confirmPassword => _confirmPassword.value;
   bool get isNextPage => _isNextPage.value;
   bool get isFocus => _isFocus.value;
+  String get error => _error.value;
+  bool get isLoad => _isLoad.value;
+
+  Future<void> registerAccount(BuildContext context) async {
+    isLoad = true;
+    final registerParams = LoginParams(email: email, password: password);
+    final result = await _registerAccount.call(registerParams);
+    result.fold((resultError) {
+      error = resultError.message;
+    }, (resultSuccess) {
+      AppDefault.navigateToWidget(
+        context,
+        withReturn: false,
+        widget: VerificationEmailPage(
+          email: email,
+        ),
+      );
+    });
+    isLoad = false;
+  }
 
   set isNextPage(bool isNext) {
     _isNextPage.value = isNext;
@@ -32,6 +61,11 @@ class RegisterController extends ValueNotifier {
     notifyListeners();
   }
 
+  set isLoad(bool isLoad) {
+    _isLoad.value = isLoad;
+    notifyListeners();
+  }
+
   set page(int page) {
     _page.value = page;
     notifyListeners();
@@ -39,6 +73,11 @@ class RegisterController extends ValueNotifier {
 
   set email(String email) {
     _email.value = email;
+    notifyListeners();
+  }
+
+  set error(String error) {
+    _error.value = error;
     notifyListeners();
   }
 
