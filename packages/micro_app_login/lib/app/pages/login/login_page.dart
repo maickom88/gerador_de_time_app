@@ -4,10 +4,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:micro_core/core/helpers/keyboard_manenger.dart';
 import 'package:micro_core/core/theme/theme.dart';
-import 'package:iconsax/iconsax.dart';
 
 import '../../../core/constants/local_image.dart';
 
+import '../../../core/enums/type_provider_enum.dart';
+import '../components/form_login.dart';
+import '../components/social_widget.dart';
+import '../states/login_state.dart';
 import 'login_controller.dart';
 
 class LoginPage extends StatefulWidget {
@@ -84,86 +87,39 @@ class _LoginPageState extends State<LoginPage> with KeyboardManager {
                                       fontSize: size, color: Colors.white),
                                 ).withBottomPadding(),
                               ).withBottomPadding(),
-                              TextField(
-                                style: AppTypography.t16(fontName: 'Inter')
-                                    .copyWith(color: AppColor.textTitle),
-                                keyboardType: TextInputType.emailAddress,
-                                decoration: const InputDecoration(
-                                  hintText: 'Email',
-                                  suffixIcon: Icon(Iconsax.sms,
-                                      color: AppColor.textLight),
-                                ),
-                              ).withBottomPadding(),
-                              TextField(
-                                style: AppTypography.t16(fontName: 'Inter')
-                                    .copyWith(color: AppColor.textTitle),
-                                keyboardType: TextInputType.emailAddress,
-                                decoration: const InputDecoration(
-                                  hintText: 'Password',
-                                  suffixIcon: Icon(Iconsax.eye_slash,
-                                      color: AppColor.textLight),
-                                ),
+                              ValueListenableBuilder<LoginState>(
+                                builder: (BuildContext context, value,
+                                    Widget? child) {
+                                  if (value is LoginLoandingState) {
+                                    return FormLogin(
+                                      loading: true,
+                                      onLogin:
+                                          (String email, String password) =>
+                                              widget.controller.login(context,
+                                                  email: email,
+                                                  password: password),
+                                    );
+                                  }
+                                  if (value is LoginErrorState) {
+                                    return FormLogin(
+                                      loading: false,
+                                      error: value.error.message,
+                                      onLogin:
+                                          (String email, String password) =>
+                                              widget.controller.login(context,
+                                                  email: email,
+                                                  password: password),
+                                    );
+                                  }
+                                  return FormLogin(
+                                    loading: false,
+                                    onLogin: (String email, String password) =>
+                                        widget.controller.login(context,
+                                            email: email, password: password),
+                                  );
+                                },
+                                valueListenable: widget.controller,
                               ),
-                              Align(
-                                alignment: Alignment.centerRight,
-                                child: TextButton(
-                                  onPressed: () {
-                                    SystemSound.play(SystemSoundType.click);
-                                  },
-                                  child: Text(
-                                    'Esqueceu sua senha?',
-                                    textAlign: TextAlign.left,
-                                    style: AppTypography.t16(fontName: 'Inter')
-                                        .copyWith(color: Colors.white),
-                                  ),
-                                ),
-                              ).withBottomPadding(bottomPadding: 30),
-                              SizedBox(
-                                width: double.infinity,
-                                height: 66,
-                                child: ElevatedButton(
-                                  onPressed: () {
-                                    HapticFeedback.lightImpact();
-                                    AppDefault.navigateTo(context,
-                                        routeName: '/nav', withReturn: false);
-                                  },
-                                  child: Text(
-                                    'Entrar',
-                                    style: AppTypography.t16()
-                                        .copyWith(color: Colors.white),
-                                  ),
-                                ),
-                              ).withBottomPadding(),
-                              SizedBox(
-                                width: double.infinity,
-                                height: 66,
-                                child: ElevatedButton(
-                                  style: ButtonStyle(
-                                    shape: MaterialStateProperty.all(
-                                      RoundedRectangleBorder(
-                                        side: const BorderSide(
-                                            width: 1, color: Colors.white),
-                                        borderRadius:
-                                            AppDefault.defaultBorderRadius(
-                                                radius: 10),
-                                      ),
-                                    ),
-                                    elevation: MaterialStateProperty.all(0),
-                                    backgroundColor: MaterialStateProperty.all(
-                                        Colors.transparent),
-                                  ),
-                                  onPressed: () {
-                                    HapticFeedback.lightImpact();
-                                    AppDefault.navigateTo(context,
-                                        routeName: '/register');
-                                  },
-                                  child: Text(
-                                    'Eu não tenho uma conta',
-                                    style: AppTypography.t16()
-                                        .copyWith(color: Colors.white),
-                                  ),
-                                ),
-                              ).withBottomPadding(),
                               Center(
                                 child: Text(
                                   'ou',
@@ -171,58 +127,12 @@ class _LoginPageState extends State<LoginPage> with KeyboardManager {
                                       .copyWith(color: Colors.white),
                                 ),
                               ).withBottomPadding(),
-                              SizedBox(
-                                width: double.infinity,
-                                height: 66,
-                                child: ElevatedButton.icon(
-                                  style: ButtonStyle(
-                                    elevation: MaterialStateProperty.all(0),
-                                    backgroundColor: MaterialStateProperty.all(
-                                      AppColor.textTitle,
-                                    ),
-                                  ),
-                                  onPressed: () {
-                                    HapticFeedback.lightImpact();
-                                    // AppDefault.navigateTo(context,
-                                    //     routeName: '/login', withReturn: false);
-                                  },
-                                  icon: Image.asset(
-                                    LocalImage.appleLogo,
-                                    width: 20,
-                                  ),
-                                  label: Text(
-                                    '   Continuar com a Apple',
-                                    style: AppTypography.t16()
-                                        .copyWith(color: Colors.white),
-                                  ),
-                                ),
-                              ).withBottomPadding(),
-                              SizedBox(
-                                width: double.infinity,
-                                height: 66,
-                                child: ElevatedButton.icon(
-                                  style: ButtonStyle(
-                                    elevation: MaterialStateProperty.all(0),
-                                    backgroundColor: MaterialStateProperty.all(
-                                      AppColor.secondaryColor,
-                                    ),
-                                  ),
-                                  onPressed: () {
-                                    HapticFeedback.lightImpact();
-                                    // AppDefault.navigateTo(context,
-                                    //     routeName: '/login', withReturn: false);
-                                  },
-                                  icon: Image.asset(
-                                    LocalImage.googleLogo,
-                                    width: 20,
-                                  ),
-                                  label: Text(
-                                    '   Continuar com Google',
-                                    style: AppTypography.t16()
-                                        .copyWith(color: Colors.white),
-                                  ),
-                                ),
-                              ).withBottomPadding(),
+                              SocialWidget(
+                                onProvider:
+                                    (TypeProviderSocial providerSocial) =>
+                                        widget.controller.loginSocial(
+                                            context, providerSocial),
+                              ),
                             ],
                           ),
                         ),

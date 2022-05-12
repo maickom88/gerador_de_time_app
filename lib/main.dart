@@ -8,6 +8,7 @@ import 'resolvers/resolvers.dart';
 import 'routes/routes.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(GeradorDeTimes()..registerRoutes());
 }
 

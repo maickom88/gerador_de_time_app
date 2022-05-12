@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:micro_core/core/theme/app_default.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:micro_core/core/components/circle_teams.dart';

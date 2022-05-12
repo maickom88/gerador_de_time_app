@@ -1,0 +1,1 @@
+enum TypeProviderSocial { google, apple }
