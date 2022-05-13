@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 
 import '../errors/errors.dart';
+import '../log/app_log.dart';
 
 class CustomInterceptors extends Interceptor {
   @override
@@ -14,6 +15,8 @@ class CustomInterceptors extends Interceptor {
     if (err.response?.statusCode == 401) {
       throw Unauthorized();
     }
+    AppLog.writeLog(
+        'Error in path: ${err.requestOptions.path}, menssage: ${err.message}');
     super.onError(err, handler);
   }
 }

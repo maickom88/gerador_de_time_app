@@ -7,6 +7,8 @@ class CustumDio {
 
   CustumDio._run();
   static final CustumDio _singleton = CustumDio._run();
+  static CustumDio get instance => _singleton;
+
   factory CustumDio() => _singleton;
 
   Future<void> initialize(String baseUrl) async {
