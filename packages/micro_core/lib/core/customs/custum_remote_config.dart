@@ -11,6 +11,7 @@ class CustumRemoteConfig implements IFirebaseRemoteConfig {
 
   CustumRemoteConfig._run();
   static final CustumRemoteConfig _singleton = CustumRemoteConfig._run();
+  static CustumRemoteConfig get instance => _singleton;
   factory CustumRemoteConfig() => _singleton;
 
   @override

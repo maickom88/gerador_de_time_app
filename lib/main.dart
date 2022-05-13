@@ -1,28 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:micro_core/core/base_app.dart';
 import 'package:micro_core/core/core_app.dart';
-import 'package:micro_core/core/customs/custum_dio.dart';
-import 'package:micro_core/core/customs/custum_remote_config.dart';
+import 'package:micro_core/core/guard/zone_guard.dart';
 import 'package:micro_core/core/theme/theme.dart';
 import 'package:micro_core/utils/core_utils.dart';
-import 'package:firebase_core/firebase_core.dart';
 
 import 'resolvers/resolvers.dart';
 import 'routes/routes.dart';
 
 Future<void> main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-
-  await Firebase.initializeApp();
-  await CustumRemoteConfig().initialize();
-
-  CustumDio().initialize(CustumRemoteConfig().apiBase);
-
-  runApp(GeradorDeTimes()..registerRoutes());
+  ZoneGuard.withObservableError(() async {
+    await BaseRoutes.initialize();
+    runApp(
+      GeradorDeTimes()..registerRoutes(),
+    );
+  });
 }
 
 class GeradorDeTimes extends StatelessWidget with BaseApp {
-  GeradorDeTimes({Key? key}) : super(key: key);
+  GeradorDeTimes({
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +30,7 @@ class GeradorDeTimes extends StatelessWidget with BaseApp {
       theme: ThemeApp.theme(),
       navigatorKey: navigatorKey,
       onGenerateRoute: generateRoute,
-      initialRoute: BaseRoutes.login,
+      initialRoute: BaseRoutes.initialRoute,
     );
   }
 
