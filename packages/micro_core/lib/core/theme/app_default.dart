@@ -51,6 +51,21 @@ class AppDefault {
         .pushReplacementNamed(routeName, arguments: arguments);
   }
 
+  static Future<T?> navigateToRemoveAll<T extends Object?>(BuildContext context,
+      {required String routeName}) {
+    return Navigator.of(context)
+        .pushNamedAndRemoveUntil<T>(routeName, (Route<dynamic> route) => false);
+  }
+
+  static Future<T?> showDefaultLoad<T>(BuildContext context, Widget widget) =>
+      showDialog<T>(
+        context: context,
+        builder: (context) => widget,
+        barrierColor: Colors.white.withOpacity(0.6),
+        useSafeArea: false,
+        barrierDismissible: false,
+      );
+
   static Future<T?> navigateToWidget<T extends Object?>(BuildContext context,
       {required Widget widget, Object? arguments, bool withReturn = true}) {
     final settings = RouteSettings(arguments: arguments);

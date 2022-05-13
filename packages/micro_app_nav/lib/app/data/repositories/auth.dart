@@ -1,0 +1,20 @@
+import 'package:either_dart/either.dart';
+import 'package:micro_core/core/errors/errors.dart';
+
+import '../../domain/repositories/auth_repository.dart';
+import '../datasources/auth_datasource.dart';
+
+class Auth implements AuthRepository {
+  final AuthDatasource authDatasource;
+  Auth({
+    required this.authDatasource,
+  });
+  @override
+  Future<Either<Failure, void>> logout() async {
+    try {
+      return Right(await authDatasource.logout());
+    } on Failure catch (error) {
+      return Left(error);
+    }
+  }
+}
