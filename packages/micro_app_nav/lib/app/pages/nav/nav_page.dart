@@ -1,11 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:iconsax/iconsax.dart';
 import 'package:micro_core/core/components/animation.dart';
 import 'package:micro_core/core/helpers/keyboard_manenger.dart';
 import 'package:micro_core/core/theme/theme.dart';
-import 'package:iconsax/iconsax.dart';
 
+import '../controllers/logout_controller.dart';
 import 'nav_controller.dart';
 import 'nav_history.dart';
 import 'nav_home.dart';
@@ -15,7 +16,12 @@ import 'nav_team.dart';
 
 class NavPage extends StatefulWidget {
   final NavController controller;
-  const NavPage({Key? key, required this.controller}) : super(key: key);
+  final LogoutController logoutController;
+  const NavPage({
+    Key? key,
+    required this.controller,
+    required this.logoutController,
+  }) : super(key: key);
 
   @override
   _NavPageState createState() => _NavPageState();
@@ -26,15 +32,15 @@ class _NavPageState extends State<NavPage> with KeyboardManager {
   late List<Widget> pages;
   @override
   void initState() {
-    pages = const [
-      FadeAnimation(
+    pages = [
+      const FadeAnimation(
         delay: 0.1,
         child: NavHome(),
       ),
-      NavTeam(),
-      NavHistoric(),
-      NavNotification(),
-      NavSettings(),
+      const NavTeam(),
+      const NavHistoric(),
+      const NavNotification(),
+      NavSettings(widget.logoutController),
     ];
     currentIndex = 0;
     super.initState();

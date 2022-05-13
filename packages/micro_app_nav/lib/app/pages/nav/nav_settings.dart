@@ -7,9 +7,12 @@ import 'package:micro_core/core/components/animation.dart';
 import 'package:micro_core/core/theme/theme.dart';
 
 import '../components/settings_details.dart';
+import '../controllers/logout_controller.dart';
 
 class NavSettings extends StatefulWidget {
-  const NavSettings({
+  final LogoutController logoutController;
+  const NavSettings(
+    this.logoutController, {
     Key? key,
   }) : super(key: key);
 
@@ -198,6 +201,21 @@ class _NavSettingsState extends State<NavSettings> {
                         label: 'Excluir conta',
                         widget: GestureDetector(
                           onTap: () => SystemSound.play(SystemSoundType.click),
+                          child: const Icon(
+                            Iconsax.arrow_circle_right,
+                            size: 25,
+                            color: Color(0xffACACAC),
+                          ).withRightPadding(rightPadding: 20),
+                        ),
+                      ),
+                      SettingsDetails(
+                        icon: Iconsax.logout,
+                        label: 'Sair',
+                        widget: GestureDetector(
+                          onTap: () {
+                            SystemSound.play(SystemSoundType.click);
+                            widget.logoutController.logout(context);
+                          },
                           child: const Icon(
                             Iconsax.arrow_circle_right,
                             size: 25,

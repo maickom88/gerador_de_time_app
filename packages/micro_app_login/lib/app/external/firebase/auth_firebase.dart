@@ -1,16 +1,16 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:google_sign_in/google_sign_in.dart';
 
+import '../../custum_google_auth.dart';
 import '../../data/datasources/auth_datasource.dart';
 import '../../data/errors/failures.dart';
 import '../../data/errors/login_cancel_error.dart';
 import '../../domain/entities/auth_response.dart';
 
 class AuthFirebase implements AuthDatasource {
-  final GoogleSignIn googleSignIn;
+  final CustumGoogleAuth custumGoogleAuth;
   final FirebaseAuth firebaseAuth;
   AuthFirebase({
-    required this.googleSignIn,
+    required this.custumGoogleAuth,
     required this.firebaseAuth,
   });
 
@@ -22,10 +22,11 @@ class AuthFirebase implements AuthDatasource {
   @override
   Future<AuthResponse> loginWithGoogle() async {
     try {
-      final googleSignInAccount = await googleSignIn.signIn();
+      final googleSignInAccount = await custumGoogleAuth.googleSignIn.signIn();
       if (googleSignInAccount != null) {
         final googleSignInAuthentication =
             await googleSignInAccount.authentication;
+
         final credential = GoogleAuthProvider.credential(
           accessToken: googleSignInAuthentication.accessToken,
           idToken: googleSignInAuthentication.idToken,
@@ -70,7 +71,7 @@ class AuthFirebase implements AuthDatasource {
   Future<void> logout() async {
     try {
       await firebaseAuth.signOut();
-      await googleSignIn.signOut();
+      await custumGoogleAuth.googleSignIn.signOut();
     } on FirebaseAuthException catch (e) {
       throw firebaseHandlersErrors(typeError: e);
     } on Exception catch (e) {

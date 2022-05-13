@@ -26,7 +26,8 @@ class LoginController extends ValueNotifier<LoginState> {
         value = LoginErrorState(error: resultError);
       }
     }, (resultSuccess) {
-      AppDefault.navigateTo(context, routeName: '/nav', withReturn: false);
+      value = LoginSuccessState(success: resultSuccess);
+      AppDefault.navigateToRemoveAll(context, routeName: '/nav');
     });
   }
 
@@ -41,7 +42,8 @@ class LoginController extends ValueNotifier<LoginState> {
         value = LoginErrorState(error: resultError);
       },
       (resultSuccess) async {
-        AppDefault.navigateTo(context, routeName: '/nav', withReturn: false);
+        value = LoginSuccessState(success: resultSuccess);
+        AppDefault.navigateToRemoveAll(context, routeName: '/nav');
       },
     );
   }
