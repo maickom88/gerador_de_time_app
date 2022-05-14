@@ -11,10 +11,10 @@ class CustumDio {
 
   factory CustumDio() => _singleton;
 
-  Future<void> initialize(String baseUrl) async {
+  Future<void> initialize(String baseUrl, {String? token}) async {
     _dio = Dio();
     _dio.interceptors.add(CustomInterceptors());
     _dio.options.baseUrl = baseUrl;
-    _dio.options.connectTimeout = 15000;
+    _dio.options.headers['x-api-key'] = token;
   }
 }

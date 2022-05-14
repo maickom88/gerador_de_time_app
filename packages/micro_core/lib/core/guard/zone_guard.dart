@@ -5,6 +5,7 @@ import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 
 import '../customs/custum_dio.dart';
+import '../customs/custum_firebase_auth.dart';
 import '../customs/custum_remote_config.dart';
 
 class ZoneGuard {
@@ -14,7 +15,9 @@ class ZoneGuard {
         WidgetsFlutterBinding.ensureInitialized();
         await Firebase.initializeApp();
         await CustumRemoteConfig.instance.initialize();
-        CustumDio.instance.initialize(CustumRemoteConfig.instance.apiBase);
+        final token = await CustumFirebaseAuth.getToken();
+        CustumDio.instance
+            .initialize(CustumRemoteConfig.instance.apiBase, token: token);
         FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
         body.call();
       },
