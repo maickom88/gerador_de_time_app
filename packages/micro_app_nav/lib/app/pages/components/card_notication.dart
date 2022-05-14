@@ -15,7 +15,6 @@ class CardNotification extends StatelessWidget {
   Widget build(BuildContext context) {
     return SizedBox(
       width: double.infinity,
-      height: 160,
       child: Stack(
         children: [
           Row(
@@ -53,7 +52,6 @@ class CardNotification extends StatelessWidget {
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
               child: Container(
-                height: 120,
                 padding:
                     const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
                 decoration: BoxDecoration(
@@ -65,10 +63,12 @@ class CardNotification extends StatelessWidget {
                     Text(title,
                         style: AppTypography.t22WithW800()
                             .copyWith(color: const Color(0xff5C5C5C))),
-                    Text(
-                      description,
-                      style: AppTypography.t16()
-                          .copyWith(color: AppColor.textLight),
+                    Expanded(
+                      child: Text(
+                        description,
+                        style: AppTypography.t16()
+                            .copyWith(color: AppColor.textLight),
+                      ),
                     ),
                   ],
                 ),

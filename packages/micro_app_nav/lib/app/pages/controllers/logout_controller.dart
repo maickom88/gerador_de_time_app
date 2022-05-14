@@ -11,13 +11,13 @@ class LogoutController extends ValueNotifier<LogoutState> {
 
   LogoutController(
     this._logoutUsecase,
-  ) : super(InitialLogoutStateState());
+  ) : super(InitialLogoutState());
 
   Future<void> logout(context) async {
     value = LogoutLoandingState();
     final result = await _logoutUsecase.call(NoParams());
     result.fold((resultError) {
-      value = LogoutStateErrorState(error: resultError);
+      value = LogoutErrorState(error: resultError);
     }, (resultSuccess) async {
       AppDefault.showDefaultLoad(
           context,

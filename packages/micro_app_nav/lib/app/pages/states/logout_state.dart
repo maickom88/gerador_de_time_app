@@ -4,13 +4,13 @@ abstract class LogoutState {}
 
 class LogoutLoandingState extends LogoutState {}
 
-class InitialLogoutStateState extends LogoutState {}
+class InitialLogoutState extends LogoutState {}
 
-class LogoutStateSuccessState extends LogoutState {}
+class LogoutSuccessState extends LogoutState {}
 
-class LogoutStateErrorState extends LogoutState {
+class LogoutErrorState extends LogoutState {
   final Failure error;
-  LogoutStateErrorState({
+  LogoutErrorState({
     required this.error,
   });
 }

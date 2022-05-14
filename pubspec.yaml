@@ -45,3 +45,19 @@ flutter:
     - assets/
     - assets/images/
     - assets/animations/
+  fonts:
+    - family: Poppins
+      fonts:
+        - asset: assets/fonts/poppins_regular_0.ttf
+        - asset: assets/fonts/poppins_bold_0.ttf
+          weight: 800
+        - asset: assets/fonts/poppins_light_0.ttf
+          weight: 200
+
+    - family: Inter
+      fonts:
+        - asset: assets/fonts/inter_regular.ttf
+        - asset: assets/fonts/inter_bold.ttf
+          weight: 800
+        - asset: assets/fonts/inter_light.ttf
+          weight: 200

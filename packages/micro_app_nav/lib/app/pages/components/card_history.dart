@@ -21,7 +21,7 @@ class CardHistoric extends StatelessWidget {
   Widget build(BuildContext context) {
     return SizedBox(
       width: double.infinity,
-      height: 160,
+      height: 165,
       child: Stack(
         children: [
           Row(

@@ -16,7 +16,7 @@ class CardPlayer extends StatelessWidget {
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.all(10),
-      height: 130,
+      height: 135,
       decoration: BoxDecoration(
         color: AppColor.lightColor,
         borderRadius: BorderRadius.circular(17),

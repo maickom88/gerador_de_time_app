@@ -6,6 +6,7 @@ import 'package:micro_core/core/components/animation.dart';
 import 'package:micro_core/core/helpers/keyboard_manenger.dart';
 import 'package:micro_core/core/theme/theme.dart';
 
+import '../controllers/home_controller.dart';
 import '../controllers/logout_controller.dart';
 import 'nav_controller.dart';
 import 'nav_history.dart';
@@ -17,10 +18,12 @@ import 'nav_team.dart';
 class NavPage extends StatefulWidget {
   final NavController controller;
   final LogoutController logoutController;
+  final HomeController homeController;
   const NavPage({
     Key? key,
     required this.controller,
     required this.logoutController,
+    required this.homeController,
   }) : super(key: key);
 
   @override
@@ -33,9 +36,9 @@ class _NavPageState extends State<NavPage> with KeyboardManager {
   @override
   void initState() {
     pages = [
-      const FadeAnimation(
+      FadeAnimation(
         delay: 0.1,
-        child: NavHome(),
+        child: NavHome(homeController: widget.homeController),
       ),
       const NavTeam(),
       const NavHistoric(),
