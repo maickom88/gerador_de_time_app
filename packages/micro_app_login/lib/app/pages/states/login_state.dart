@@ -1,6 +1,6 @@
 import 'package:micro_core/core/errors/errors.dart';
 
-import '../../domain/entities/auth_response.dart';
+import '../../domain/entities/user_entity.dart';
 
 abstract class LoginState {}
 
@@ -9,7 +9,7 @@ class LoginLoandingState extends LoginState {}
 class InitialLoginState extends LoginState {}
 
 class LoginSuccessState extends LoginState {
-  final AuthResponse success;
+  final UserEntity success;
 
   LoginSuccessState({
     required this.success,

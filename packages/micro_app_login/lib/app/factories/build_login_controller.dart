@@ -3,5 +3,6 @@ import 'build_resources.dart';
 
 LoginController buildLoginController() => LoginController(
       loginSocialUsecase,
+      notifyApiUsecase,
       loginWithEmailAndPasswordUsecase,
     );

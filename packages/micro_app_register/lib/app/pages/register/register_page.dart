@@ -74,7 +74,7 @@ class _RegisterPageState extends State<RegisterPage> with KeyboardManager {
                               child: AnimatedContainer(
                                 clipBehavior: Clip.none,
                                 width: AppDefault.width(context),
-                                height: 400,
+                                height: 430,
                                 constraints:
                                     const BoxConstraints(maxHeight: 750),
                                 padding: const EdgeInsets.symmetric(

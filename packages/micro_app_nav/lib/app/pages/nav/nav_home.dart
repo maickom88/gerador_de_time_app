@@ -66,7 +66,7 @@ class NavHome extends StatelessWidget {
                               children: [
                                 const TextSpan(text: 'Olá'),
                                 TextSpan(
-                                  text: ' John Doe',
+                                  text: ' ${homeController.userEntity?.name}',
                                   style: AppTypography.t28WithW800(),
                                 ),
                               ],
@@ -76,7 +76,8 @@ class NavHome extends StatelessWidget {
                             'Hoje é um ótimo dia para jogar 😁',
                             style: AppTypography.t16WithW300(fontName: 'Inter')
                                 .copyWith(color: AppColor.textLight),
-                          )
+                          ),
+                          const SizedBox(height: 8)
                         ],
                       ),
                     ),
