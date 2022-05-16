@@ -8,14 +8,17 @@ import 'package:micro_core/core/helpers/keyboard_manenger.dart';
 import 'package:micro_core/core/theme/theme.dart';
 
 import '../../components/error_page.dart';
+import '../../domain/entities/position_entity.dart';
 import '../controllers/position_controller.dart';
 import '../states/position_state.dart';
 
 class PageSearchPosition extends StatelessWidget with KeyboardManager {
   final PositionController positionController;
+  final Function(PositionEntity position) onPosition;
   const PageSearchPosition({
     Key? key,
     required this.positionController,
+    required this.onPosition,
   }) : super(key: key);
 
   @override
@@ -48,17 +51,21 @@ class PageSearchPosition extends StatelessWidget with KeyboardManager {
                         child: Padding(
                           padding: const EdgeInsets.only(right: 12.0),
                           child: CupertinoTextField(
-                              placeholder: 'Pesquisar',
-                              prefix: const Padding(
-                                padding: EdgeInsets.only(left: 10),
-                                child: Icon(
-                                  Iconsax.search_normal,
-                                  color: AppColor.textLight,
-                                ),
+                            placeholder: 'Pesquisar',
+                            onChanged: (value) =>
+                                positionController.searchPosition(value),
+                            prefix: const Padding(
+                              padding: EdgeInsets.only(left: 10),
+                              child: Icon(
+                                Iconsax.search_normal,
+                                color: AppColor.textLight,
                               ),
-                              decoration: BoxDecoration(
-                                  color: AppColor.lightColor,
-                                  borderRadius: BorderRadius.circular(11))),
+                            ),
+                            decoration: BoxDecoration(
+                              color: AppColor.lightColor,
+                              borderRadius: BorderRadius.circular(11),
+                            ),
+                          ),
                         ),
                       ),
                       border: Border.all(color: Colors.transparent),
@@ -69,15 +76,23 @@ class PageSearchPosition extends StatelessWidget with KeyboardManager {
                   type: MaterialType.transparency,
                   child: ListView.builder(
                       shrinkWrap: true,
-                      itemCount: value.positions.length,
+                      itemCount:
+                          positionController.searchResultPositions.isNotEmpty
+                              ? positionController.searchResultPositions.length
+                              : value.positions.length,
                       physics: const NeverScrollableScrollPhysics(),
                       itemBuilder: (_, index) {
-                        final position = value.positions[index];
+                        final position = positionController
+                                .searchResultPositions.isNotEmpty
+                            ? positionController.searchResultPositions[index]
+                            : value.positions[index];
                         return FadeAnimation(
                           delay: (1.0 + index) / 4,
                           child: ListTile(
                             onTap: () {
                               SystemSound.play(SystemSoundType.click);
+                              onPosition(position);
+                              AppDefault.close(context);
                             },
                             title: Text(
                               position.name,

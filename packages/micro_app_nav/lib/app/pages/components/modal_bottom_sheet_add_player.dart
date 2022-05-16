@@ -2,20 +2,40 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:micro_core/core/components/animation.dart';
+import 'package:adaptive_action_sheet/adaptive_action_sheet.dart';
 import 'package:micro_core/core/theme/theme.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 import '../../../core/utils/theme.dart';
+import '../../domain/entities/skill_entity.dart';
 import '../components/page_search_position.dart';
 import '../controllers/position_controller.dart';
 import 'page_search_position.dart';
+import 'skill_component.dart';
 
-class ModelBottomAddPlayer extends StatelessWidget {
+class ModelBottomAddPlayer extends StatefulWidget {
   final PositionController positionController;
+  final Function(String name, String guidPosition, SkillEntity skill) onSave;
   const ModelBottomAddPlayer({
     Key? key,
     required this.positionController,
+    required this.onSave,
   }) : super(key: key);
+
+  @override
+  State<ModelBottomAddPlayer> createState() => _ModelBottomAddPlayerState();
+}
+
+class _ModelBottomAddPlayerState extends State<ModelBottomAddPlayer> {
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +43,7 @@ class ModelBottomAddPlayer extends StatelessWidget {
       type: MaterialType.transparency,
       child: Container(
         padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 12),
-        height: AppDefault.height(context).percent(68),
+        height: AppDefault.height(context).percent(80),
         child: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -48,7 +68,57 @@ class ModelBottomAddPlayer extends StatelessWidget {
                     style: AppTypography.t16().copyWith(),
                   ),
                   GestureDetector(
-                    onTap: () {},
+                    onTap: () {
+                      final skill = SkillEntity(
+                        strength: widget.positionController.strength ?? 0,
+                        velocity: widget.positionController.velocity ?? 0,
+                        completion: widget.positionController.completion ?? 0,
+                        dribble: widget.positionController.dribble ?? 0,
+                      );
+                      if (widget.positionController.name == null ||
+                          widget.positionController.name?.isEmpty == true) {
+                        showAdaptiveActionSheet(
+                          context: context,
+                          title: const Text('Informe o nome do jogador'),
+                          actions: <BottomSheetAction>[
+                            BottomSheetAction(
+                              title: Text('Sim, entendi',
+                                  style: AppTypography.t14().copyWith(
+                                      color: Colors.blue,
+                                      fontWeight: FontWeight.bold)),
+                              onPressed: () {
+                                AppDefault.close(context);
+                              },
+                            ),
+                          ],
+                        );
+
+                        return;
+                      }
+                      if (widget.positionController.positionEntity == null) {
+                        showAdaptiveActionSheet(
+                          context: context,
+                          title: const Text('Informe uma posição'),
+                          actions: <BottomSheetAction>[
+                            BottomSheetAction(
+                              title: Text('Sim, entendi',
+                                  style: AppTypography.t14().copyWith(
+                                      color: Colors.blue,
+                                      fontWeight: FontWeight.bold)),
+                              onPressed: () {
+                                AppDefault.close(context);
+                              },
+                            ),
+                          ],
+                        );
+                        return;
+                      }
+                      widget.onSave(
+                        widget.positionController.name!,
+                        widget.positionController.positionEntity!.guid!,
+                        skill,
+                      );
+                    },
                     child: Text(
                       'Salvar',
                       style: AppTypography.t16().copyWith(
@@ -72,8 +142,9 @@ class ModelBottomAddPlayer extends StatelessWidget {
                   ),
                 ).withBottomPadding(),
               ),
-              const TextField(
-                decoration: InputDecoration(
+              TextField(
+                onChanged: (value) => widget.positionController.name = value,
+                decoration: const InputDecoration(
                   filled: true,
                   fillColor: AppColor.lightColor,
                   hintText: 'Nome',
@@ -81,31 +152,31 @@ class ModelBottomAddPlayer extends StatelessWidget {
                 ),
               ).themeTwo().withBottomPadding(),
               TextField(
-                onTap: () {
-                  showCupertinoModalBottomSheet(
+                onTap: () async {
+                  await showCupertinoModalBottomSheet(
                     context: context,
                     expand: true,
                     builder: (context) => PageSearchPosition(
-                      positionController: positionController..getPositions(),
+                      positionController: widget.positionController
+                        ..getPositions(),
+                      onPosition: (position) {
+                        setState(() {
+                          widget.positionController.positionEntity = position;
+                        });
+                      },
                     ),
                   );
                 },
                 readOnly: true,
-                decoration: const InputDecoration(
+                decoration: InputDecoration(
                   filled: true,
                   fillColor: AppColor.lightColor,
-                  hintText: 'Posição',
-                  suffixIcon: Icon(Iconsax.arrow_down),
+                  hintText: widget.positionController.positionEntity != null
+                      ? widget.positionController.positionEntity?.name
+                      : 'Posição',
+                  suffixIcon: const Icon(Iconsax.arrow_down),
                 ),
-              ).themeTwo().withBottomPadding(bottomPadding: 5),
-              Align(
-                alignment: Alignment.topRight,
-                child: Text(
-                  'Opcional',
-                  style:
-                      AppTypography.t14().copyWith(color: AppColor.textLight),
-                ),
-              ),
+              ).themeTwo().withBottomPadding(),
               Text(
                 'Editar habilidades',
                 style: AppTypography.t16().copyWith(
@@ -115,192 +186,35 @@ class ModelBottomAddPlayer extends StatelessWidget {
               ),
               FadeAnimation(
                 delay: 0.2,
-                child: Container(
-                  width: double.infinity,
-                  padding: const EdgeInsets.all(10),
-                  height: 40,
-                  decoration: const BoxDecoration(
-                    border: Border(
-                      top: BorderSide(width: 1, color: AppColor.lightColor),
-                    ),
-                  ),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        'Força',
-                        style: AppTypography.t16WithW800()
-                            .copyWith(color: AppColor.textLight),
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          const Icon(Iconsax.star1,
-                                  size: 30, color: AppColor.primaryColor)
-                              .withRightPadding(rightPadding: 0),
-                          const Icon(Iconsax.star1,
-                                  size: 30, color: AppColor.primaryColor)
-                              .withRightPadding(rightPadding: 0),
-                          const Icon(Iconsax.star1,
-                                  size: 30, color: AppColor.primaryColor)
-                              .withRightPadding(rightPadding: 5),
-                          const Icon(Iconsax.star,
-                                  size: 20, color: AppColor.primaryColor)
-                              .withRightPadding(rightPadding: 5)
-                              .withTopPadding(topPadding: 5),
-                          const Icon(Iconsax.star,
-                                  size: 20, color: AppColor.primaryColor)
-                              .withRightPadding(rightPadding: 5)
-                              .withTopPadding(topPadding: 5),
-                        ],
-                      ),
-                    ],
-                  ),
+                child: SkillCompoenent(
+                  onChange: (int value) =>
+                      widget.positionController.strength = value,
+                  title: 'Força',
                 ).withTopPadding(),
               ),
               FadeAnimation(
                 delay: 0.4,
-                child: Container(
-                  width: double.infinity,
-                  padding: const EdgeInsets.all(10),
-                  height: 40,
-                  decoration: const BoxDecoration(
-                    border: Border(
-                      top: BorderSide(width: 1, color: AppColor.lightColor),
-                    ),
-                  ),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        'Velocidade',
-                        style: AppTypography.t16WithW800()
-                            .copyWith(color: AppColor.textLight),
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          const Icon(Iconsax.star1,
-                                  size: 30, color: AppColor.primaryColor)
-                              .withRightPadding(rightPadding: 0),
-                          const Icon(Iconsax.star1,
-                                  size: 30, color: AppColor.primaryColor)
-                              .withRightPadding(rightPadding: 0),
-                          const Icon(Iconsax.star1,
-                                  size: 30, color: AppColor.primaryColor)
-                              .withRightPadding(rightPadding: 5),
-                          const Icon(Iconsax.star,
-                                  size: 20, color: AppColor.primaryColor)
-                              .withRightPadding(rightPadding: 5)
-                              .withTopPadding(topPadding: 5),
-                          const Icon(Iconsax.star,
-                                  size: 20, color: AppColor.primaryColor)
-                              .withRightPadding(rightPadding: 5)
-                              .withTopPadding(topPadding: 5),
-                        ],
-                      ),
-                    ],
-                  ),
-                ).withTopPadding(),
+                child: SkillCompoenent(
+                  onChange: (int value) =>
+                      widget.positionController.velocity = value,
+                  title: 'Velocidade',
+                ),
               ),
               FadeAnimation(
                 delay: 0.6,
-                child: Container(
-                  width: double.infinity,
-                  padding: const EdgeInsets.all(10),
-                  height: 40,
-                  decoration: const BoxDecoration(
-                    border: Border(
-                      top: BorderSide(width: 1, color: AppColor.lightColor),
-                    ),
-                  ),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        'Drible',
-                        style: AppTypography.t16WithW800()
-                            .copyWith(color: AppColor.textLight),
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          const Icon(Iconsax.star1,
-                                  size: 30, color: AppColor.primaryColor)
-                              .withRightPadding(rightPadding: 0),
-                          const Icon(Iconsax.star1,
-                                  size: 30, color: AppColor.primaryColor)
-                              .withRightPadding(rightPadding: 0),
-                          const Icon(Iconsax.star1,
-                                  size: 30, color: AppColor.primaryColor)
-                              .withRightPadding(rightPadding: 5),
-                          const Icon(Iconsax.star,
-                                  size: 20, color: AppColor.primaryColor)
-                              .withRightPadding(rightPadding: 5)
-                              .withTopPadding(topPadding: 5),
-                          const Icon(Iconsax.star,
-                                  size: 20, color: AppColor.primaryColor)
-                              .withRightPadding(rightPadding: 5)
-                              .withTopPadding(topPadding: 5),
-                        ],
-                      ),
-                    ],
-                  ),
-                ).withTopPadding(),
+                child: SkillCompoenent(
+                  onChange: (int value) =>
+                      widget.positionController.dribble = value,
+                  title: 'Drible',
+                ),
               ),
               FadeAnimation(
-                delay: 0.8,
-                child: Container(
-                  width: double.infinity,
-                  padding: const EdgeInsets.all(10),
-                  height: 40,
-                  decoration: const BoxDecoration(
-                    border: Border(
-                      top: BorderSide(width: 1, color: AppColor.lightColor),
-                    ),
-                  ),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        'Finalização',
-                        style: AppTypography.t16WithW800()
-                            .copyWith(color: AppColor.textLight),
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          const Icon(Iconsax.star1,
-                                  size: 30, color: AppColor.primaryColor)
-                              .withRightPadding(rightPadding: 0),
-                          const Icon(Iconsax.star1,
-                                  size: 30, color: AppColor.primaryColor)
-                              .withRightPadding(rightPadding: 0),
-                          const Icon(Iconsax.star1,
-                                  size: 30, color: AppColor.primaryColor)
-                              .withRightPadding(rightPadding: 5),
-                          const Icon(Iconsax.star,
-                                  size: 20, color: AppColor.primaryColor)
-                              .withRightPadding(rightPadding: 5)
-                              .withTopPadding(topPadding: 5),
-                          const Icon(Iconsax.star,
-                                  size: 20, color: AppColor.primaryColor)
-                              .withRightPadding(rightPadding: 5)
-                              .withTopPadding(topPadding: 5),
-                        ],
-                      ),
-                    ],
-                  ),
-                ).withTopPadding(),
-              ),
+                  delay: 0.8,
+                  child: SkillCompoenent(
+                    onChange: (int value) =>
+                        widget.positionController.completion = value,
+                    title: 'Finalização',
+                  )),
             ],
           ),
         ),

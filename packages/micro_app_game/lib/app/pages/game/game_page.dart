@@ -224,72 +224,74 @@ class _GamePageState extends State<GamePage> {
             topRight: Radius.circular(20),
           ),
         ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            SizedBox(
-              height: 100,
-              width: 100,
-              child: CountDownProgressIndicator(
-                controller: countdownController,
-                strokeWidth: 6,
-                autostart: false,
-                timeTextStyle:
-                    const TextStyle(color: AppColor.textLight, fontSize: 17),
-                valueColor: AppColor.textTitle,
-                backgroundColor: AppColor.textLight,
-                initialPosition: 0,
-                duration: 120,
-                onComplete: () => null,
-              ),
-            ).withBottomPadding(),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                SizedBox(
-                  width: 65,
-                  child: GestureDetector(
-                    onTap: () {
-                      countdownController.start();
-                    },
-                    child: Text(
-                      'Iniciar',
-                      style: AppTypography.t16()
-                          .copyWith(color: AppColor.secondaryColor),
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              SizedBox(
+                height: 100,
+                width: 100,
+                child: CountDownProgressIndicator(
+                  controller: countdownController,
+                  strokeWidth: 6,
+                  autostart: false,
+                  timeTextStyle:
+                      const TextStyle(color: AppColor.textLight, fontSize: 17),
+                  valueColor: AppColor.textTitle,
+                  backgroundColor: AppColor.textLight,
+                  initialPosition: 0,
+                  duration: 120,
+                  onComplete: () => null,
+                ),
+              ).withBottomPadding(),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  SizedBox(
+                    width: 78,
+                    child: GestureDetector(
+                      onTap: () {
+                        countdownController.start();
+                      },
+                      child: Text(
+                        'Iniciar',
+                        style: AppTypography.t16()
+                            .copyWith(color: AppColor.secondaryColor),
+                      ),
                     ),
                   ),
-                ),
-                SizedBox(
-                  width: 50,
-                  child: GestureDetector(
-                    onTap: () {
-                      countdownController.pause();
-                    },
-                    child: Text(
-                      'Pause',
-                      style: AppTypography.t16()
-                          .copyWith(color: AppColor.textLight),
+                  SizedBox(
+                    width: 50,
+                    child: GestureDetector(
+                      onTap: () {
+                        countdownController.pause();
+                      },
+                      child: Text(
+                        'Pause',
+                        style: AppTypography.t16()
+                            .copyWith(color: AppColor.textLight),
+                      ),
                     ),
                   ),
-                ),
-                SizedBox(
-                  width: 65,
-                  child: GestureDetector(
-                    onTap: () {
-                      countdownController.restart(initialPosition: 0);
-                    },
-                    child: Text(
-                      'Reiniciar',
-                      style:
-                          AppTypography.t16().copyWith(color: Colors.red[400]),
+                  SizedBox(
+                    width: 70,
+                    child: GestureDetector(
+                      onTap: () {
+                        countdownController.restart(initialPosition: 0);
+                      },
+                      child: Text(
+                        'Reiniciar',
+                        style: AppTypography.t16()
+                            .copyWith(color: Colors.red[400]),
+                      ),
                     ),
                   ),
-                ),
-              ],
-            )
-          ],
-        ).withSymPadding(),
+                ],
+              )
+            ],
+          ).withSymPadding(),
+        ),
       ),
     );
   }

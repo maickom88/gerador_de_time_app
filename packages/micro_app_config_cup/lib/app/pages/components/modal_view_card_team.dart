@@ -15,7 +15,7 @@ class ModalViewCardTeam extends StatelessWidget {
       type: MaterialType.transparency,
       color: Colors.transparent,
       child: Container(
-        height: AppDefault.height(context).percent(50),
+        height: AppDefault.height(context).percent(55),
         padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 12),
         child: SingleChildScrollView(
           child: Column(

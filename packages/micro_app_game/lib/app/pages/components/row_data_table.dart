@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:micro_core/core/theme/theme.dart';
-import 'package:micro_core/utils/split_convert_name.dart';
 
 class RowDataTable extends StatelessWidget {
   final String avatar;

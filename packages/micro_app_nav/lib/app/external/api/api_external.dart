@@ -5,7 +5,9 @@ import '../../data/datasources/api_datasource.dart';
 import '../../data/errors/server_error.dart';
 import '../../domain/entities/player_entity.dart';
 import '../../domain/entities/position_entity.dart';
+import '../../domain/entities/skill_entity.dart';
 import '../../domain/entities/sport_entity.dart';
+import '../../domain/usecases/save_player_usecase.dart';
 
 class ApiExternal implements ApiDatasource {
   final CustumDio _dio;
@@ -47,6 +49,34 @@ class ApiExternal implements ApiDatasource {
           .map((position) => PositionEntity.fromMap(position))
           .toList();
       return positions;
+    } on DioError catch (error) {
+      throw error.error;
+    } on Exception catch (_) {
+      throw ServerError();
+    }
+  }
+
+  @override
+  Future<PlayerEntity> savePLayer(SavePlayerParams params) async {
+    try {
+      final result = await _dio.http
+          .post<Map<String, dynamic>>('/player', data: params.toMap());
+      final player = PlayerEntity.fromMap(result.data!);
+      return player;
+    } on DioError catch (error) {
+      throw error.error;
+    } on Exception catch (_) {
+      throw ServerError();
+    }
+  }
+
+  @override
+  Future<SkillEntity> saveSkill(SkillEntity params) async {
+    try {
+      final result = await _dio.http
+          .post<Map<String, dynamic>>('/skill', data: params.toMap());
+      final skill = SkillEntity.fromMap(result.data!);
+      return skill;
     } on DioError catch (error) {
       throw error.error;
     } on Exception catch (_) {

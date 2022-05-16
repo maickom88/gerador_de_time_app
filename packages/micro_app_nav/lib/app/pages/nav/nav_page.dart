@@ -61,6 +61,10 @@ class _NavPageState extends State<NavPage> with KeyboardManager {
   @override
   void dispose() {
     widget.controller.dispose();
+    widget.homeController.dispose();
+    widget.logoutController.dispose();
+    widget.positionController.dispose();
+    widget.teamController.dispose();
     super.dispose();
   }
 
