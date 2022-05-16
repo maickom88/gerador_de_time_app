@@ -1,47 +1,47 @@
 import 'package:flutter/material.dart';
-import 'package:micro_core/core/usecases/usecases.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../domain/entities/sport_entity.dart';
+import '../../domain/entities/player_entity.dart';
 import '../../domain/entities/user_entity.dart';
-import '../../domain/usecases/get_sports_usecase.dart';
+import '../../domain/usecases/get_players_usecase.dart';
 import '../states/home_state.dart';
+import '../states/team_state.dart';
 
-class HomeController extends ValueNotifier<HomeState> {
-  final GetSports _getSports;
+class TeamController extends ValueNotifier<TeamState> {
+  final GetPlayers _getPlayers;
   final SharedPreferences _sharedPreferences;
 
-  final ValueNotifier<List<SportEntity>> _searchResultSports =
-      ValueNotifier<List<SportEntity>>([]);
+  final ValueNotifier<List<PlayerEntity>> _searchResultPlayer =
+      ValueNotifier<List<PlayerEntity>>([]);
   late final ValueNotifier<UserEntity?> _userEntity =
       ValueNotifier<UserEntity?>(null);
 
-  List<SportEntity> get searchResultSports => _searchResultSports.value;
+  List<PlayerEntity> get searchResultPlayer => _searchResultPlayer.value;
   UserEntity? get userEntity => _userEntity.value;
 
-  HomeController(
-    this._getSports,
+  TeamController(
+    this._getPlayers,
     this._sharedPreferences,
-  ) : super(InitialHomeState());
+  ) : super(InitialTeamState());
 
-  Future<void> getSports() async {
-    value = HomeLoandingState();
+  Future<void> getPlayers() async {
+    value = TeamLoandingState();
     if (_sharedPreferences.containsKey('user')) {
       userEntity = UserEntity.fromJson(_sharedPreferences.getString('user')!);
     }
-    final result = await _getSports.call(NoParams());
+    final result = await _getPlayers.call(userEntity!.guid);
     result.fold((resultError) {
-      value = HomeErrorState(error: resultError);
+      value = TeamErrorState(error: resultError);
     }, (resultSuccess) async {
       await Future.delayed(const Duration(seconds: 2));
-      value = HomeSuccessState(sports: resultSuccess);
+      value = TeamSuccessState(players: resultSuccess);
     });
   }
 
-  void searchSport(String search) {
+  void searchPlayer(String search) {
     if (value is HomeSuccessState) {
-      searchResultSports = (value as HomeSuccessState)
-          .sports
+      searchResultPlayer = (value as TeamSuccessState)
+          .players
           .where((element) =>
               element.name.toLowerCase().contains(search.toLowerCase()))
           .toList();
@@ -53,8 +53,8 @@ class HomeController extends ValueNotifier<HomeState> {
     notifyListeners();
   }
 
-  set searchResultSports(List<SportEntity> sports) {
-    _searchResultSports.value = sports;
+  set searchResultPlayer(List<PlayerEntity> player) {
+    _searchResultPlayer.value = player;
     notifyListeners();
   }
 }
