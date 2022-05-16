@@ -45,8 +45,8 @@ class CardScore extends StatelessWidget {
             ),
           ),
           Positioned.fill(
-            right: 0,
-            top: -15,
+            right: 3,
+            top: -27,
             child: Align(
               alignment: isRight ? Alignment.centerRight : Alignment.centerLeft,
               child: Text(

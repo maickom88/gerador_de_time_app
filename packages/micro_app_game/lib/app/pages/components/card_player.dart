@@ -72,72 +72,74 @@ class _CardPlayerState extends State<CardPlayer> {
                 },
               ),
               Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      widget.name,
-                      overflow: TextOverflow.ellipsis,
-                      style: AppTypography.t22WithW800(),
-                    ),
-                    SingleChildScrollView(
-                      scrollDirection: Axis.horizontal,
-                      physics: const NeverScrollableScrollPhysics(),
-                      child: Row(
-                        children: [
-                          const Icon(Iconsax.star1,
-                                  size: 25, color: AppColor.primaryColor)
-                              .withRightPadding(rightPadding: 0),
-                          const Icon(Iconsax.star1,
-                                  size: 25, color: AppColor.primaryColor)
-                              .withRightPadding(rightPadding: 0),
-                          const Icon(Iconsax.star1,
-                                  size: 25, color: AppColor.primaryColor)
-                              .withRightPadding(rightPadding: 5),
-                          const Icon(Iconsax.star,
-                                  size: 19, color: AppColor.primaryColor)
-                              .withRightPadding(rightPadding: 5),
-                          const Icon(Iconsax.star,
-                                  size: 19, color: AppColor.primaryColor)
-                              .withRightPadding(rightPadding: 5),
-                        ],
-                      ).withBottomPadding(bottomPadding: 10),
-                    ),
-                    Container(
-                      height: 28,
-                      width: 185,
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(100),
+                child: SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        widget.name,
+                        overflow: TextOverflow.ellipsis,
+                        style: AppTypography.t22WithW800(),
                       ),
-                      child: ListView(
+                      SingleChildScrollView(
                         scrollDirection: Axis.horizontal,
-                        children: [
-                          Container(
-                            width: 80,
-                            height: 28,
-                            decoration: BoxDecoration(
-                              color: AppColor.secondaryColor,
-                              borderRadius: BorderRadius.circular(100),
-                            ),
-                            child: Center(
-                                child: Text(
-                              'POSIÇÃO',
-                              style: AppTypography.t14()
-                                  .copyWith(color: Colors.white),
-                            )),
-                          ).withRightPadding(rightPadding: 5),
-                          Center(
-                            child: Text(
-                              widget.position.toUpperCase(),
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                          )
-                        ],
+                        physics: const NeverScrollableScrollPhysics(),
+                        child: Row(
+                          children: [
+                            const Icon(Iconsax.star1,
+                                    size: 25, color: AppColor.primaryColor)
+                                .withRightPadding(rightPadding: 0),
+                            const Icon(Iconsax.star1,
+                                    size: 25, color: AppColor.primaryColor)
+                                .withRightPadding(rightPadding: 0),
+                            const Icon(Iconsax.star1,
+                                    size: 25, color: AppColor.primaryColor)
+                                .withRightPadding(rightPadding: 5),
+                            const Icon(Iconsax.star,
+                                    size: 19, color: AppColor.primaryColor)
+                                .withRightPadding(rightPadding: 5),
+                            const Icon(Iconsax.star,
+                                    size: 19, color: AppColor.primaryColor)
+                                .withRightPadding(rightPadding: 5),
+                          ],
+                        ),
                       ),
-                    )
-                  ],
+                      Container(
+                        height: 30,
+                        width: 185,
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(100),
+                        ),
+                        child: ListView(
+                          scrollDirection: Axis.horizontal,
+                          children: [
+                            Container(
+                              width: 80,
+                              height: 28,
+                              decoration: BoxDecoration(
+                                color: AppColor.secondaryColor,
+                                borderRadius: BorderRadius.circular(100),
+                              ),
+                              child: Center(
+                                  child: Text(
+                                'POSIÇÃO',
+                                style: AppTypography.t14()
+                                    .copyWith(color: Colors.white),
+                              )),
+                            ).withRightPadding(rightPadding: 5),
+                            Center(
+                              child: Text(
+                                widget.position.toUpperCase(),
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            )
+                          ],
+                        ),
+                      )
+                    ],
+                  ),
                 ),
               )
             ],

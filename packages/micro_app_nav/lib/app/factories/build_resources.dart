@@ -9,6 +9,8 @@ import '../domain/usecases/get_players_usecase.dart';
 import '../domain/usecases/get_positions_usecase.dart';
 import '../domain/usecases/get_sports_usecase.dart';
 import '../domain/usecases/logout_usecase.dart';
+import '../domain/usecases/save_player_usecase.dart';
+import '../domain/usecases/save_skill_usecase.dart';
 import '../external/api/api_external.dart';
 import '../external/firebase/auth_firebase.dart';
 
@@ -24,4 +26,6 @@ final apiDatasource = ApiExternal(dio);
 final apiRepository = Api(apiDatasource: apiDatasource);
 final getSportsUsecase = GetSports(apiRepository: apiRepository);
 final getPlayersUsecase = GetPlayers(apiRepository: apiRepository);
+final savePLayer = SavePlayer(apiRepository: apiRepository);
 final getPositions = GetPositions(apiRepository: apiRepository);
+final saveSkill = SaveSkill(apiRepository: apiRepository);

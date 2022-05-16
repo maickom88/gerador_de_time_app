@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:micro_core/core/usecases/usecases.dart';
 
 import '../../domain/entities/position_entity.dart';
+import '../../domain/entities/skill_entity.dart';
 import '../../domain/usecases/get_positions_usecase.dart';
 import '../states/position_state.dart';
 
@@ -10,6 +11,14 @@ class PositionController extends ValueNotifier<PositionState> {
 
   final ValueNotifier<List<PositionEntity>> _searchResultPositions =
       ValueNotifier<List<PositionEntity>>([]);
+
+  String? name;
+  int? strength;
+  int? velocity;
+  int? completion;
+  int? dribble;
+  PositionEntity? positionEntity;
+  SkillEntity? skillEntity;
 
   List<PositionEntity> get searchResultPositions =>
       _searchResultPositions.value;
@@ -29,7 +38,7 @@ class PositionController extends ValueNotifier<PositionState> {
     });
   }
 
-  void searchPlayer(String search) {
+  void searchPosition(String search) {
     if (value is PositionSuccessState) {
       searchResultPositions = (value as PositionSuccessState)
           .positions

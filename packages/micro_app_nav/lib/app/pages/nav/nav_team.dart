@@ -8,7 +8,10 @@ import 'package:micro_core/core/theme/theme.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 import '../../components/error_page.dart';
+import '../../components/loading_sport.dart';
+import '../../domain/usecases/save_player_usecase.dart';
 import '../components/card_player.dart';
+import '../components/modal_bottom_error.dart';
 import '../components/modal_bottom_sheet_add_player.dart';
 import '../controllers/position_controller.dart';
 import '../controllers/team_controller.dart';
@@ -34,76 +37,14 @@ class _NavTeamState extends State<NavTeam> {
   @override
   void initState() {
     listChecked = [];
-    players = [
-      {
-        'image':
-            'https://images.unsplash.com/photo-1521572267360-ee0c2909d518?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80',
-        'name': 'Gabriel Silva',
-        'position': 'Pivô',
-      },
-      {
-        'image':
-            'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80',
-        'name': 'Fabricio Santos',
-        'position': 'Pivô',
-      },
-      {
-        'image':
-            'https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=880&q=80',
-        'name': 'Marcos Paulo',
-        'position': 'Goleiro'
-      },
-      {
-        'image':
-            'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80',
-        'name': 'José',
-        'position': 'Ala esquerda'
-      },
-      {
-        'image':
-            'https://images.unsplash.com/photo-1560250097-0b93528c311a?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80',
-        'name': 'Betão',
-        'position': 'Pivô'
-      },
-      {
-        'image':
-            'https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=880&q=80',
-        'name': 'Santiago',
-        'position': 'Ala Direita'
-      },
-      {
-        'image':
-            'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80',
-        'name': 'Rodrigo C.',
-        'position': 'Defensor'
-      },
-      {
-        'image':
-            'https://images.unsplash.com/photo-1531891437562-4301cf35b7e4?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=764&q=80',
-        'name': 'Weverton',
-        'position': 'Defensor'
-      },
-      {
-        'image':
-            'https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1148&q=80',
-        'name': 'Julio C.',
-        'position': 'Defensor'
-      },
-      {
-        'image':
-            'https://images.unsplash.com/photo-1603415526960-f7e0328c63b1?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80',
-        'name': 'Pedro Paulo',
-        'position': 'Atacante'
-      },
-      {
-        'image':
-            'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=880&q=80',
-        'name': 'Pedrinho',
-        'position': 'Atacante'
-      }
-    ];
     isEditing = false;
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    widget.positionController.dispose();
+    super.dispose();
   }
 
   @override
@@ -129,14 +70,62 @@ class _NavTeamState extends State<NavTeam> {
                     CupertinoSliverNavigationBar(
                       backgroundColor: Colors.white.withOpacity(0.8),
                       trailing: GestureDetector(
-                        onTap: () {
+                        onTap: () async {
                           HapticFeedback.lightImpact();
-                          showCupertinoModalBottomSheet(
+                          await showCupertinoModalBottomSheet(
                             context: context,
                             builder: (context) => ModelBottomAddPlayer(
                               positionController: widget.positionController,
+                              onSave: (name, guidPosition, skill) async {
+                                AppDefault.showDefaultLoad(
+                                  context,
+                                  const LoadingSport(
+                                    message: 'Salvando jogador...',
+                                  ),
+                                );
+                                final resultSaveSkill = await widget
+                                    .teamController
+                                    .saveSkill(skill);
+                                if (resultSaveSkill) {
+                                  final params = SavePlayerParams(
+                                    name: name,
+                                    guidPosition: guidPosition,
+                                    guidSkill:
+                                        widget.teamController.skill?.guid,
+                                    userGuid:
+                                        widget.teamController.userEntity!.guid,
+                                  );
+                                  final result = await widget.teamController
+                                      .savePLayer(params);
+                                  AppDefault.close(context);
+                                  if (result) {
+                                    AppDefault.close(context);
+                                  } else {
+                                    showCupertinoModalBottomSheet(
+                                      context: context,
+                                      builder: (context) =>
+                                          const ModelBottomError(
+                                        description:
+                                            'Encontramos um error\nao tentar salvar um jogador',
+                                      ),
+                                    );
+                                  }
+                                } else {
+                                  AppDefault.close(context);
+                                  showCupertinoModalBottomSheet(
+                                    context: context,
+                                    builder: (context) =>
+                                        const ModelBottomError(
+                                      description:
+                                          'Encontramos um error\nao tentar salvar um jogador',
+                                    ),
+                                  );
+                                }
+                              },
                             ),
                           );
+                          widget.positionController.name = null;
+                          widget.positionController.positionEntity = null;
                         },
                         child: const Icon(
                           Iconsax.edit,
@@ -369,7 +358,7 @@ class _NavTeamState extends State<NavTeam> {
                                     : null,
                                 title: CardPlayer(
                                   photo: player.photo,
-                                  name: player.name,
+                                  name: player.name.splitConvertName(),
                                   position: player.position.name,
                                 ),
                               ),

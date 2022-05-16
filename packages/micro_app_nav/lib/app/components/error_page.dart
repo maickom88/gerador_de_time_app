@@ -31,12 +31,14 @@ class ErrrorComponent extends StatelessWidget {
           Text(
             'Encontramos um error\nao tentar conectar com o servidor',
             textAlign: TextAlign.center,
-            style: AppTypography.t16(fontName: 'Inter'),
+            style: AppTypography.t16(fontName: 'Inter')
+                .copyWith(color: AppColor.textLight),
           ).withBottomPadding(),
           Text(
             'Por favor tente novamente 😅',
             textAlign: TextAlign.center,
-            style: AppTypography.t16(fontName: 'Inter'),
+            style: AppTypography.t16(fontName: 'Inter')
+                .copyWith(color: AppColor.textLight),
           ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 30),

@@ -8,6 +8,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.0.1"
+  animated_toggle_switch:
+    dependency: transitive
+    description:
+      name: animated_toggle_switch
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.5.2"
   archive:
     dependency: transitive
     description:
