@@ -3,6 +3,7 @@ import 'package:iconsax/iconsax.dart';
 import 'package:micro_core/core/theme/theme.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
+import '../../../core/constants/local_image.dart';
 import 'avatar_photo.dart';
 import 'model_bottom_performace.dart';
 
@@ -31,16 +32,27 @@ class CardPlayer extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          AvatarPhoto(
-            icon: Iconsax.trend_up,
-            photo: photo,
-            onTap: () {
-              showCupertinoModalBottomSheet(
-                context: context,
-                builder: (context) => const ModelBottomPerformance(),
-              );
-            },
-          ),
+          Builder(builder: (context) {
+            final locaImage = ProfileImage.generateImage();
+            return AvatarPhoto(
+              icon: Iconsax.trend_up,
+              isLoadImageLocal: photo == null ? true : false,
+              photo: photo != null ? photo! : locaImage,
+              heroTag: name,
+              onTap: () {
+                showCupertinoModalBottomSheet(
+                  context: context,
+                  builder: (context) => ModelBottomPerformance(
+                    photo: photo != null ? photo! : locaImage,
+                    isLoadLocalImage: photo == null ? true : false,
+                    heroTag: name,
+                    name: name,
+                    position: position,
+                  ),
+                );
+              },
+            );
+          }),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,

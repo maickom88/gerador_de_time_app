@@ -4,7 +4,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../../domain/entities/player_entity.dart';
 import '../../domain/entities/user_entity.dart';
 import '../../domain/usecases/get_players_usecase.dart';
-import '../states/home_state.dart';
 import '../states/team_state.dart';
 
 class TeamController extends ValueNotifier<TeamState> {
@@ -28,18 +27,18 @@ class TeamController extends ValueNotifier<TeamState> {
     value = TeamLoandingState();
     if (_sharedPreferences.containsKey('user')) {
       userEntity = UserEntity.fromJson(_sharedPreferences.getString('user')!);
+      final result = await _getPlayers.call(userEntity!.guid);
+      result.fold((resultError) {
+        value = TeamErrorState(error: resultError);
+      }, (resultSuccess) async {
+        await Future.delayed(const Duration(seconds: 2));
+        value = TeamSuccessState(players: resultSuccess);
+      });
     }
-    final result = await _getPlayers.call(userEntity!.guid);
-    result.fold((resultError) {
-      value = TeamErrorState(error: resultError);
-    }, (resultSuccess) async {
-      await Future.delayed(const Duration(seconds: 2));
-      value = TeamSuccessState(players: resultSuccess);
-    });
   }
 
   void searchPlayer(String search) {
-    if (value is HomeSuccessState) {
+    if (value is TeamSuccessState) {
       searchResultPlayer = (value as TeamSuccessState)
           .players
           .where((element) =>

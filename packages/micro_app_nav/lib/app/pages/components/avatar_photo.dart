@@ -5,15 +5,17 @@ import 'package:flutter/services.dart';
 import 'package:micro_core/core/theme/theme.dart';
 import 'package:iconsax/iconsax.dart';
 
-import '../../../core/constants/local_image.dart';
-
 class AvatarPhoto extends StatelessWidget {
-  final String? photo;
+  final String photo;
+  final String heroTag;
   final VoidCallback onTap;
   final IconData icon;
+  final bool isLoadImageLocal;
   const AvatarPhoto({
     Key? key,
     required this.photo,
+    this.isLoadImageLocal = false,
+    required this.heroTag,
     this.icon = Iconsax.camera,
     required this.onTap,
   }) : super(key: key);
@@ -32,22 +34,30 @@ class AvatarPhoto extends StatelessWidget {
               color: AppColor.textLight,
             ),
             child: ClipOval(
-              child: Builder(builder: (context) {
-                if (photo != null) {
-                  return Image.network(
-                    photo!,
-                    fit: BoxFit.cover,
-                    height: 85,
-                    width: 85,
+              child: Builder(
+                builder: (context) {
+                  if (!isLoadImageLocal) {
+                    return Hero(
+                      tag: heroTag,
+                      child: Image.network(
+                        photo,
+                        fit: BoxFit.cover,
+                        height: 85,
+                        width: 85,
+                      ),
+                    );
+                  }
+                  return Hero(
+                    tag: heroTag,
+                    child: Image.asset(
+                      photo,
+                      fit: BoxFit.cover,
+                      height: 85,
+                      width: 85,
+                    ),
                   );
-                }
-                return Image.asset(
-                  ProfileImage.generateImage(),
-                  fit: BoxFit.cover,
-                  height: 85,
-                  width: 85,
-                );
-              }),
+                },
+              ),
             ),
           ),
           Positioned.fill(

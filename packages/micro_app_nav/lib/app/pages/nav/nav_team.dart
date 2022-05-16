@@ -10,14 +10,17 @@ import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import '../../components/error_page.dart';
 import '../components/card_player.dart';
 import '../components/modal_bottom_sheet_add_player.dart';
+import '../controllers/position_controller.dart';
 import '../controllers/team_controller.dart';
 import '../states/team_state.dart';
 
 class NavTeam extends StatefulWidget {
   final TeamController teamController;
+  final PositionController positionController;
   const NavTeam({
     Key? key,
     required this.teamController,
+    required this.positionController,
   }) : super(key: key);
 
   @override
@@ -130,7 +133,9 @@ class _NavTeamState extends State<NavTeam> {
                           HapticFeedback.lightImpact();
                           showCupertinoModalBottomSheet(
                             context: context,
-                            builder: (context) => const ModelBottomAddPlayer(),
+                            builder: (context) => ModelBottomAddPlayer(
+                              positionController: widget.positionController,
+                            ),
                           );
                         },
                         child: const Icon(
@@ -260,6 +265,9 @@ class _NavTeamState extends State<NavTeam> {
                         height: 48,
                         child: CupertinoTextField(
                           placeholder: 'Pesquisar',
+                          onChanged: (value) {
+                            widget.teamController.searchPlayer(value);
+                          },
                           suffix: IconButton(
                             icon: const Icon(
                               Iconsax.setting_4,
@@ -307,9 +315,16 @@ class _NavTeamState extends State<NavTeam> {
                       ListView.builder(
                           shrinkWrap: true,
                           physics: const NeverScrollableScrollPhysics(),
-                          itemCount: value.players.length,
+                          itemCount: widget
+                                  .teamController.searchResultPlayer.isNotEmpty
+                              ? widget.teamController.searchResultPlayer.length
+                              : value.players.length,
                           itemBuilder: (_, index) {
-                            final player = value.players[index];
+                            final player = widget.teamController
+                                    .searchResultPlayer.isNotEmpty
+                                ? widget
+                                    .teamController.searchResultPlayer[index]
+                                : value.players[index];
                             return FadeAnimation(
                               delay: (1.0 + index) / 4,
                               child: ListTile(

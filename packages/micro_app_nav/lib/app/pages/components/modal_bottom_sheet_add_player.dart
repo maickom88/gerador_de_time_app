@@ -1,17 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:iconsax/iconsax.dart';
 import 'package:flutter/services.dart';
+import 'package:iconsax/iconsax.dart';
 import 'package:micro_core/core/components/animation.dart';
 import 'package:micro_core/core/theme/theme.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 import '../../../core/utils/theme.dart';
 import '../components/page_search_position.dart';
+import '../controllers/position_controller.dart';
 import 'page_search_position.dart';
 
 class ModelBottomAddPlayer extends StatelessWidget {
+  final PositionController positionController;
   const ModelBottomAddPlayer({
     Key? key,
+    required this.positionController,
   }) : super(key: key);
 
   @override
@@ -82,7 +85,9 @@ class ModelBottomAddPlayer extends StatelessWidget {
                   showCupertinoModalBottomSheet(
                     context: context,
                     expand: true,
-                    builder: (context) => const PageSearchPosition(),
+                    builder: (context) => PageSearchPosition(
+                      positionController: positionController..getPositions(),
+                    ),
                   );
                 },
                 readOnly: true,
