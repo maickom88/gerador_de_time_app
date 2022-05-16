@@ -5,8 +5,18 @@ import 'package:micro_core/core/components/animation.dart';
 import 'package:micro_core/core/theme/theme.dart';
 
 class ModelBottomPerformance extends StatelessWidget {
+  final String photo;
+  final bool isLoadLocalImage;
+  final String heroTag;
+  final String name;
+  final String position;
   const ModelBottomPerformance({
     Key? key,
+    required this.photo,
+    required this.heroTag,
+    required this.name,
+    required this.position,
+    this.isLoadLocalImage = false,
   }) : super(key: key);
 
   @override
@@ -69,11 +79,29 @@ class ModelBottomPerformance extends StatelessWidget {
                               color: AppColor.textLight,
                             ),
                             child: ClipOval(
-                              child: Image.network(
-                                'https://images.unsplash.com/photo-1521572267360-ee0c2909d518?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80',
-                                fit: BoxFit.cover,
-                                height: 85,
-                                width: 85,
+                              child: Builder(
+                                builder: (context) {
+                                  if (!isLoadLocalImage) {
+                                    return Hero(
+                                      tag: heroTag,
+                                      child: Image.network(
+                                        photo,
+                                        fit: BoxFit.cover,
+                                        height: 85,
+                                        width: 85,
+                                      ),
+                                    );
+                                  }
+                                  return Hero(
+                                    tag: heroTag,
+                                    child: Image.asset(
+                                      photo,
+                                      fit: BoxFit.cover,
+                                      height: 85,
+                                      width: 85,
+                                    ),
+                                  );
+                                },
                               ),
                             ),
                           ),
@@ -86,7 +114,7 @@ class ModelBottomPerformance extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
-                            'Gabriel Silva',
+                            name,
                             overflow: TextOverflow.ellipsis,
                             style: AppTypography.t22WithW800(),
                           ),
@@ -132,9 +160,9 @@ class ModelBottomPerformance extends StatelessWidget {
                                         .copyWith(color: Colors.white),
                                   )),
                                 ).withRightPadding(rightPadding: 5),
-                                const Flexible(
+                                Flexible(
                                   child: Text(
-                                    'ALA DIREITA',
+                                    position.toUpperCase(),
                                     overflow: TextOverflow.ellipsis,
                                   ),
                                 )

@@ -5,6 +5,8 @@ import 'package:micro_core/core/customs/custum_local_storage.dart';
 
 import '../data/repositories/api.dart';
 import '../data/repositories/auth.dart';
+import '../domain/usecases/get_players_usecase.dart';
+import '../domain/usecases/get_positions_usecase.dart';
 import '../domain/usecases/get_sports_usecase.dart';
 import '../domain/usecases/logout_usecase.dart';
 import '../external/api/api_external.dart';
@@ -21,3 +23,5 @@ final dio = CustumDio.instance;
 final apiDatasource = ApiExternal(dio);
 final apiRepository = Api(apiDatasource: apiDatasource);
 final getSportsUsecase = GetSports(apiRepository: apiRepository);
+final getPlayersUsecase = GetPlayers(apiRepository: apiRepository);
+final getPositions = GetPositions(apiRepository: apiRepository);

@@ -8,6 +8,8 @@ import 'package:micro_core/core/theme/theme.dart';
 
 import '../controllers/home_controller.dart';
 import '../controllers/logout_controller.dart';
+import '../controllers/position_controller.dart';
+import '../controllers/team_controller.dart';
 import 'nav_controller.dart';
 import 'nav_history.dart';
 import 'nav_home.dart';
@@ -19,10 +21,14 @@ class NavPage extends StatefulWidget {
   final NavController controller;
   final LogoutController logoutController;
   final HomeController homeController;
+  final TeamController teamController;
+  final PositionController positionController;
   const NavPage({
     Key? key,
     required this.controller,
+    required this.teamController,
     required this.logoutController,
+    required this.positionController,
     required this.homeController,
   }) : super(key: key);
 
@@ -40,7 +46,10 @@ class _NavPageState extends State<NavPage> with KeyboardManager {
         delay: 0.1,
         child: NavHome(homeController: widget.homeController),
       ),
-      const NavTeam(),
+      NavTeam(
+        teamController: widget.teamController,
+        positionController: widget.positionController,
+      ),
       const NavHistoric(),
       const NavNotification(),
       NavSettings(widget.logoutController),

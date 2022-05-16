@@ -42,7 +42,8 @@ class HomeController extends ValueNotifier<HomeState> {
     if (value is HomeSuccessState) {
       searchResultSports = (value as HomeSuccessState)
           .sports
-          .where((element) => element.name.contains(search))
+          .where((element) =>
+              element.name.toLowerCase().contains(search.toLowerCase()))
           .toList();
     }
   }
