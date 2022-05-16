@@ -83,4 +83,17 @@ class ApiExternal implements ApiDatasource {
       throw ServerError();
     }
   }
+
+  @override
+  Future<void> removePlayers(List<String> params) async {
+    try {
+      for (var element in params) {
+        await _dio.http.delete('/player/$element');
+      }
+    } on DioError catch (error) {
+      throw error.error;
+    } on Exception catch (_) {
+      throw ServerError();
+    }
+  }
 }

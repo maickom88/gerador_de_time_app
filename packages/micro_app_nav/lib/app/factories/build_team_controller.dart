@@ -1,5 +1,10 @@
 import '../pages/controllers/team_controller.dart';
 import 'build_resources.dart';
 
-TeamController buildTeamController() =>
-    TeamController(getPlayersUsecase, savePLayer, saveSkill, storage);
+TeamController buildTeamController() => TeamController(
+      getPlayersUsecase,
+      savePLayer,
+      removerPLayers,
+      saveSkill,
+      storage,
+    );

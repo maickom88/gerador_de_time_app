@@ -33,7 +33,6 @@ class NavTeam extends StatefulWidget {
 class _NavTeamState extends State<NavTeam> {
   late bool isEditing;
   late List<Map> listChecked;
-  late List<Map<String, String>> players;
   @override
   void initState() {
     listChecked = [];
@@ -126,6 +125,7 @@ class _NavTeamState extends State<NavTeam> {
                           );
                           widget.positionController.name = null;
                           widget.positionController.positionEntity = null;
+                          widget.positionController.skillEntity = null;
                         },
                         child: const Icon(
                           Iconsax.edit,
@@ -139,6 +139,8 @@ class _NavTeamState extends State<NavTeam> {
                                 SystemSound.play(SystemSoundType.click);
                                 setState(() {
                                   isEditing = !isEditing;
+
+                                  widget.teamController.playerSelected = [];
                                 });
                                 ScaffoldMessenger.of(context)
                                     .hideCurrentSnackBar();
@@ -179,7 +181,7 @@ class _NavTeamState extends State<NavTeam> {
                                                   color: Colors.white),
                                               const Spacer(),
                                               GestureDetector(
-                                                onTap: () {
+                                                onTap: () async {
                                                   SystemSound.play(
                                                       SystemSoundType.click);
                                                   ScaffoldMessenger.of(context)
@@ -187,16 +189,64 @@ class _NavTeamState extends State<NavTeam> {
                                                   setState(() {
                                                     isEditing = !isEditing;
                                                   });
+                                                  AppDefault.showDefaultLoad(
+                                                    context,
+                                                    const LoadingSport(
+                                                      message:
+                                                          'Removendo jogador...',
+                                                    ),
+                                                  );
+                                                  final result = await widget
+                                                      .teamController
+                                                      .removePLayers();
+                                                  AppDefault.close(context);
+                                                  if (!result) {
+                                                    showCupertinoModalBottomSheet(
+                                                      context: context,
+                                                      builder: (context) =>
+                                                          const ModelBottomError(
+                                                        description:
+                                                            'Encontramos um error\nao tentar remover jogadores',
+                                                      ),
+                                                    );
+                                                  }
+                                                  setState(() {
+                                                    widget.teamController
+                                                        .playerSelected = [];
+                                                  });
                                                 },
                                                 child: const Text(
                                                     'Excluir marcados'),
                                               ).withRightPadding(),
                                               GestureDetector(
-                                                onTap: () {
+                                                onTap: () async {
                                                   HapticFeedback.lightImpact();
                                                   ScaffoldMessenger.of(context)
                                                       .hideCurrentSnackBar();
+                                                  AppDefault.showDefaultLoad(
+                                                    context,
+                                                    const LoadingSport(
+                                                      message:
+                                                          'Removendo jogador...',
+                                                    ),
+                                                  );
+                                                  final result = await widget
+                                                      .teamController
+                                                      .removePLayers();
+                                                  AppDefault.close(context);
+                                                  if (!result) {
+                                                    showCupertinoModalBottomSheet(
+                                                      context: context,
+                                                      builder: (context) =>
+                                                          const ModelBottomError(
+                                                        description:
+                                                            'Encontramos um error\nao tentar remover jogadores',
+                                                      ),
+                                                    );
+                                                  }
                                                   setState(() {
+                                                    widget.teamController
+                                                        .playerSelected = [];
                                                     isEditing = !isEditing;
                                                   });
                                                 },
@@ -325,32 +375,37 @@ class _NavTeamState extends State<NavTeam> {
                                           checkColor: Colors.white,
                                           fillColor: MaterialStateProperty.all(
                                               AppColor.secondaryColor),
-                                          value: listChecked.isNotEmpty
-                                              ? listChecked.firstWhere(
-                                                      (element) =>
-                                                          element['index'] ==
-                                                          index,
-                                                      orElse: () => {
-                                                            'value': false
-                                                          })['value'] ??
-                                                  false
+                                          value: widget.teamController
+                                                  .playerSelected.isNotEmpty
+                                              ? widget.teamController
+                                                      .playerSelected
+                                                      .where(
+                                                        (element) =>
+                                                            element.guid ==
+                                                            player.guid,
+                                                      )
+                                                      .isEmpty
+                                                  ? false
+                                                  : true
                                               : false,
                                           shape: const CircleBorder(),
                                           onChanged: (bool? value) {
                                             if (value!) {
                                               setState(() {
-                                                listChecked.add({
-                                                  'index': index,
-                                                  'value': value
-                                                });
+                                                widget.teamController
+                                                    .playerSelected
+                                                    .add(player);
                                               });
                                             } else {
-                                              setState(() {
-                                                listChecked.removeWhere(
-                                                    (element) =>
-                                                        element['index'] ==
-                                                        index);
-                                              });
+                                              setState(
+                                                () {
+                                                  widget.teamController
+                                                      .playerSelected
+                                                      .removeWhere((element) =>
+                                                          element.guid ==
+                                                          player.guid);
+                                                },
+                                              );
                                             }
                                           },
                                         ),

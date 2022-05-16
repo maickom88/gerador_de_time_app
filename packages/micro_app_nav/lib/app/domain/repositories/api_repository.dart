@@ -11,6 +11,7 @@ abstract class ApiRepository {
   Future<Either<Failure, List<SportEntity>>> getSports();
   Future<Either<Failure, List<PositionEntity>>> getPositions();
   Future<Either<Failure, List<PlayerEntity>>> getPlayers(String params);
+  Future<Either<Failure, void>> removePlayers(List<String> params);
   Future<Either<Failure, SkillEntity>> saveSkill(SkillEntity params);
   Future<Either<Failure, PlayerEntity>> savePLayer(SavePlayerParams params);
 }
