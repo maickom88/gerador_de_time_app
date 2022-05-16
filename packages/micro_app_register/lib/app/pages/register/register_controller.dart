@@ -1,16 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:micro_core/core/theme/theme.dart';
 
+import '../../domain/usecases/notify_api.dart';
 import '../../domain/usecases/register_account.dart';
 import '../verification_email/verification_email_page.dart';
 
 class RegisterController extends ValueNotifier {
   final RegisterAccount _registerAccount;
+  final NotifyApi _notifyApi;
 
   final PageController pageViewController = PageController();
 
   RegisterController(
     this._registerAccount,
+    this._notifyApi,
   ) : super(null);
 
   final ValueNotifier<int> _page = ValueNotifier<int>(0);
@@ -40,15 +43,27 @@ class RegisterController extends ValueNotifier {
     result.fold((resultError) {
       error = resultError.message;
     }, (resultSuccess) {
-      AppDefault.navigateToWidget(
-        context,
-        withReturn: false,
-        widget: VerificationEmailPage(
-          email: email,
-        ),
-      );
+      notify(context, name: name);
     });
     isLoad = false;
+  }
+
+  Future<void> notify(BuildContext context, {String? name}) async {
+    final result = await _notifyApi.call(name);
+    result.fold(
+      (resultError) {
+        error = resultError.message;
+      },
+      (resultSuccess) async {
+        AppDefault.navigateToWidget(
+          context,
+          withReturn: false,
+          widget: VerificationEmailPage(
+            email: email,
+          ),
+        );
+      },
+    );
   }
 
   set isNextPage(bool isNext) {

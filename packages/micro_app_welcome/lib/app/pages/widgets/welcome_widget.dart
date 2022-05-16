@@ -24,7 +24,7 @@ class WelcomeWidget extends StatelessWidget {
               textAlign: TextAlign.center,
               style: AppTypography.t28WithW800()
                   .copyWith(fontSize: size, color: Colors.white),
-            ).withBottomPadding(),
+            ),
           ),
         ),
         Flexible(

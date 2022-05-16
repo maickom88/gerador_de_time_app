@@ -74,66 +74,70 @@ class _LoginPageState extends State<LoginPage> with KeyboardManager {
                             color: const Color(0xffACACAC).withOpacity(0.26),
                             borderRadius: AppDefault.defaultBorderRadius(),
                           ),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              TweenAnimationBuilder<double>(
-                                tween: Tween<double>(begin: 17, end: 28),
-                                duration: const Duration(milliseconds: 300),
-                                builder: (_, size, __) => Text(
-                                  'Sign in',
-                                  textAlign: TextAlign.center,
-                                  style: AppTypography.t28WithW800().copyWith(
-                                      fontSize: size, color: Colors.white),
+                          child: SingleChildScrollView(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                TweenAnimationBuilder<double>(
+                                  tween: Tween<double>(begin: 17, end: 28),
+                                  duration: const Duration(milliseconds: 300),
+                                  builder: (_, size, __) => Text(
+                                    'Sign in',
+                                    textAlign: TextAlign.center,
+                                    style: AppTypography.t28WithW800().copyWith(
+                                        fontSize: size, color: Colors.white),
+                                  ).withBottomPadding(),
                                 ).withBottomPadding(),
-                              ).withBottomPadding(),
-                              ValueListenableBuilder<LoginState>(
-                                builder: (BuildContext context, value,
-                                    Widget? child) {
-                                  if (value is LoginLoandingState) {
-                                    return FormLogin(
-                                      loading: true,
-                                      onLogin:
-                                          (String email, String password) =>
-                                              widget.controller.login(context,
-                                                  email: email,
-                                                  password: password),
-                                    );
-                                  }
-                                  if (value is LoginErrorState) {
+                                ValueListenableBuilder<LoginState>(
+                                  builder: (BuildContext context, value,
+                                      Widget? child) {
+                                    if (value is LoginLoandingState) {
+                                      return FormLogin(
+                                        loading: true,
+                                        onLogin:
+                                            (String email, String password) =>
+                                                widget.controller.login(context,
+                                                    email: email,
+                                                    password: password),
+                                      );
+                                    }
+                                    if (value is LoginErrorState) {
+                                      return FormLogin(
+                                        loading: false,
+                                        error: value.error.message,
+                                        onLogin:
+                                            (String email, String password) =>
+                                                widget.controller.login(context,
+                                                    email: email,
+                                                    password: password),
+                                      );
+                                    }
                                     return FormLogin(
                                       loading: false,
-                                      error: value.error.message,
                                       onLogin:
                                           (String email, String password) =>
                                               widget.controller.login(context,
                                                   email: email,
                                                   password: password),
                                     );
-                                  }
-                                  return FormLogin(
-                                    loading: false,
-                                    onLogin: (String email, String password) =>
-                                        widget.controller.login(context,
-                                            email: email, password: password),
-                                  );
-                                },
-                                valueListenable: widget.controller,
-                              ),
-                              Center(
-                                child: Text(
-                                  'ou',
-                                  style: AppTypography.t16()
-                                      .copyWith(color: Colors.white),
+                                  },
+                                  valueListenable: widget.controller,
                                 ),
-                              ).withBottomPadding(),
-                              SocialWidget(
-                                onProvider:
-                                    (TypeProviderSocial providerSocial) =>
-                                        widget.controller.loginSocial(
-                                            context, providerSocial),
-                              ),
-                            ],
+                                Center(
+                                  child: Text(
+                                    'ou',
+                                    style: AppTypography.t16()
+                                        .copyWith(color: Colors.white),
+                                  ),
+                                ).withBottomPadding(),
+                                SocialWidget(
+                                  onProvider:
+                                      (TypeProviderSocial providerSocial) =>
+                                          widget.controller.loginSocial(
+                                              context, providerSocial),
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                       ),

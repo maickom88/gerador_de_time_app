@@ -17,4 +17,8 @@ class CustumDio {
     _dio.options.baseUrl = baseUrl;
     _dio.options.headers['x-api-key'] = token;
   }
+
+  Future<void> setToken(String? token) async {
+    _dio.options.headers['x-api-key'] = token;
+  }
 }
