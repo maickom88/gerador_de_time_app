@@ -59,4 +59,13 @@ class Api implements ApiRepository {
       return Left(error);
     }
   }
+
+  @override
+  Future<Either<Failure, void>> removePlayers(List<String> params) async {
+    try {
+      return Right(await apiDatasource.removePlayers(params));
+    } on Failure catch (error) {
+      return Left(error);
+    }
+  }
 }

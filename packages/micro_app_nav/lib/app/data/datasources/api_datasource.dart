@@ -9,5 +9,6 @@ abstract class ApiDatasource {
   Future<List<PositionEntity>> getPositions();
   Future<List<PlayerEntity>> getPlayers(String params);
   Future<PlayerEntity> savePLayer(SavePlayerParams params);
+  Future<void> removePlayers(List<String> params);
   Future<SkillEntity> saveSkill(SkillEntity params);
 }

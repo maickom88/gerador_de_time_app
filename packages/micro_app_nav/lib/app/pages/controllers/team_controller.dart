@@ -5,6 +5,7 @@ import '../../domain/entities/player_entity.dart';
 import '../../domain/entities/skill_entity.dart';
 import '../../domain/entities/user_entity.dart';
 import '../../domain/usecases/get_players_usecase.dart';
+import '../../domain/usecases/remove_players_usecase.dart';
 import '../../domain/usecases/save_player_usecase.dart';
 import '../../domain/usecases/save_skill_usecase.dart';
 import '../states/team_state.dart';
@@ -13,6 +14,7 @@ class TeamController extends ValueNotifier<TeamState> {
   final GetPlayers _getPlayers;
   final SavePlayer _savePlayer;
   final SaveSkill _saveSkill;
+  final RemovePlayers _removePlayers;
   final SharedPreferences _sharedPreferences;
 
   final ValueNotifier<List<PlayerEntity>> _searchResultPlayer =
@@ -23,10 +25,12 @@ class TeamController extends ValueNotifier<TeamState> {
   List<PlayerEntity> get searchResultPlayer => _searchResultPlayer.value;
   UserEntity? get userEntity => _userEntity.value;
   SkillEntity? skill;
+  List<PlayerEntity> playerSelected = [];
 
   TeamController(
     this._getPlayers,
     this._savePlayer,
+    this._removePlayers,
     this._saveSkill,
     this._sharedPreferences,
   ) : super(InitialTeamState());
@@ -74,6 +78,26 @@ class TeamController extends ValueNotifier<TeamState> {
       return true;
     });
     return resultSaveSkill;
+  }
+
+  Future<bool> removePLayers({bool removerAll = false}) async {
+    List<String> params;
+    if (removerAll) {
+      params = (value as TeamSuccessState).players.map((e) => e.guid!).toList();
+    } else {
+      params = playerSelected.map((e) => e.guid!).toList();
+    }
+    final result = await _removePlayers.call(params);
+    final resultRemovePlayers = await result.fold<Future<bool>>((resultError) {
+      return Future.value(false);
+    }, (resultSuccess) async {
+      (value as TeamSuccessState)
+          .players
+          .removeWhere((element) => params.contains(element.guid));
+      return true;
+    });
+
+    return resultRemovePlayers;
   }
 
   void searchPlayer(String search) {
