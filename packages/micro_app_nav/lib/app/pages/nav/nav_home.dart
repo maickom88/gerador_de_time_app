@@ -3,11 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:loading_indicator/loading_indicator.dart';
+import 'package:micro_commons/app/components/error_page.dart';
 import 'package:micro_core/core/components/animation.dart';
 import 'package:micro_core/core/theme/theme.dart';
 
 import '../../../core/constants/local_image.dart';
-import '../../components/error_page.dart';
 import '../components/card_sport.dart';
 import '../controllers/home_controller.dart';
 import '../states/home_state.dart';
@@ -26,7 +26,7 @@ class NavHome extends StatelessWidget {
           valueListenable: homeController,
           builder: (context, value, child) {
             if (value is HomeErrorState) {
-              return ErrrorComponent(
+              return ErrorComponent(
                 onLoad: () => homeController.getSports(),
               );
             }

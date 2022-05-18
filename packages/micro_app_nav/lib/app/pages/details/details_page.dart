@@ -315,7 +315,7 @@ class CardDetailsCup extends StatelessWidget {
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-      height: 120,
+      height: 135,
       decoration: BoxDecoration(
         color: color,
         borderRadius: AppDefault.defaultBorderRadius(),
@@ -327,12 +327,14 @@ class CardDetailsCup extends StatelessWidget {
             style: const TextStyle(fontSize: 50),
           ).withRightPadding(),
           Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                label,
-                widget,
-              ],
+            child: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  label,
+                  widget,
+                ],
+              ),
             ),
           ),
         ],

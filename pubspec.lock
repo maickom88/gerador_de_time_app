@@ -450,6 +450,13 @@ packages:
       relative: true
     source: path
     version: "0.0.1"
+  micro_commons:
+    dependency: transitive
+    description:
+      path: "packages/micro_commons"
+      relative: true
+    source: path
+    version: "0.0.1"
   micro_core:
     dependency: "direct main"
     description:

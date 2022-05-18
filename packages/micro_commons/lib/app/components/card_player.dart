@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:uuid/uuid.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:micro_core/core/theme/theme.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
@@ -33,19 +34,19 @@ class CardPlayer extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Builder(builder: (context) {
-            final locaImage = ProfileImage.generateImage();
+            const locaImage = ProfileImage.hand1;
             return AvatarPhoto(
               icon: Iconsax.trend_up,
               isLoadImageLocal: photo == null ? true : false,
               photo: photo != null ? photo! : locaImage,
-              heroTag: name,
+              heroTag: const Uuid().v1(),
               onTap: () {
                 showCupertinoModalBottomSheet(
                   context: context,
                   builder: (context) => ModelBottomPerformance(
                     photo: photo != null ? photo! : locaImage,
                     isLoadLocalImage: photo == null ? true : false,
-                    heroTag: name,
+                    heroTag: name.hashCode.toString(),
                     name: name,
                     position: position,
                   ),

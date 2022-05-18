@@ -4,9 +4,9 @@ import 'package:micro_core/core/theme/theme.dart';
 
 import '../../core/constants/local_image.dart';
 
-class ErrrorComponent extends StatelessWidget {
+class ErrorComponent extends StatelessWidget {
   final Function onLoad;
-  const ErrrorComponent({Key? key, required this.onLoad}) : super(key: key);
+  const ErrorComponent({Key? key, required this.onLoad}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

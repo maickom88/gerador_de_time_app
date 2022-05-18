@@ -1,3 +1,5 @@
-import '../pages/cup/cup_controller.dart';
+import 'package:micro_commons/app/factories/build_resources.dart';
 
-CupController buildCupController() => CupController();
+import '../pages/controllers/cup_controller.dart';
+
+CupController buildCupController() => CupController(getPlayersUsecase, storage);

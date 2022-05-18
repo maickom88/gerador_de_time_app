@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:micro_commons/app/entities/player_entity.dart';
+import 'package:micro_commons/app/usecases/get_players_usecase.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../domain/entities/player_entity.dart';
 import '../../domain/entities/skill_entity.dart';
 import '../../domain/entities/user_entity.dart';
-import '../../domain/usecases/get_players_usecase.dart';
 import '../../domain/usecases/remove_players_usecase.dart';
 import '../../domain/usecases/save_player_usecase.dart';
 import '../../domain/usecases/save_skill_usecase.dart';
