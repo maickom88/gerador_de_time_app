@@ -9,6 +9,7 @@ class MicroAppCupResolver implements MicroApp {
 
   @override
   Map<String, WidgetBuildArgs> get routes => {
-        '/cup': (_, args) => CupPage(cupController: buildCupController()),
+        '/cup': (_, args) =>
+            CupPage(cupController: buildCupController()..getPlayers()),
       };
 }

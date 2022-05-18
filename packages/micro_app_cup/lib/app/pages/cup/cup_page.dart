@@ -92,18 +92,17 @@ class _CupPageState extends State<CupPage> {
               ),
             ];
           },
-          body: SingleChildScrollView(
-            physics: const NeverScrollableScrollPhysics(),
-            child: ValueListenableBuilder<CupState>(
-                valueListenable: widget.cupController,
-                builder: (context, value, child) {
-                  if (value is CupErrorState) {
-                    return ErrorComponent(
-                      onLoad: () => widget.cupController.getPlayers(),
-                    );
-                  }
-                  if (value is CupSuccessState) {
-                    return Column(
+          body: ValueListenableBuilder<CupState>(
+              valueListenable: widget.cupController,
+              builder: (context, value, child) {
+                if (value is CupErrorState) {
+                  return ErrorComponent(
+                    onLoad: () => widget.cupController.getPlayers(),
+                  );
+                }
+                if (value is CupSuccessState) {
+                  return SingleChildScrollView(
+                    child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         SizedBox(
@@ -265,53 +264,41 @@ class _CupPageState extends State<CupPage> {
                               return FadeAnimation(
                                 delay: (1.0 + index) / 4,
                                 child: ListTile(
-                                  leading: isEditing
-                                      ? FadeAnimation(
-                                          delay: 0,
-                                          directionType:
-                                              DirectionType.translateX,
-                                          child: Checkbox(
-                                            checkColor: Colors.white,
-                                            fillColor:
-                                                MaterialStateProperty.all(
-                                                    AppColor.secondaryColor),
-                                            value: widget.cupController
-                                                    .playerSelected.isNotEmpty
-                                                ? widget.cupController
-                                                        .playerSelected
-                                                        .where(
-                                                          (element) =>
-                                                              element.guid ==
-                                                              player.guid,
-                                                        )
-                                                        .isEmpty
-                                                    ? false
-                                                    : true
-                                                : false,
-                                            shape: const CircleBorder(),
-                                            onChanged: (bool? value) {
-                                              if (value!) {
-                                                setState(() {
-                                                  widget.cupController
-                                                      .playerSelected
-                                                      .add(player);
-                                                });
-                                              } else {
-                                                setState(
-                                                  () {
-                                                    widget.cupController
-                                                        .playerSelected
-                                                        .removeWhere(
-                                                            (element) =>
-                                                                element.guid ==
-                                                                player.guid);
-                                                  },
-                                                );
-                                              }
-                                            },
-                                          ),
-                                        )
-                                      : null,
+                                  leading: Checkbox(
+                                    checkColor: Colors.white,
+                                    fillColor: MaterialStateProperty.all(
+                                        AppColor.secondaryColor),
+                                    value: widget.cupController.playerSelected
+                                            .isNotEmpty
+                                        ? widget.cupController.playerSelected
+                                                .where(
+                                                  (element) =>
+                                                      element.guid ==
+                                                      player.guid,
+                                                )
+                                                .isEmpty
+                                            ? false
+                                            : true
+                                        : false,
+                                    shape: const CircleBorder(),
+                                    onChanged: (bool? value) {
+                                      if (value!) {
+                                        setState(() {
+                                          widget.cupController.playerSelected
+                                              .add(player);
+                                        });
+                                      } else {
+                                        setState(
+                                          () {
+                                            widget.cupController.playerSelected
+                                                .removeWhere((element) =>
+                                                    element.guid ==
+                                                    player.guid);
+                                          },
+                                        );
+                                      }
+                                    },
+                                  ),
                                   title: CardPlayer(
                                     photo: player.photo,
                                     name: player.name.splitConvertName(),
@@ -321,25 +308,25 @@ class _CupPageState extends State<CupPage> {
                               );
                             }),
                       ],
-                    ).withSymPadding();
-                  }
-                  return Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: const [
-                      SizedBox(
-                        height: 50,
-                        child: Center(
-                          child: LoadingIndicator(
-                            indicatorType: Indicator.ballPulseSync,
-                            colors: [AppColor.primaryColor],
-                          ),
+                    ).withSymPadding(),
+                  );
+                }
+                return Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: const [
+                    SizedBox(
+                      height: 50,
+                      child: Center(
+                        child: LoadingIndicator(
+                          indicatorType: Indicator.ballPulseSync,
+                          colors: [AppColor.primaryColor],
                         ),
                       ),
-                    ],
-                  );
-                }),
-          ),
+                    ),
+                  ],
+                );
+              }),
         ),
       ),
     );
