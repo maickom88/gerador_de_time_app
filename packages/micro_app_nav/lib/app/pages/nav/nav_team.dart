@@ -2,15 +2,15 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:micro_commons/app/components/card_player.dart';
+import 'package:micro_commons/app/components/error_page.dart';
 import 'package:micro_core/core/components/animation.dart';
 import 'package:loading_indicator/loading_indicator.dart';
 import 'package:micro_core/core/theme/theme.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
-import '../../components/error_page.dart';
 import '../../components/loading_sport.dart';
 import '../../domain/usecases/save_player_usecase.dart';
-import '../components/card_player.dart';
 import '../components/modal_bottom_error.dart';
 import '../components/modal_bottom_sheet_add_player.dart';
 import '../controllers/position_controller.dart';
@@ -32,17 +32,14 @@ class NavTeam extends StatefulWidget {
 
 class _NavTeamState extends State<NavTeam> {
   late bool isEditing;
-  late List<Map> listChecked;
   @override
   void initState() {
-    listChecked = [];
     isEditing = false;
     super.initState();
   }
 
   @override
   void dispose() {
-    widget.positionController.dispose();
     super.dispose();
   }
 
@@ -53,7 +50,7 @@ class _NavTeamState extends State<NavTeam> {
           valueListenable: widget.teamController,
           builder: (context, value, child) {
             if (value is TeamErrorState) {
-              return ErrrorComponent(
+              return ErrorComponent(
                 onLoad: () => widget.teamController.getPlayers(),
               );
             }

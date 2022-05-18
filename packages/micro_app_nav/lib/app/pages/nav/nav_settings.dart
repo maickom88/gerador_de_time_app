@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:iconsax/iconsax.dart';
-import '../components/avatar_photo.dart';
+import 'package:micro_commons/app/components/avatar_photo.dart';
 import 'package:micro_core/core/components/animation.dart';
 import 'package:micro_core/core/theme/theme.dart';
 

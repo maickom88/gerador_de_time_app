@@ -3,11 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:loading_indicator/loading_indicator.dart';
+import 'package:micro_commons/app/components/error_page.dart';
 import 'package:micro_core/core/components/animation.dart';
 import 'package:micro_core/core/helpers/keyboard_manenger.dart';
 import 'package:micro_core/core/theme/theme.dart';
 
-import '../../components/error_page.dart';
 import '../../domain/entities/position_entity.dart';
 import '../controllers/position_controller.dart';
 import '../states/position_state.dart';
@@ -30,7 +30,7 @@ class PageSearchPosition extends StatelessWidget with KeyboardManager {
           valueListenable: positionController,
           builder: (context, value, child) {
             if (value is PositionErrorState) {
-              return ErrrorComponent(
+              return ErrorComponent(
                 onLoad: () => positionController.getPositions(),
               );
             }
