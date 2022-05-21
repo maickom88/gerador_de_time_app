@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:micro_commons/app/entities/player_entity.dart';
-import 'package:micro_commons/app/usecases/get_players_usecase.dart';
+import 'package:micro_commons/app/domain/entities/player_entity.dart';
+import 'package:micro_commons/app/domain/usecases/get_players_usecase.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../domain/entities/skill_entity.dart';

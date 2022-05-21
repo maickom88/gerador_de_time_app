@@ -1,11 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:loading_indicator/loading_indicator.dart';
 import 'package:micro_core/core/components/animation.dart';
 import 'package:micro_core/core/theme/theme.dart';
 
-class ModelBottomPerformance extends StatelessWidget {
+import '../controllers/performace_controller.dart';
+import '../states/performace_state.dart';
+import 'error_page.dart';
+
+class ModelBottomPerformance extends StatefulWidget {
+  final PerformaceController controller;
   final String photo;
+  final String guid;
   final bool isLoadLocalImage;
   final String heroTag;
   final String name;
@@ -13,6 +20,8 @@ class ModelBottomPerformance extends StatelessWidget {
   const ModelBottomPerformance({
     Key? key,
     required this.photo,
+    required this.controller,
+    required this.guid,
     required this.heroTag,
     required this.name,
     required this.position,
@@ -20,11 +29,29 @@ class ModelBottomPerformance extends StatelessWidget {
   }) : super(key: key);
 
   @override
+  State<ModelBottomPerformance> createState() => _ModelBottomPerformanceState();
+}
+
+class _ModelBottomPerformanceState extends State<ModelBottomPerformance> {
+  late double doublePercente;
+  @override
+  void initState() {
+    doublePercente = 50;
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    widget.controller.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Material(
       type: MaterialType.transparency,
       child: Container(
-        height: AppDefault.height(context).percent(50),
+        height: AppDefault.height(context).percent(doublePercente),
         padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 12),
         child: SingleChildScrollView(
           child: Column(
@@ -81,11 +108,11 @@ class ModelBottomPerformance extends StatelessWidget {
                             child: ClipOval(
                               child: Builder(
                                 builder: (context) {
-                                  if (!isLoadLocalImage) {
+                                  if (!widget.isLoadLocalImage) {
                                     return Hero(
-                                      tag: heroTag,
+                                      tag: widget.heroTag,
                                       child: Image.network(
-                                        photo,
+                                        widget.photo,
                                         fit: BoxFit.cover,
                                         height: 85,
                                         width: 85,
@@ -93,9 +120,9 @@ class ModelBottomPerformance extends StatelessWidget {
                                     );
                                   }
                                   return Hero(
-                                    tag: heroTag,
+                                    tag: widget.heroTag,
                                     child: Image.asset(
-                                      photo,
+                                      widget.photo,
                                       fit: BoxFit.cover,
                                       height: 85,
                                       width: 85,
@@ -114,7 +141,7 @@ class ModelBottomPerformance extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
-                            name,
+                            widget.name,
                             overflow: TextOverflow.ellipsis,
                             style: AppTypography.t22WithW800(),
                           ),
@@ -139,34 +166,36 @@ class ModelBottomPerformance extends StatelessWidget {
                           ).withBottomPadding(bottomPadding: 10),
                           Container(
                             height: 28,
-                            width: 185,
+                            padding: const EdgeInsets.only(right: 20),
                             decoration: BoxDecoration(
                               color: AppColor.lightColor,
                               borderRadius: BorderRadius.circular(100),
                             ),
-                            child: Row(
-                              children: [
-                                Container(
-                                  width: 80,
-                                  height: 28,
-                                  decoration: BoxDecoration(
-                                    color: AppColor.secondaryColor,
-                                    borderRadius: BorderRadius.circular(100),
-                                  ),
-                                  child: Center(
-                                      child: Text(
-                                    'POSIÇÃO',
-                                    style: AppTypography.t14()
-                                        .copyWith(color: Colors.white),
-                                  )),
-                                ).withRightPadding(rightPadding: 5),
-                                Flexible(
-                                  child: Text(
-                                    position.toUpperCase(),
-                                    overflow: TextOverflow.ellipsis,
-                                  ),
-                                )
-                              ],
+                            child: IntrinsicWidth(
+                              child: Row(
+                                children: [
+                                  Container(
+                                    width: 80,
+                                    height: 28,
+                                    decoration: BoxDecoration(
+                                      color: AppColor.secondaryColor,
+                                      borderRadius: BorderRadius.circular(100),
+                                    ),
+                                    child: Center(
+                                        child: Text(
+                                      'POSIÇÃO',
+                                      style: AppTypography.t14()
+                                          .copyWith(color: Colors.white),
+                                    )),
+                                  ).withRightPadding(rightPadding: 5),
+                                  Flexible(
+                                    child: Text(
+                                      widget.position.toUpperCase(),
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                  )
+                                ],
+                              ),
                             ),
                           )
                         ],
@@ -175,33 +204,73 @@ class ModelBottomPerformance extends StatelessWidget {
                   ],
                 ),
               ).withBottomPadding(),
-              const FadeAnimation(
-                delay: 0.2,
-                child: PerformaceDetails(
-                  emoji: '🏆',
-                  label: 'Vitorias',
-                  value: 2,
-                  color: Colors.green,
-                ),
-              ),
-              FadeAnimation(
-                delay: 0.4,
-                child: PerformaceDetails(
-                  emoji: '⚽️',
-                  color: Colors.yellow[700]!,
-                  label: 'Gols marcados',
-                  value: 6,
-                ),
-              ),
-              const FadeAnimation(
-                delay: 0.6,
-                child: PerformaceDetails(
-                  emoji: '🔥',
-                  color: AppColor.secondaryColor,
-                  label: 'Copinhas',
-                  value: 3,
-                ),
-              ),
+              ValueListenableBuilder<PerformaceState>(
+                  valueListenable: widget.controller,
+                  builder: (context, value, child) {
+                    if (value is PerformaceErrorState) {
+                      Future.delayed(Duration.zero, () async {
+                        setState(() {
+                          doublePercente = 65;
+                        });
+                      });
+
+                      return ErrorComponent(
+                        height: 80,
+                        onLoad: () =>
+                            widget.controller.getPerformace(widget.guid),
+                      );
+                    }
+                    if (value is PerformaceSuccessState) {
+                      return Column(
+                        children: [
+                          FadeAnimation(
+                            delay: 0.2,
+                            child: PerformaceDetails(
+                              emoji: '🏆',
+                              label: 'Vitorias',
+                              value: value.perfomace.totalWinnerCups,
+                              color: Colors.green,
+                            ),
+                          ),
+                          FadeAnimation(
+                            delay: 0.4,
+                            child: PerformaceDetails(
+                              emoji: '⚽️',
+                              color: Colors.yellow[700]!,
+                              label: 'Gols marcados',
+                              value: value.perfomace.goals.length,
+                            ),
+                          ),
+                          FadeAnimation(
+                            delay: 0.6,
+                            child: PerformaceDetails(
+                              emoji: '🔥',
+                              color: AppColor.secondaryColor,
+                              label: 'Copinhas',
+                              value: value
+                                  .perfomace.totalNumberOfCupParticipations,
+                            ),
+                          ),
+                        ],
+                      );
+                    }
+
+                    return Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: const [
+                        SizedBox(
+                          height: 50,
+                          child: Center(
+                            child: LoadingIndicator(
+                              indicatorType: Indicator.ballPulseSync,
+                              colors: [AppColor.primaryColor],
+                            ),
+                          ),
+                        ),
+                      ],
+                    );
+                  }),
             ],
           ),
         ),

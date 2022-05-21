@@ -412,6 +412,7 @@ class _NavTeamState extends State<NavTeam> {
                                   photo: player.photo,
                                   name: player.name.splitConvertName(),
                                   position: player.position.name,
+                                  guid: player.guid!,
                                 ),
                               ),
                             );

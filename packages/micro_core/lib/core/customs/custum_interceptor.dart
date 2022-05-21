@@ -15,6 +15,9 @@ class CustomInterceptors extends Interceptor {
     if (err.response?.statusCode == 401) {
       throw Unauthorized();
     }
+    if (err.response?.statusCode == 400) {
+      throw UnexpectedError();
+    }
     AppLog.writeLog(
         'Error in path: ${err.requestOptions.path}, menssage: ${err.message}');
     super.onError(err, handler);

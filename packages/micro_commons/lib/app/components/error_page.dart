@@ -5,8 +5,15 @@ import 'package:micro_core/core/theme/theme.dart';
 import '../../core/constants/local_image.dart';
 
 class ErrorComponent extends StatelessWidget {
+  final double? height;
   final Function onLoad;
-  const ErrorComponent({Key? key, required this.onLoad}) : super(key: key);
+  final bool? showDetails;
+  const ErrorComponent(
+      {Key? key,
+      this.showDetails = true,
+      this.height = 300,
+      required this.onLoad})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -19,15 +26,18 @@ class ErrorComponent extends StatelessWidget {
               style: AppTypography.t28WithW800()
                   .copyWith(color: AppColor.primaryColor)),
           SizedBox(
-              height: 300,
+              height: height,
               child: Lottie.asset(
                 LocalImage.error2,
                 repeat: false,
               )).withBottomPadding(),
-          Text(
-            'Ocorreu um error inesperado!',
-            style: AppTypography.t22WithW800(),
-          ).withBottomPadding(),
+          Visibility(
+            visible: !showDetails!,
+            child: Text(
+              'Ocorreu um error inesperado!',
+              style: AppTypography.t22WithW800(),
+            ).withBottomPadding(),
+          ),
           Text(
             'Encontramos um error\nao tentar conectar com o servidor',
             textAlign: TextAlign.center,

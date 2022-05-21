@@ -1,4 +1,4 @@
-import 'package:micro_commons/app/entities/player_entity.dart';
+import 'package:micro_commons/app/domain/entities/player_entity.dart';
 import 'package:micro_core/core/customs/custum_dio.dart';
 import 'package:dio/dio.dart';
 

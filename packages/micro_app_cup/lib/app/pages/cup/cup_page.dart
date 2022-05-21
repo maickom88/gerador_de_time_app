@@ -303,6 +303,7 @@ class _CupPageState extends State<CupPage> {
                                     photo: player.photo,
                                     name: player.name.splitConvertName(),
                                     position: player.position.name,
+                                    guid: player.guid!,
                                   ),
                                 ),
                               );

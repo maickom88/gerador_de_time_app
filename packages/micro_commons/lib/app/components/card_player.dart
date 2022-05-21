@@ -5,6 +5,8 @@ import 'package:micro_core/core/theme/theme.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 import '../../../core/constants/local_image.dart';
+import '../controllers/performace_controller.dart';
+import '../factories/build_resources.dart';
 import 'avatar_photo.dart';
 import 'model_bottom_performace.dart';
 
@@ -12,9 +14,11 @@ class CardPlayer extends StatelessWidget {
   final String name;
   final String? photo;
   final String position;
+  final String guid;
   const CardPlayer({
     Key? key,
     required this.name,
+    required this.guid,
     required this.position,
     required this.photo,
   }) : super(key: key);
@@ -44,12 +48,15 @@ class CardPlayer extends StatelessWidget {
                 showCupertinoModalBottomSheet(
                   context: context,
                   builder: (context) => ModelBottomPerformance(
-                    photo: photo != null ? photo! : locaImage,
-                    isLoadLocalImage: photo == null ? true : false,
-                    heroTag: name.hashCode.toString(),
-                    name: name,
-                    position: position,
-                  ),
+                      photo: photo != null ? photo! : locaImage,
+                      isLoadLocalImage: photo == null ? true : false,
+                      heroTag: name.hashCode.toString(),
+                      name: name,
+                      position: position,
+                      guid: guid,
+                      controller:
+                          PerformaceController(getPerformacePlayerUsecase)
+                            ..getPerformace(guid)),
                 );
               },
             );
@@ -85,34 +92,36 @@ class CardPlayer extends StatelessWidget {
                 ).withBottomPadding(bottomPadding: 10),
                 Container(
                   height: 28,
-                  width: 185,
+                  padding: const EdgeInsets.only(right: 20),
                   decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(100),
                   ),
-                  child: Row(
-                    children: [
-                      Container(
-                        width: 80,
-                        height: 28,
-                        decoration: BoxDecoration(
-                          color: AppColor.secondaryColor,
-                          borderRadius: BorderRadius.circular(100),
-                        ),
-                        child: Center(
-                            child: Text(
-                          'POSIÇÃO',
-                          style:
-                              AppTypography.t14().copyWith(color: Colors.white),
-                        )),
-                      ).withRightPadding(rightPadding: 5),
-                      Flexible(
-                        child: Text(
-                          position.toUpperCase(),
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                      )
-                    ],
+                  child: IntrinsicWidth(
+                    child: Row(
+                      children: [
+                        Container(
+                          width: 80,
+                          height: 28,
+                          decoration: BoxDecoration(
+                            color: AppColor.secondaryColor,
+                            borderRadius: BorderRadius.circular(100),
+                          ),
+                          child: Center(
+                              child: Text(
+                            'POSIÇÃO',
+                            style: AppTypography.t14()
+                                .copyWith(color: Colors.white),
+                          )),
+                        ).withRightPadding(rightPadding: 5),
+                        Flexible(
+                          child: Text(
+                            position.toUpperCase(),
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        )
+                      ],
+                    ),
                   ),
                 )
               ],

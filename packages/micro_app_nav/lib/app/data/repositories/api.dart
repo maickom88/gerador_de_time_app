@@ -1,5 +1,5 @@
 import 'package:either_dart/either.dart';
-import 'package:micro_commons/app/entities/player_entity.dart';
+import 'package:micro_commons/app/domain/entities/player_entity.dart';
 import 'package:micro_core/core/errors/errors.dart';
 
 import '../../domain/entities/position_entity.dart';

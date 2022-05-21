@@ -1,9 +1,10 @@
 import 'package:either_dart/either.dart';
 import 'package:micro_core/core/errors/errors.dart';
 
-import '../../entities/player_entity.dart';
-import '../../entities/skill_entity.dart';
-import '../../repositories/api_repository.dart';
+import '../../domain/entities/performace_entity.dart';
+import '../../domain/entities/player_entity.dart';
+import '../../domain/entities/skill_entity.dart';
+import '../../domain/repositories/api_repository.dart';
 import '../datasources/api_datasource.dart';
 
 class Api implements ApiRepository {
@@ -21,16 +22,6 @@ class Api implements ApiRepository {
     }
   }
 
-  // @override
-  // Future<Either<Failure, PlayerEntity>> savePLayer(
-  //     SavePlayerParams params) async {
-  //   try {
-  //     return Right(await apiDatasource.savePLayer(params));
-  //   } on Failure catch (error) {
-  //     return Left(error);
-  //   }
-  // }
-
   @override
   Future<Either<Failure, SkillEntity>> saveSkill(SkillEntity params) async {
     try {
@@ -44,6 +35,16 @@ class Api implements ApiRepository {
   Future<Either<Failure, void>> removePlayers(List<String> params) async {
     try {
       return Right(await apiDatasource.removePlayers(params));
+    } on Failure catch (error) {
+      return Left(error);
+    }
+  }
+
+  @override
+  Future<Either<Failure, PerfomaceEntity>> getPerformacePlayer(
+      String params) async {
+    try {
+      return Right(await apiDatasource.getPerformacePlayer(params));
     } on Failure catch (error) {
       return Left(error);
     }
