@@ -6,6 +6,7 @@ import 'package:micro_core/core/components/animation.dart';
 import 'package:micro_core/core/helpers/keyboard_manenger.dart';
 import 'package:micro_core/core/theme/theme.dart';
 
+import '../controllers/historic_controller.dart';
 import '../controllers/home_controller.dart';
 import '../controllers/logout_controller.dart';
 import '../controllers/position_controller.dart';
@@ -23,10 +24,12 @@ class NavPage extends StatefulWidget {
   final HomeController homeController;
   final TeamController teamController;
   final PositionController positionController;
+  final HistoricController historicController;
   const NavPage({
     Key? key,
     required this.controller,
     required this.teamController,
+    required this.historicController,
     required this.logoutController,
     required this.positionController,
     required this.homeController,
@@ -50,7 +53,7 @@ class _NavPageState extends State<NavPage> with KeyboardManager {
         teamController: widget.teamController,
         positionController: widget.positionController,
       ),
-      const NavHistoric(),
+      NavHistoric(historicController: widget.historicController),
       const NavNotification(),
       NavSettings(widget.logoutController),
     ];

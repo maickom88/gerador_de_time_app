@@ -9,7 +9,7 @@ class CupEntity {
   final int time;
   final SportEntity sport;
   final int timeAdditions;
-  final TeamEntity winner;
+  final TeamEntity? winner;
   final bool isDraft;
   final DateTime date;
   final List<TeamEntity> teams;
@@ -31,7 +31,7 @@ class CupEntity {
       'responsible_email': responsibleEmail,
       'time': time,
       'time_additions': timeAdditions,
-      'winner': winner.toMap(),
+      'winner': winner?.toMap(),
       'is_draft': isDraft,
       'date': date.millisecondsSinceEpoch,
       'teams': teams.map((x) => x.toMap()).toList(),
@@ -47,7 +47,7 @@ class CupEntity {
       timeAdditions: map['time_additions']?.toInt() ?? 0,
       winner: TeamEntity.fromMap(map['winner']),
       isDraft: map['is_draft'] ?? false,
-      date: DateTime.fromMillisecondsSinceEpoch(map['date']),
+      date: DateTime.parse(map['created_at']),
       teams: List<TeamEntity>.from(
           map['teams']?.map((x) => TeamEntity.fromMap(x))),
     );

@@ -7,14 +7,16 @@ import '../details/details_page.dart';
 
 class CardHistoric extends StatelessWidget {
   final String title;
+  final DateTime date;
   final bool isDraft;
-  final String nameWinner;
+  final String? nameWinner;
 
   const CardHistoric({
     Key? key,
     required this.title,
+    required this.date,
     required this.isDraft,
-    required this.nameWinner,
+    this.nameWinner,
   }) : super(key: key);
 
   @override
@@ -47,7 +49,7 @@ class CardHistoric extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.only(left: 8.0, top: 3),
                 child: Text(
-                  '21 de Outubro',
+                  date.formateDateString(),
                   style:
                       AppTypography.t14().copyWith(color: AppColor.textLight),
                 ),

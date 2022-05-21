@@ -6,3 +6,4 @@ export 'theme_app.dart';
 export '../extensions/percet_size_extension.dart';
 export '../extensions/lock_email.dart';
 export '../extensions/split_convert_name.dart';
+export '../extensions/formate_date.dart';
