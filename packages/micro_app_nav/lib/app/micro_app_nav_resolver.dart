@@ -2,6 +2,7 @@ import 'package:micro_core/micro_core.dart';
 
 import 'factories/build_get_positions_controller.dart';
 import 'factories/build_get_sports_controller.dart';
+import 'factories/build_historic_controller.dart';
 import 'factories/build_logout_controller.dart';
 import 'factories/build_nav_controller.dart';
 import 'factories/build_team_controller.dart';
@@ -19,6 +20,7 @@ class MicroAppNavResolver implements MicroApp {
               homeController: buildHomeController()..getSports(),
               teamController: buildTeamController()..getPlayers(),
               positionController: buildPositionController(),
+              historicController: buildHistoricController()..getHistorics(),
             ),
       };
 }

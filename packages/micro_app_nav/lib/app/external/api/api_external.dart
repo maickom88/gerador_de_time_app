@@ -1,3 +1,4 @@
+import 'package:micro_commons/app/domain/entities/cup_entity.dart';
 import 'package:micro_commons/app/domain/entities/player_entity.dart';
 import 'package:micro_core/core/customs/custum_dio.dart';
 import 'package:dio/dio.dart';
@@ -76,6 +77,20 @@ class ApiExternal implements ApiDatasource {
       for (var element in params) {
         await _dio.http.delete('/player/$element');
       }
+    } on DioError catch (error) {
+      throw error.error;
+    } on Exception catch (_) {
+      throw ServerError();
+    }
+  }
+
+  @override
+  Future<List<CupEntity>> getCups(String params) async {
+    try {
+      final result = await _dio.http
+          .get<List>('/cup', queryParameters: {"email_user": params});
+      final cups = result.data!.map((cup) => CupEntity.fromMap(cup)).toList();
+      return cups;
     } on DioError catch (error) {
       throw error.error;
     } on Exception catch (_) {

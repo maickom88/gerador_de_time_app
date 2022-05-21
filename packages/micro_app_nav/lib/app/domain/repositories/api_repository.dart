@@ -1,3 +1,4 @@
+import 'package:micro_commons/app/domain/entities/cup_entity.dart';
 import 'package:micro_commons/app/domain/entities/player_entity.dart';
 import 'package:micro_core/core/errors/errors.dart';
 import 'package:either_dart/either.dart';
@@ -10,6 +11,7 @@ import '../usecases/save_player_usecase.dart';
 abstract class ApiRepository {
   Future<Either<Failure, List<SportEntity>>> getSports();
   Future<Either<Failure, List<PositionEntity>>> getPositions();
+  Future<Either<Failure, List<CupEntity>>> getCups(String params);
   Future<Either<Failure, void>> removePlayers(List<String> params);
   Future<Either<Failure, SkillEntity>> saveSkill(SkillEntity params);
   Future<Either<Failure, PlayerEntity>> savePLayer(SavePlayerParams params);

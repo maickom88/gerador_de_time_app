@@ -1,4 +1,5 @@
 import 'package:either_dart/either.dart';
+import 'package:micro_commons/app/domain/entities/cup_entity.dart';
 import 'package:micro_commons/app/domain/entities/player_entity.dart';
 import 'package:micro_core/core/errors/errors.dart';
 
@@ -55,6 +56,15 @@ class Api implements ApiRepository {
   Future<Either<Failure, void>> removePlayers(List<String> params) async {
     try {
       return Right(await apiDatasource.removePlayers(params));
+    } on Failure catch (error) {
+      return Left(error);
+    }
+  }
+
+  @override
+  Future<Either<Failure, List<CupEntity>>> getCups(String params) async {
+    try {
+      return Right(await apiDatasource.getCups(params));
     } on Failure catch (error) {
       return Left(error);
     }
