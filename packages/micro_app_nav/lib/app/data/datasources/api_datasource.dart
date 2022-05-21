@@ -1,4 +1,4 @@
-import 'package:micro_commons/app/entities/player_entity.dart';
+import 'package:micro_commons/app/domain/entities/player_entity.dart';
 
 import '../../domain/entities/position_entity.dart';
 import '../../domain/entities/skill_entity.dart';
