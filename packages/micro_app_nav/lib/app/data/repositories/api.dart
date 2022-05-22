@@ -3,6 +3,7 @@ import 'package:micro_commons/app/domain/entities/cup_entity.dart';
 import 'package:micro_commons/app/domain/entities/player_entity.dart';
 import 'package:micro_core/core/errors/errors.dart';
 
+import '../../domain/entities/cup_information_entity.dart';
 import '../../domain/entities/position_entity.dart';
 import '../../domain/entities/skill_entity.dart';
 import '../../domain/entities/sport_entity.dart';
@@ -65,6 +66,16 @@ class Api implements ApiRepository {
   Future<Either<Failure, List<CupEntity>>> getCups(String params) async {
     try {
       return Right(await apiDatasource.getCups(params));
+    } on Failure catch (error) {
+      return Left(error);
+    }
+  }
+
+  @override
+  Future<Either<Failure, CupInformationEntity>> getCupInformation(
+      String params) async {
+    try {
+      return Right(await apiDatasource.getCupInformation(params));
     } on Failure catch (error) {
       return Left(error);
     }

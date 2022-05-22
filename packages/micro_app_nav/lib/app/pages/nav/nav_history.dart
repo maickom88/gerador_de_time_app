@@ -11,7 +11,7 @@ import '../components/card_history.dart';
 import '../controllers/historic_controller.dart';
 import '../states/historic_state.dart';
 
-class NavHistoric extends StatelessWidget {
+class NavHistoric extends StatefulWidget {
   final HistoricController historicController;
   const NavHistoric({
     Key? key,
@@ -19,14 +19,24 @@ class NavHistoric extends StatelessWidget {
   }) : super(key: key);
 
   @override
+  State<NavHistoric> createState() => _NavHistoricState();
+}
+
+class _NavHistoricState extends State<NavHistoric> {
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: ValueListenableBuilder<HistoricState>(
-          valueListenable: historicController,
+          valueListenable: widget.historicController,
           builder: (context, value, child) {
             if (value is HistoricErrorState) {
               return ErrorComponent(
-                onLoad: () => historicController.getHistorics(),
+                onLoad: () => widget.historicController.getHistorics(),
               );
             }
             if (value is HistoricSuccessState) {
@@ -58,7 +68,7 @@ class NavHistoric extends StatelessWidget {
                         child: CupertinoTextField(
                           placeholder: 'Pesquisar',
                           onChanged: (value) {
-                            historicController.searchHistoric(value);
+                            widget.historicController.searchHistoric(value);
                           },
                           suffix: IconButton(
                             icon: const Icon(
@@ -79,16 +89,18 @@ class NavHistoric extends StatelessWidget {
                         ),
                       ).withBottomPadding(bottomPadding: 30),
                       ListView.builder(
-                        itemCount: historicController
+                        itemCount: widget.historicController
                                 .searchResultHistorics.isNotEmpty
-                            ? historicController.searchResultHistorics.length
+                            ? widget
+                                .historicController.searchResultHistorics.length
                             : value.cups.length,
                         shrinkWrap: true,
                         physics: const NeverScrollableScrollPhysics(),
                         itemBuilder: (_, index) {
-                          final cup = historicController
+                          final cup = widget.historicController
                                   .searchResultHistorics.isNotEmpty
-                              ? historicController.searchResultHistorics[index]
+                              ? widget.historicController
+                                  .searchResultHistorics[index]
                               : value.cups[index];
                           return FadeAnimation(
                             delay: (1.0 + index) / 4,
@@ -97,6 +109,7 @@ class NavHistoric extends StatelessWidget {
                               title: cup.sport.name,
                               nameWinner: cup.winner?.name.toUpperCase(),
                               date: cup.date,
+                              guidCup: cup.guid!,
                             ),
                           );
                         },

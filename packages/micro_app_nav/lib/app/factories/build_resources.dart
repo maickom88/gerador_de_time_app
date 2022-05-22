@@ -4,6 +4,7 @@ import 'package:micro_core/core/customs/custum_dio.dart';
 
 import '../data/repositories/api.dart';
 import '../data/repositories/auth.dart';
+import '../domain/usecases/get_cup_information_usecase.dart';
 import '../domain/usecases/get_cups_usecase.dart';
 import '../domain/usecases/get_positions_usecase.dart';
 import '../domain/usecases/get_sports_usecase.dart';
@@ -29,3 +30,5 @@ final getPositions = GetPositions(apiRepository: apiRepository);
 final saveSkill = SaveSkill(apiRepository: apiRepository);
 final removerPLayers = RemovePlayers(apiRepository: apiRepository);
 final getCupsUsecase = GetCups(apiRepository: apiRepository);
+final getCupInformationUsecase =
+    GetCupInformation(apiRepository: apiRepository);
