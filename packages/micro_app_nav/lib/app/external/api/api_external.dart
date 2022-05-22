@@ -5,6 +5,7 @@ import 'package:dio/dio.dart';
 
 import '../../data/datasources/api_datasource.dart';
 import '../../data/errors/server_error.dart';
+import '../../domain/entities/cup_information_entity.dart';
 import '../../domain/entities/position_entity.dart';
 import '../../domain/entities/skill_entity.dart';
 import '../../domain/entities/sport_entity.dart';
@@ -91,6 +92,20 @@ class ApiExternal implements ApiDatasource {
           .get<List>('/cup', queryParameters: {"email_user": params});
       final cups = result.data!.map((cup) => CupEntity.fromMap(cup)).toList();
       return cups;
+    } on DioError catch (error) {
+      throw error.error;
+    } on Exception catch (_) {
+      throw ServerError();
+    }
+  }
+
+  @override
+  Future<CupInformationEntity> getCupInformation(String params) async {
+    try {
+      final result = await _dio.http
+          .get<Map<String, dynamic>>('/cup/$params/informations');
+      final cupInformation = CupInformationEntity.fromMap(result.data!);
+      return cupInformation;
     } on DioError catch (error) {
       throw error.error;
     } on Exception catch (_) {

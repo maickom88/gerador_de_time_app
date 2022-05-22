@@ -3,17 +3,20 @@ import 'package:flutter/services.dart';
 import 'package:micro_core/core/theme/theme.dart';
 import 'package:iconsax/iconsax.dart';
 
+import '../../factories/build_cup_information_controller.dart';
 import '../details/details_page.dart';
 
 class CardHistoric extends StatelessWidget {
   final String title;
   final DateTime date;
   final bool isDraft;
+  final String guidCup;
   final String? nameWinner;
 
   const CardHistoric({
     Key? key,
     required this.title,
+    required this.guidCup,
     required this.date,
     required this.isDraft,
     this.nameWinner,
@@ -115,7 +118,11 @@ class CardHistoric extends StatelessWidget {
                             HapticFeedback.lightImpact();
                             AppDefault.navigateToWidget(
                               context,
-                              widget: const DetailsPage(),
+                              widget: DetailsPage(
+                                guidCup: guidCup,
+                                controller: buildCupInformationController()
+                                  ..getCupInformations(guidCup),
+                              ),
                             );
                           },
                           child: Text(
