@@ -8,6 +8,6 @@ class MicroAppConfigCupResolver implements MicroApp {
 
   @override
   Map<String, WidgetBuildArgs> get routes => {
-        '/config': (_, args) => const ConfigCupPage(),
+        '/config': (_, args) => ConfigCupPage(argument: args),
       };
 }

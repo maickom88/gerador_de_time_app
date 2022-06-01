@@ -7,17 +7,26 @@ import 'package:micro_core/core/components/circle_teams.dart';
 import 'package:micro_core/core/theme/theme.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
-import '../components/modal_view_card_team.dart';
 import '../../../core/colors/colors.dart';
+import '../components/modal_view_card_team.dart';
 
 class ConfigCupPage extends StatefulWidget {
-  const ConfigCupPage({Key? key}) : super(key: key);
+  final Object? argument;
+  const ConfigCupPage({
+    Key? key,
+    required this.argument,
+  }) : super(key: key);
 
   @override
   _ConfigCupPageState createState() => _ConfigCupPageState();
 }
 
 class _ConfigCupPageState extends State<ConfigCupPage> {
+  @override
+  void initState() {
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

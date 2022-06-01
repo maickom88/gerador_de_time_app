@@ -4,12 +4,12 @@ import 'package:flutter/services.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:micro_commons/app/components/card_player.dart';
 import 'package:micro_commons/app/components/error_page.dart';
+import 'package:micro_commons/app/components/loading_sport.dart';
 import 'package:micro_core/core/components/animation.dart';
 import 'package:loading_indicator/loading_indicator.dart';
 import 'package:micro_core/core/theme/theme.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
-import '../../components/loading_sport.dart';
 import '../../domain/usecases/save_player_usecase.dart';
 import '../components/modal_bottom_error.dart';
 import '../components/modal_bottom_sheet_add_player.dart';
