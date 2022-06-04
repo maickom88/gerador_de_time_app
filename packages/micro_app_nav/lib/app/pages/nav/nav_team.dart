@@ -413,6 +413,8 @@ class _NavTeamState extends State<NavTeam> {
                                   name: player.name.splitConvertName(),
                                   position: player.position.name,
                                   guid: player.guid!,
+                                  skillValue: widget.positionController
+                                      .calculeSkill(player.skills),
                                 ),
                               ),
                             );

@@ -20,7 +20,6 @@ class CircleTeams extends StatelessWidget {
       width: double.infinity,
       child: Stack(
         children: [
-          // ignore: unnecessary_null_comparison
           if (players.containsAt(0))
             Positioned.fill(
               right: 85,
@@ -56,7 +55,6 @@ class CircleTeams extends StatelessWidget {
                     )),
               ),
             ),
-          // ignore: unnecessary_null_comparison
           if (players.containsAt(1))
             Positioned.fill(
               right: 60,
@@ -92,7 +90,6 @@ class CircleTeams extends StatelessWidget {
                     )),
               ),
             ),
-          // ignore: unnecessary_null_comparison
           if (players.containsAt(2))
             Positioned.fill(
               right: 30,
@@ -129,7 +126,6 @@ class CircleTeams extends StatelessWidget {
                 ),
               ),
             ),
-
           FadeAnimation(
             delay: 1.2,
             directionType: DirectionType.translateX,
@@ -146,20 +142,23 @@ class CircleTeams extends StatelessWidget {
                 child: Stack(
                   children: [
                     if (players.containsAt(3))
-                      ClipOval(
-                        child: Builder(
-                          builder: (context) {
-                            if (players[3].photo != null) {
-                              return Image.network(
-                                players[3].photo!,
+                      Opacity(
+                        opacity: 0.5,
+                        child: ClipOval(
+                          child: Builder(
+                            builder: (context) {
+                              if (players[3].photo != null) {
+                                return Image.network(
+                                  players[3].photo!,
+                                  fit: BoxFit.cover,
+                                );
+                              }
+                              return Image.asset(
+                                ProfileImage.hand1,
                                 fit: BoxFit.cover,
                               );
-                            }
-                            return Image.asset(
-                              ProfileImage.hand1,
-                              fit: BoxFit.cover,
-                            );
-                          },
+                            },
+                          ),
                         ),
                       ),
                     Center(

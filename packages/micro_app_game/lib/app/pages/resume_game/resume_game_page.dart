@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:iconsax/iconsax.dart';
-import 'package:micro_core/core/components/circle_teams.dart';
 import 'package:micro_core/core/theme/theme.dart';
 import 'package:adaptive_action_sheet/adaptive_action_sheet.dart';
 import 'package:carousel_slider/carousel_slider.dart';
@@ -201,10 +200,10 @@ class _ResumeGamePageState extends State<ResumeGamePage> {
                                           TextStyle(color: AppColor.textLight))
                                 ]),
                                 Column(children: [
-                                  Transform.scale(
-                                    scale: 0.6,
-                                    child: const CircleTeams(),
-                                  ),
+                                  // Transform.scale(
+                                  //   scale: 0.6,
+                                  //   child: CircleTeams(),
+                                  // ),
                                 ]),
                               ]),
                             )
@@ -566,7 +565,10 @@ class CardTeam extends StatelessWidget {
               ),
             ],
           ),
-          Transform.scale(scale: 0.7, child: const CircleTeams()),
+          // Transform.scale(
+          //   scale: 0.7,
+          //   child: CircleTeams(),
+          // ),
         ],
       ),
     );
