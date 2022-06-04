@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:adaptive_action_sheet/adaptive_action_sheet.dart';
 import 'package:loading_indicator/loading_indicator.dart';
 import 'package:micro_commons/app/components/card_player.dart';
 import 'package:micro_commons/app/components/error_page.dart';
@@ -26,11 +27,9 @@ class CupPage extends StatefulWidget {
 
 class _CupPageState extends State<CupPage> {
   late bool isEditing;
-  late List<Map> listChecked;
   late Tween<double> tween;
   @override
   void initState() {
-    listChecked = [];
     isEditing = false;
     tween = Tween<double>(begin: 0.0, end: 5.0);
 
@@ -42,6 +41,21 @@ class _CupPageState extends State<CupPage> {
     widget.cupController.dispose();
     super.dispose();
   }
+
+  Future<T?> showAlert<T>(String description) => showAdaptiveActionSheet<T>(
+        context: context,
+        title: Text(description),
+        actions: <BottomSheetAction>[
+          BottomSheetAction(
+            title: Text('Sim, entendi',
+                style: AppTypography.t14()
+                    .copyWith(color: Colors.blue, fontWeight: FontWeight.bold)),
+            onPressed: () {
+              AppDefault.close(context);
+            },
+          ),
+        ],
+      );
 
   @override
   Widget build(BuildContext context) {
@@ -109,6 +123,8 @@ class _CupPageState extends State<CupPage> {
                           height: 48,
                           child: CupertinoTextField(
                             placeholder: 'Pesquisar',
+                            onChanged: (value) =>
+                                widget.cupController.searchPlayer(value),
                             suffix: IconButton(
                               icon: const Icon(
                                 Iconsax.setting_4,
@@ -141,8 +157,9 @@ class _CupPageState extends State<CupPage> {
                                           .copyWith(color: AppColor.textLight),
                                     ),
                                     CupertinoSwitch(
-                                      value: false,
-                                      onChanged: (value) {},
+                                      value: widget.cupController.balanceTeams,
+                                      onChanged: (value) => widget
+                                          .cupController.balanceTeams = value,
                                     )
                                   ],
                                 ).withBottomPadding(bottomPadding: 8),
@@ -163,23 +180,67 @@ class _CupPageState extends State<CupPage> {
                                                 padding: const EdgeInsets.only(
                                                     top: 30),
                                                 height: 350,
-                                                child: CupertinoPicker(
-                                                  magnification: 1.5,
-                                                  backgroundColor: Colors.white,
-                                                  onSelectedItemChanged:
-                                                      (value) {
-                                                    setState(() {});
-                                                  },
-                                                  itemExtent: 45,
-                                                  children: List.generate(
-                                                    10,
-                                                    (index) => Text(
-                                                      (index + 1).toString(),
-                                                      style:
-                                                          AppTypography.t16(),
-                                                    ),
+                                                child: Material(
+                                                  color: Colors.transparent,
+                                                  child: Column(
+                                                    mainAxisSize:
+                                                        MainAxisSize.max,
+                                                    children: [
+                                                      Stack(
+                                                        children: [
+                                                          Align(
+                                                            alignment: Alignment
+                                                                .topLeft,
+                                                            child:
+                                                                GestureDetector(
+                                                              onTap: () {
+                                                                SystemSound.play(
+                                                                    SystemSoundType
+                                                                        .click);
+                                                                AppDefault.close(
+                                                                    context);
+                                                              },
+                                                              child: Text(
+                                                                'Cancelar',
+                                                                style: AppTypography
+                                                                        .t16()
+                                                                    .copyWith(
+                                                                  color: AppColor
+                                                                      .secondaryColor,
+                                                                ),
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      ).withBottomPadding(),
+                                                      Expanded(
+                                                        child: CupertinoPicker(
+                                                          magnification: 1.5,
+                                                          backgroundColor:
+                                                              Colors.white,
+                                                          onSelectedItemChanged:
+                                                              (value) {
+                                                            widget.cupController
+                                                                    .numberOfTeam =
+                                                                value + 2;
+                                                          },
+                                                          itemExtent: 45,
+                                                          children:
+                                                              List.generate(
+                                                            10,
+                                                            (index) => Text(
+                                                              (index + 2)
+                                                                  .toString(),
+                                                              style:
+                                                                  AppTypography
+                                                                      .t16(),
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ],
                                                   ),
-                                                ),
+                                                ).withSymPadding(),
                                               );
                                             });
                                       },
@@ -193,7 +254,8 @@ class _CupPageState extends State<CupPage> {
                                         ),
                                         child: Center(
                                           child: Text(
-                                            '0',
+                                            (widget.cupController.numberOfTeam)
+                                                .toString(),
                                             style: AppTypography.t16().copyWith(
                                                 color: AppColor.textLight),
                                           ),
@@ -207,10 +269,33 @@ class _CupPageState extends State<CupPage> {
                             GestureDetector(
                               onTap: () {
                                 SystemSound.play(SystemSoundType.click);
-                                AppDefault.navigateTo(
-                                  context,
-                                  routeName: '/config',
-                                );
+                                if (widget
+                                    .cupController.playerSelected.isEmpty) {
+                                  showAlert(
+                                      'Selecione os jogadores para essa copinha');
+                                  return;
+                                }
+
+                                if (widget.cupController.playerSelected.length <
+                                    8) {
+                                  showAlert(
+                                      'É necessario 8 jogadores ou mais para realizar o sorteio');
+                                  return;
+                                }
+                                if ((widget.cupController.playerSelected
+                                            .length %
+                                        2) !=
+                                    0) {
+                                  showAlert(
+                                      'É necessario um numero par de jogadores');
+                                  return;
+                                }
+                                if (widget.cupController.numberOfTeam <= 0) {
+                                  showAlert('Informe a quantidade de times');
+                                  return;
+                                }
+
+                                widget.cupController.drawPLayers(context);
                               },
                               child: Text.rich(
                                 TextSpan(
@@ -233,18 +318,49 @@ class _CupPageState extends State<CupPage> {
                             ).withBottomPadding(),
                           ],
                         ).withBottomPadding(),
-                        listChecked.isEmpty
+                        if (widget.cupController.playerSelected.length <
+                            value.players.length)
+                          Align(
+                            alignment: Alignment.topRight,
+                            child: TextButton(
+                              style: TextButton.styleFrom(
+                                  primary: AppColor.secondaryColor),
+                              onPressed: () => widget.cupController
+                                  .selectedAllPlayers(value.players),
+                              child: Text(
+                                'Marca todos',
+                                style: TextStyle(color: Colors.grey[400]),
+                              ),
+                            ),
+                          ),
+                        if (widget.cupController.playerSelected.length >=
+                            value.players.length)
+                          Align(
+                            alignment: Alignment.topRight,
+                            child: TextButton(
+                              style: TextButton.styleFrom(
+                                  primary:
+                                      const Color.fromARGB(255, 208, 49, 49)),
+                              onPressed: () => widget.cupController
+                                  .removeSelectedAllPlayers(value.players),
+                              child: Text(
+                                'Desmarcar todos',
+                                style: TextStyle(color: Colors.grey[400]),
+                              ),
+                            ),
+                          ),
+                        widget.cupController.playerSelected.isEmpty
                             ? Text(
                                 'Marque os jogadores para a copinha',
                                 style: AppTypography.t14()
                                     .copyWith(color: AppColor.textLight),
                               )
-                            : listChecked.length == 1
+                            : widget.cupController.playerSelected.length == 1
                                 ? Text('1 jogador marcado',
                                     style: AppTypography.t14()
                                         .copyWith(color: AppColor.textLight))
                                 : Text(
-                                    '${listChecked.length} jogadores marcados',
+                                    '${widget.cupController.playerSelected.length} jogadores marcados',
                                     style: AppTypography.t14()
                                         .copyWith(color: AppColor.textLight),
                                   ),

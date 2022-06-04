@@ -2,6 +2,7 @@ import "dart:math";
 
 class LocalImage {
   static const String error2 = 'assets/animations/error2.json';
+  static const String sportLottie = 'assets/animations/load_sport.json';
 }
 
 class ProfileImage {

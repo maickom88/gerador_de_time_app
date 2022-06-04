@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:micro_commons/app/components/loading_sport.dart';
 import 'package:micro_core/core/theme/theme.dart';
 import 'package:micro_core/core/usecases/usecases.dart';
 
-import '../../components/loading_sport.dart';
 import '../../domain/usecases/logout_usecase.dart';
 import '../states/logout_state.dart';
 
