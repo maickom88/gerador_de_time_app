@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:micro_commons/app/domain/entities/skill_entity.dart';
 import 'package:micro_core/core/usecases/usecases.dart';
 
 import '../../domain/entities/position_entity.dart';
-import '../../domain/entities/skill_entity.dart';
 import '../../domain/usecases/get_positions_usecase.dart';
 import '../states/position_state.dart';
 
@@ -36,6 +36,13 @@ class PositionController extends ValueNotifier<PositionState> {
       await Future.delayed(const Duration(seconds: 2));
       value = PositionSuccessState(positions: resultSuccess);
     });
+  }
+
+  int? calculeSkill(SkillEntity skill) {
+    int maxSkill = 0;
+    maxSkill =
+        skill.completion + skill.dribble + skill.strength + skill.velocity;
+    return maxSkill ~/ 4;
   }
 
   void searchPosition(String search) {

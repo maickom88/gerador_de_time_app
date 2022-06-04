@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+
 import 'player_entity.dart';
 
 class DrawEntity {
@@ -15,8 +17,12 @@ class DrawEntity {
 }
 
 class TeamEntity {
+  String? title;
+  Color? color;
   final List<PlayerEntity> team;
   TeamEntity({
+    this.title,
+    this.color,
     required this.team,
   });
 

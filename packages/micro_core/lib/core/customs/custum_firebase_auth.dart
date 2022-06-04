@@ -10,7 +10,7 @@ class CustumFirebaseAuth {
 
   static Future<String> getToken() async {
     if (userISLogged()) {
-      return await FirebaseAuth.instance.currentUser!.getIdToken(true);
+      return await FirebaseAuth.instance.currentUser!.getIdToken();
     }
     return '';
   }

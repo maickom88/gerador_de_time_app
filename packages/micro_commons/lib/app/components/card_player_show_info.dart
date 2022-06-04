@@ -1,27 +1,34 @@
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:uuid/uuid.dart';
 import 'package:micro_core/core/theme/theme.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
+import '../../core/constants/local_image.dart';
+import '../controllers/performace_controller.dart';
+import '../factories/build_resources.dart';
 import 'avatar_photo.dart';
-import 'modal_bottom_perfomace.dart';
+import 'model_bottom_performace.dart';
 
-class CardPlayer extends StatefulWidget {
+class CardPlayerShowInfo extends StatefulWidget {
   final String name;
-  final String photo;
+  final String? photo;
   final String position;
-  const CardPlayer({
+  final String guid;
+  final int? skillValue;
+  const CardPlayerShowInfo({
     Key? key,
     required this.name,
+    this.skillValue = 0,
+    required this.guid,
     required this.position,
     required this.photo,
   }) : super(key: key);
-
   @override
   _CardPlayerState createState() => _CardPlayerState();
 }
 
-class _CardPlayerState extends State<CardPlayer> {
+class _CardPlayerState extends State<CardPlayerShowInfo> {
   late bool showMoreInfo;
   @override
   void initState() {
@@ -55,16 +62,31 @@ class _CardPlayerState extends State<CardPlayer> {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              AvatarPhoto(
-                icon: Iconsax.trend_up,
-                photo: widget.photo,
-                onTap: () {
-                  showCupertinoModalBottomSheet(
-                    context: context,
-                    builder: (context) => const ModelBottomPerformance(),
-                  );
-                },
-              ),
+              Builder(builder: (context) {
+                const locaImage = ProfileImage.hand1;
+                return AvatarPhoto(
+                  icon: Iconsax.trend_up,
+                  isLoadImageLocal: widget.photo == null ? true : false,
+                  photo: widget.photo != null ? widget.photo! : locaImage,
+                  heroTag: const Uuid().v1(),
+                  onTap: () {
+                    showCupertinoModalBottomSheet(
+                      context: context,
+                      builder: (context) => ModelBottomPerformance(
+                          photo:
+                              widget.photo != null ? widget.photo! : locaImage,
+                          isLoadLocalImage: widget.photo == null ? true : false,
+                          heroTag: widget.name.hashCode.toString(),
+                          name: widget.name,
+                          position: widget.position,
+                          guid: widget.guid,
+                          controller:
+                              PerformaceController(getPerformacePlayerUsecase)
+                                ..getPerformace(widget.guid)),
+                    );
+                  },
+                );
+              }),
               Expanded(
                 child: SingleChildScrollView(
                   child: Column(
@@ -81,21 +103,15 @@ class _CardPlayerState extends State<CardPlayer> {
                         physics: const NeverScrollableScrollPhysics(),
                         child: Row(
                           children: [
-                            const Icon(Iconsax.star1,
-                                    size: 25, color: AppColor.primaryColor)
-                                .withRightPadding(rightPadding: 0),
-                            const Icon(Iconsax.star1,
-                                    size: 25, color: AppColor.primaryColor)
-                                .withRightPadding(rightPadding: 0),
-                            const Icon(Iconsax.star1,
-                                    size: 25, color: AppColor.primaryColor)
-                                .withRightPadding(rightPadding: 5),
-                            const Icon(Iconsax.star,
-                                    size: 19, color: AppColor.primaryColor)
-                                .withRightPadding(rightPadding: 5),
-                            const Icon(Iconsax.star,
-                                    size: 19, color: AppColor.primaryColor)
-                                .withRightPadding(rightPadding: 5),
+                            ...List.generate(
+                              5,
+                              (value) => Icon(
+                                  value < widget.skillValue!
+                                      ? Iconsax.star1
+                                      : Iconsax.star,
+                                  size: widget.skillValue! > value ? 25 : 19,
+                                  color: AppColor.primaryColor),
+                            ).toList(),
                           ],
                         ).withBottomPadding(bottomPadding: 10),
                       ),

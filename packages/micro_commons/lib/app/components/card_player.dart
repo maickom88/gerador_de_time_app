@@ -15,9 +15,11 @@ class CardPlayer extends StatelessWidget {
   final String? photo;
   final String position;
   final String guid;
+  final int? skillValue;
   const CardPlayer({
     Key? key,
     required this.name,
+    this.skillValue = 0,
     required this.guid,
     required this.position,
     required this.photo,
@@ -73,21 +75,13 @@ class CardPlayer extends StatelessWidget {
                 ),
                 Row(
                   children: [
-                    const Icon(Iconsax.star1,
-                            size: 25, color: AppColor.primaryColor)
-                        .withRightPadding(rightPadding: 0),
-                    const Icon(Iconsax.star1,
-                            size: 25, color: AppColor.primaryColor)
-                        .withRightPadding(rightPadding: 0),
-                    const Icon(Iconsax.star1,
-                            size: 25, color: AppColor.primaryColor)
-                        .withRightPadding(rightPadding: 5),
-                    const Icon(Iconsax.star,
-                            size: 19, color: AppColor.primaryColor)
-                        .withRightPadding(rightPadding: 5),
-                    const Icon(Iconsax.star,
-                            size: 19, color: AppColor.primaryColor)
-                        .withRightPadding(rightPadding: 5),
+                    ...List.generate(
+                      5,
+                      (value) => Icon(
+                          value < skillValue! ? Iconsax.star1 : Iconsax.star,
+                          size: skillValue! > value ? 25 : 19,
+                          color: AppColor.primaryColor),
+                    ).toList(),
                   ],
                 ).withBottomPadding(bottomPadding: 10),
                 Container(

@@ -5,6 +5,7 @@ import 'package:adaptive_action_sheet/adaptive_action_sheet.dart';
 import 'package:loading_indicator/loading_indicator.dart';
 import 'package:micro_commons/app/components/card_player.dart';
 import 'package:micro_commons/app/components/error_page.dart';
+import 'package:micro_commons/app/domain/entities/skill_entity.dart';
 import 'package:micro_core/core/components/animation.dart';
 import 'package:micro_core/core/theme/theme.dart';
 
@@ -32,8 +33,14 @@ class _CupPageState extends State<CupPage> {
   void initState() {
     isEditing = false;
     tween = Tween<double>(begin: 0.0, end: 5.0);
-
     super.initState();
+  }
+
+  int? calculeSkill(SkillEntity skill) {
+    int maxSkill = 0;
+    maxSkill =
+        skill.completion + skill.dribble + skill.strength + skill.velocity;
+    return maxSkill ~/ 4;
   }
 
   @override
@@ -420,6 +427,7 @@ class _CupPageState extends State<CupPage> {
                                     name: player.name.splitConvertName(),
                                     position: player.position.name,
                                     guid: player.guid!,
+                                    skillValue: calculeSkill(player.skills),
                                   ),
                                 ),
                               );

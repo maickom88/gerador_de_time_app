@@ -3,18 +3,21 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:iconsax/iconsax.dart';
-import 'package:micro_core/core/components/circle_teams.dart';
+import 'package:micro_commons/app/components/circle_teams.dart';
+import 'package:micro_commons/app/domain/entities/player_entity.dart';
+import 'package:micro_core/core/components/animation.dart';
 import 'package:micro_core/core/theme/theme.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 import '../../../core/colors/colors.dart';
 import '../components/modal_view_card_team.dart';
+import '../controllers/cup_config_controller.dart';
 
 class ConfigCupPage extends StatefulWidget {
-  final Object? argument;
+  final CupConfigController controller;
   const ConfigCupPage({
     Key? key,
-    required this.argument,
+    required this.controller,
   }) : super(key: key);
 
   @override
@@ -25,6 +28,12 @@ class _ConfigCupPageState extends State<ConfigCupPage> {
   @override
   void initState() {
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    widget.controller.dispose();
+    super.dispose();
   }
 
   @override
@@ -113,25 +122,32 @@ class _ConfigCupPageState extends State<ConfigCupPage> {
                                   return CounterModal(
                                     totalItens: 30,
                                     onValue: (int minute) {
-                                      setState(() {});
+                                      widget.controller.time.value =
+                                          (minute + 1);
                                     },
                                   );
                                 });
                           },
-                          child: Container(
-                            height: 40,
-                            padding: const EdgeInsets.symmetric(horizontal: 7),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(8),
-                              color: AppColor.lightColor,
-                            ),
-                            child: Center(
-                              child: Text(
-                                '⏱  0min',
-                                style: AppTypography.t16()
-                                    .copyWith(color: AppColor.textLight),
-                              ),
-                            ),
+                          child: ValueListenableBuilder(
+                            valueListenable: widget.controller.time,
+                            builder: (context, value, child) {
+                              return Container(
+                                height: 40,
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 7),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(8),
+                                  color: AppColor.lightColor,
+                                ),
+                                child: Center(
+                                  child: Text(
+                                    '⏱  ${widget.controller.time.value}min',
+                                    style: AppTypography.t16()
+                                        .copyWith(color: AppColor.textLight),
+                                  ),
+                                ),
+                              );
+                            },
                           ),
                         )
                       ],
@@ -143,64 +159,104 @@ class _ConfigCupPageState extends State<ConfigCupPage> {
                           style: AppTypography.t14()
                               .copyWith(color: AppColor.textLight),
                         ),
-                        CupertinoSwitch(
-                          value: false,
-                          onChanged: (value) {},
+                        ValueListenableBuilder<bool>(
+                          valueListenable: widget.controller.isAdditions,
+                          builder:
+                              (BuildContext context, value, Widget? child) {
+                            return CupertinoSwitch(
+                              value: value,
+                              onChanged: (value) =>
+                                  widget.controller.isAdditions.value = value,
+                            );
+                          },
                         )
                       ],
                     ).withBottomPadding(bottomPadding: 8),
-                    SizedBox(
-                      width: 130,
-                      child: GestureDetector(
-                        onTap: () {
-                          SystemSound.play(SystemSoundType.click);
-                          showCupertinoModalBottomSheet(
-                              context: context,
-                              builder: (BuildContext context) {
-                                return CounterModal(
-                                  totalItens: 30,
-                                  onValue: (int minute) {
-                                    setState(() {});
+                    ValueListenableBuilder<bool>(
+                        valueListenable: widget.controller.isAdditions,
+                        builder: (context, value, child) {
+                          return Visibility(
+                            visible: value,
+                            child: FadeAnimation(
+                              delay: 0.0,
+                              child: SizedBox(
+                                width: 130,
+                                child: GestureDetector(
+                                  onTap: () {
+                                    SystemSound.play(SystemSoundType.click);
+                                    showCupertinoModalBottomSheet(
+                                        context: context,
+                                        builder: (BuildContext context) {
+                                          return CounterModal(
+                                            totalItens: 30,
+                                            onValue: (int minute) {
+                                              widget.controller.timeAdditions
+                                                  .value = (minute + 1);
+                                            },
+                                          );
+                                        });
                                   },
-                                );
-                              });
-                        },
-                        child: Container(
-                          height: 40,
-                          padding: const EdgeInsets.symmetric(horizontal: 7),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(8),
-                            color: AppColor.lightColor,
-                          ),
-                          child: Center(
-                            child: Text(
-                              '⏱  0min',
-                              style: AppTypography.t16()
-                                  .copyWith(color: AppColor.textLight),
+                                  child: ValueListenableBuilder<int>(
+                                      valueListenable:
+                                          widget.controller.timeAdditions,
+                                      builder: (context, value, snapshot) {
+                                        return Container(
+                                          height: 40,
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 7),
+                                          decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(8),
+                                            color: AppColor.lightColor,
+                                          ),
+                                          child: Center(
+                                            child: Text(
+                                              '⏱  ${widget.controller.timeAdditions.value}min',
+                                              style: AppTypography.t16()
+                                                  .copyWith(
+                                                      color:
+                                                          AppColor.textLight),
+                                            ),
+                                          ),
+                                        );
+                                      }),
+                                ),
+                              ).withBottomPadding(),
                             ),
-                          ),
-                        ),
-                      ),
-                    ).withBottomPadding(),
+                          );
+                        }),
                     Text(
                       '4 Equipes formadas',
                       style: AppTypography.t16WithW800(),
                     ).withBottomPadding(),
-                    GridView.builder(
-                      shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
-                      gridDelegate:
-                          const SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 2,
-                        mainAxisExtent: 150,
-                        mainAxisSpacing: 10,
-                        crossAxisSpacing: 10,
-                      ),
-                      itemCount: 4,
-                      itemBuilder: (_, index) {
-                        return CardTeam(
-                          color: ColorsRadom.colors[index],
-                          title: 'Equipe $index',
+                    ValueListenableBuilder(
+                      valueListenable: widget.controller,
+                      builder: (context, value, child) {
+                        return GridView.builder(
+                          shrinkWrap: true,
+                          physics: const NeverScrollableScrollPhysics(),
+                          gridDelegate:
+                              const SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 2,
+                            mainAxisExtent: 150,
+                            mainAxisSpacing: 10,
+                            crossAxisSpacing: 10,
+                          ),
+                          itemCount: widget.controller.draw?.teams.length,
+                          itemBuilder: (_, index) {
+                            final team = widget.controller.draw?.teams[index];
+                            return CardTeam(
+                              color: team?.color ?? ColorsRadom.colors[index],
+                              title: team?.title ?? 'Equipe ${index + 1}',
+                              players:
+                                  widget.controller.draw?.teams[index].team ??
+                                      [],
+                              onUpdate: (String title, Color color) {
+                                widget.controller.setValueInTeam(index,
+                                    title: title, color: color);
+                              },
+                            );
+                          },
                         );
                       },
                     ),
@@ -249,10 +305,14 @@ class _ConfigCupPageState extends State<ConfigCupPage> {
 class CardTeam extends StatelessWidget {
   final Color color;
   final String title;
+  final List<PlayerEntity> players;
+  final void Function(String title, Color color) onUpdate;
   const CardTeam({
     Key? key,
     required this.color,
     required this.title,
+    required this.players,
+    required this.onUpdate,
   }) : super(key: key);
 
   @override
@@ -285,7 +345,14 @@ class CardTeam extends StatelessWidget {
                   showCupertinoModalBottomSheet(
                       context: context,
                       builder: (_) {
-                        return const ModalViewCardTeam();
+                        return ModalViewCardTeam(
+                          players: players,
+                          nameTeam: title,
+                          onSave: (titleUpdate, colorUpdate) {
+                            onUpdate(
+                                titleUpdate ?? title, colorUpdate ?? color);
+                          },
+                        );
                       });
                 },
                 child: Container(
@@ -306,7 +373,9 @@ class CardTeam extends StatelessWidget {
               )
             ],
           ),
-          const CircleTeams(),
+          CircleTeams(
+            players: players,
+          ),
         ],
       ),
     );

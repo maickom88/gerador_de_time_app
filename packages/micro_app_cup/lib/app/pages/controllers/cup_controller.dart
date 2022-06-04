@@ -66,8 +66,9 @@ class CupController extends ValueNotifier<CupState> {
       players: playerSelected,
     );
     final result = await _drawPlayers.call(params);
-    AppDefault.close(context);
+
     result.fold((resultError) {
+      AppDefault.close(context);
       showCupertinoModalBottomSheet(
         context: context,
         builder: (BuildContext context) {
@@ -87,6 +88,8 @@ class CupController extends ValueNotifier<CupState> {
         },
       );
     }, (resultSuccess) async {
+      await Future.delayed(const Duration(seconds: 2));
+      AppDefault.close(context);
       AppDefault.navigateTo(
         context,
         routeName: '/config',
