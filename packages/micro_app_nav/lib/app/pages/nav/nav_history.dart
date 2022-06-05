@@ -106,7 +106,7 @@ class _NavHistoricState extends State<NavHistoric> {
                             delay: (1.0 + index) / 4,
                             child: CardHistoric(
                               isDraft: cup.isDraft,
-                              title: cup.sport.name,
+                              title: cup.sport?.name ?? 'Futebol',
                               nameWinner: cup.winner?.name.toUpperCase(),
                               date: cup.date,
                               guidCup: cup.guid!,
