@@ -3,31 +3,35 @@ import 'package:flutter/material.dart';
 import 'player_entity.dart';
 
 class DrawEntity {
-  final List<TeamEntity> teams;
+  String? guidSport;
+  String? email;
+  final List<TeamDrawEntity> teams;
   DrawEntity({
     required this.teams,
+    this.email,
+    this.guidSport,
   });
 
   factory DrawEntity.fromMap(Map<String, dynamic> map) {
     return DrawEntity(
-      teams: List<TeamEntity>.from(
-          map['teams']?.map((x) => TeamEntity.fromMap(x))),
+      teams: List<TeamDrawEntity>.from(
+          map['teams']?.map((x) => TeamDrawEntity.fromMap(x))),
     );
   }
 }
 
-class TeamEntity {
+class TeamDrawEntity {
   String? title;
   Color? color;
   final List<PlayerEntity> team;
-  TeamEntity({
+  TeamDrawEntity({
     this.title,
     this.color,
     required this.team,
   });
 
-  factory TeamEntity.fromMap(Map<String, dynamic> map) {
-    return TeamEntity(
+  factory TeamDrawEntity.fromMap(Map<String, dynamic> map) {
+    return TeamDrawEntity(
       team: List<PlayerEntity>.from(
           map['team']?.map((x) => PlayerEntity.fromMap(x))),
     );

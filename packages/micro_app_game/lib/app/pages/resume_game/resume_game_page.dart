@@ -1,17 +1,26 @@
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
-import 'package:iconsax/iconsax.dart';
-import 'package:micro_core/core/theme/theme.dart';
 import 'package:adaptive_action_sheet/adaptive_action_sheet.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:loading_indicator/loading_indicator.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:iconsax/iconsax.dart';
+import 'package:micro_commons/app/components/circle_teams.dart';
+import 'package:micro_commons/app/components/error_page.dart';
+import 'package:micro_core/core/theme/theme.dart';
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 import '../../../core/colors/colors.dart';
 import '../game/game_page.dart';
+import '../controllers/resume_game_controller.dart';
+import '../states/cup_state.dart';
 
 class ResumeGamePage extends StatefulWidget {
-  const ResumeGamePage({Key? key}) : super(key: key);
+  final ResumeController controller;
+  const ResumeGamePage({
+    Key? key,
+    required this.controller,
+  }) : super(key: key);
 
   @override
   _ResumeGamePageState createState() => _ResumeGamePageState();
@@ -117,109 +126,140 @@ class _ResumeGamePageState extends State<ResumeGamePage> {
                 ),
               ];
             },
-            body: SingleChildScrollView(
-              clipBehavior: Clip.none,
-              physics: const NeverScrollableScrollPhysics(),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        'Futebol',
-                        style: AppTypography.t16(),
-                      ),
-                      Text(
-                        '12, Abril de 2021',
-                        style: AppTypography.t16()
-                            .copyWith(color: AppColor.textLight),
-                      ),
-                    ],
-                  ).withBottomPadding(),
-                  Container(
-                    width: double.infinity,
-                    padding:
-                        const EdgeInsets.symmetric(vertical: 10, horizontal: 8),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      color: AppColor.lightColor,
-                    ),
-                    child: Table(
-                      // defaultColumnWidth: const FixedColumnWidth(120.0),
-                      defaultVerticalAlignment:
-                          TableCellVerticalAlignment.middle,
-                      border: TableBorder.symmetric(
-                        inside: BorderSide(
-                          color: Colors.grey.withOpacity(0.1),
-                          width: 1,
+            body: ValueListenableBuilder<ResumeState>(
+                valueListenable: widget.controller,
+                builder: (context, value, child) {
+                  if (value is ResumeErrorState) {
+                    return ErrorComponent(
+                      onLoad: () => widget.controller.initializeCup(),
+                    );
+                  }
+                  if (value is ResumeSuccessState) {
+                    return SingleChildScrollView(
+                      clipBehavior: Clip.none,
+                      physics: const NeverScrollableScrollPhysics(),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                'Futebol',
+                                style: AppTypography.t16(),
+                              ),
+                              Text(
+                                value.cup.date.formateDateString(),
+                                style: AppTypography.t16()
+                                    .copyWith(color: AppColor.textLight),
+                              ),
+                            ],
+                          ).withBottomPadding(),
+                          Container(
+                            width: double.infinity,
+                            padding: const EdgeInsets.symmetric(
+                                vertical: 10, horizontal: 8),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              color: AppColor.lightColor,
+                            ),
+                            child: Table(
+                              // defaultColumnWidth: const FixedColumnWidth(120.0),
+                              defaultVerticalAlignment:
+                                  TableCellVerticalAlignment.middle,
+                              border: TableBorder.symmetric(
+                                inside: BorderSide(
+                                  color: Colors.grey.withOpacity(0.1),
+                                  width: 1,
+                                ),
+                              ),
+                              children: [
+                                TableRow(children: [
+                                  Column(children: const [
+                                    Text('📣', style: TextStyle(fontSize: 20.0))
+                                  ]),
+                                  Column(children: const [
+                                    Text('🏆', style: TextStyle(fontSize: 20.0))
+                                  ]),
+                                  Column(children: const [
+                                    Text('⚽️', style: TextStyle(fontSize: 20.0))
+                                  ]),
+                                  Column(children: const [
+                                    Text('- ⚽️',
+                                        style: TextStyle(fontSize: 20.0))
+                                  ]),
+                                  Column(children: const [
+                                    Text('', style: TextStyle(fontSize: 20.0))
+                                  ]),
+                                ]),
+                                ...value.cup.teams
+                                    .map(
+                                      (team) => TableRow(children: [
+                                        Column(
+                                          children: [
+                                            Text(team.name,
+                                                style: const TextStyle(
+                                                    color: AppColor.textLight))
+                                          ],
+                                        ),
+                                        Column(children: [
+                                          Text(
+                                            team.vitories.toString(),
+                                            style: const TextStyle(
+                                                color: AppColor.textLight),
+                                          )
+                                        ]),
+                                        Column(children: [
+                                          Text(team.goals.toString(),
+                                              style: const TextStyle(
+                                                  color: AppColor.textLight))
+                                        ]),
+                                        Column(children: [
+                                          Text(team.goalsNegative.toString(),
+                                              style: const TextStyle(
+                                                  color: AppColor.textLight))
+                                        ]),
+                                        Column(children: [
+                                          Transform.scale(
+                                            scale: 0.9,
+                                            child: CircleTeams(
+                                              players: team.players,
+                                              isTable: true,
+                                            ),
+                                          ),
+                                        ]),
+                                      ]),
+                                    )
+                                    .toList()
+                              ],
+                            ),
+                          ),
+                          AppDefault.defaultSpaceHeight(height: 40),
+                          Text(
+                            'Futebol',
+                            style: AppTypography.t16(),
+                          ).withBottomPadding(),
+                          const CardInfoGame(),
+                        ],
+                      ).withSymPadding(),
+                    );
+                  }
+                  return Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: const [
+                      SizedBox(
+                        height: 50,
+                        child: Center(
+                          child: LoadingIndicator(
+                            indicatorType: Indicator.ballPulseSync,
+                            colors: [AppColor.primaryColor],
+                          ),
                         ),
                       ),
-                      children: [
-                        TableRow(children: [
-                          Column(children: const [
-                            Text('📣', style: TextStyle(fontSize: 20.0))
-                          ]),
-                          Column(children: const [
-                            Text('🏆', style: TextStyle(fontSize: 20.0))
-                          ]),
-                          Column(children: const [
-                            Text('⚽️', style: TextStyle(fontSize: 20.0))
-                          ]),
-                          Column(children: const [
-                            Text('- ⚽️', style: TextStyle(fontSize: 20.0))
-                          ]),
-                          Column(children: const [
-                            Text('', style: TextStyle(fontSize: 20.0))
-                          ]),
-                        ]),
-                        ...[1, 2, 3]
-                            .map(
-                              (e) => TableRow(children: [
-                                Column(
-                                  children: const [
-                                    Text('Equipe 1',
-                                        style: TextStyle(
-                                            color: AppColor.textLight))
-                                  ],
-                                ),
-                                Column(children: const [
-                                  Text(
-                                    '1',
-                                    style: TextStyle(color: AppColor.textLight),
-                                  )
-                                ]),
-                                Column(children: const [
-                                  Text('2',
-                                      style:
-                                          TextStyle(color: AppColor.textLight))
-                                ]),
-                                Column(children: const [
-                                  Text('0',
-                                      style:
-                                          TextStyle(color: AppColor.textLight))
-                                ]),
-                                Column(children: [
-                                  // Transform.scale(
-                                  //   scale: 0.6,
-                                  //   child: CircleTeams(),
-                                  // ),
-                                ]),
-                              ]),
-                            )
-                            .toList()
-                      ],
-                    ),
-                  ),
-                  AppDefault.defaultSpaceHeight(height: 40),
-                  Text(
-                    'Futebol',
-                    style: AppTypography.t16(),
-                  ).withBottomPadding(),
-                  const CardInfoGame(),
-                ],
-              ).withSymPadding(),
-            ),
+                    ],
+                  );
+                }),
           ),
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,

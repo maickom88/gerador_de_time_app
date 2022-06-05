@@ -89,46 +89,57 @@ class CardHistoric extends StatelessWidget {
                               )
                       ],
                     ),
-                    Text(
-                      '🏆 $nameWinner',
-                      style: AppTypography.t22WithW300()
-                          .copyWith(color: AppColor.textLight),
+                    Visibility(
+                      replacement: Text(
+                        '❌ Não finalizado',
+                        style: AppTypography.t22WithW300()
+                            .copyWith(color: AppColor.textLight),
+                      ),
+                      visible: nameWinner != null,
+                      child: Text(
+                        '🏆 $nameWinner',
+                        style: AppTypography.t22WithW300()
+                            .copyWith(color: AppColor.textLight),
+                      ),
                     ),
                     const Spacer(),
-                    Align(
-                      alignment: Alignment.bottomRight,
-                      child: SizedBox(
-                        height: 40,
-                        child: ElevatedButton(
-                          style: ButtonStyle(
-                            padding: MaterialStateProperty.all(
-                              const EdgeInsets.symmetric(horizontal: 20),
-                            ),
-                            shape: MaterialStateProperty.all(
-                              RoundedRectangleBorder(
-                                borderRadius:
-                                    AppDefault.defaultBorderRadius(radius: 100),
+                    Visibility(
+                      visible: nameWinner != null,
+                      child: Align(
+                        alignment: Alignment.bottomRight,
+                        child: SizedBox(
+                          height: 40,
+                          child: ElevatedButton(
+                            style: ButtonStyle(
+                              padding: MaterialStateProperty.all(
+                                const EdgeInsets.symmetric(horizontal: 20),
                               ),
-                            ),
-                            elevation: MaterialStateProperty.all(0),
-                            backgroundColor: MaterialStateProperty.all(
-                                AppColor.secondaryColor),
-                          ),
-                          onPressed: () {
-                            HapticFeedback.lightImpact();
-                            AppDefault.navigateToWidget(
-                              context,
-                              widget: DetailsPage(
-                                guidCup: guidCup,
-                                controller: buildCupInformationController()
-                                  ..getCupInformations(guidCup),
+                              shape: MaterialStateProperty.all(
+                                RoundedRectangleBorder(
+                                  borderRadius: AppDefault.defaultBorderRadius(
+                                      radius: 100),
+                                ),
                               ),
-                            );
-                          },
-                          child: Text(
-                            'Ver detalhes',
-                            style: AppTypography.t14()
-                                .copyWith(color: Colors.white),
+                              elevation: MaterialStateProperty.all(0),
+                              backgroundColor: MaterialStateProperty.all(
+                                  AppColor.secondaryColor),
+                            ),
+                            onPressed: () {
+                              HapticFeedback.lightImpact();
+                              AppDefault.navigateToWidget(
+                                context,
+                                widget: DetailsPage(
+                                  guidCup: guidCup,
+                                  controller: buildCupInformationController()
+                                    ..getCupInformations(guidCup),
+                                ),
+                              );
+                            },
+                            child: Text(
+                              'Ver detalhes',
+                              style: AppTypography.t14()
+                                  .copyWith(color: Colors.white),
+                            ),
                           ),
                         ),
                       ),

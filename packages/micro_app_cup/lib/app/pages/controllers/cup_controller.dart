@@ -90,6 +90,7 @@ class CupController extends ValueNotifier<CupState> {
     }, (resultSuccess) async {
       await Future.delayed(const Duration(seconds: 2));
       AppDefault.close(context);
+      resultSuccess.email = userEntity?.email;
       AppDefault.navigateTo(
         context,
         routeName: '/config',

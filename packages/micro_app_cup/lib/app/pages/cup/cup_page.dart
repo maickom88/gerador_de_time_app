@@ -1,11 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:adaptive_action_sheet/adaptive_action_sheet.dart';
 import 'package:loading_indicator/loading_indicator.dart';
 import 'package:micro_commons/app/components/card_player.dart';
 import 'package:micro_commons/app/components/error_page.dart';
 import 'package:micro_commons/app/domain/entities/skill_entity.dart';
+import 'package:micro_commons/utils/alert_util.dart';
 import 'package:micro_core/core/components/animation.dart';
 import 'package:micro_core/core/theme/theme.dart';
 
@@ -48,21 +48,6 @@ class _CupPageState extends State<CupPage> {
     widget.cupController.dispose();
     super.dispose();
   }
-
-  Future<T?> showAlert<T>(String description) => showAdaptiveActionSheet<T>(
-        context: context,
-        title: Text(description),
-        actions: <BottomSheetAction>[
-          BottomSheetAction(
-            title: Text('Sim, entendi',
-                style: AppTypography.t14()
-                    .copyWith(color: Colors.blue, fontWeight: FontWeight.bold)),
-            onPressed: () {
-              AppDefault.close(context);
-            },
-          ),
-        ],
-      );
 
   @override
   Widget build(BuildContext context) {
@@ -278,14 +263,14 @@ class _CupPageState extends State<CupPage> {
                                 SystemSound.play(SystemSoundType.click);
                                 if (widget
                                     .cupController.playerSelected.isEmpty) {
-                                  showAlert(
+                                  showAlert(context,
                                       'Selecione os jogadores para essa copinha');
                                   return;
                                 }
 
                                 if (widget.cupController.playerSelected.length <
                                     8) {
-                                  showAlert(
+                                  showAlert(context,
                                       'É necessario 8 jogadores ou mais para realizar o sorteio');
                                   return;
                                 }
@@ -293,12 +278,13 @@ class _CupPageState extends State<CupPage> {
                                             .length %
                                         2) !=
                                     0) {
-                                  showAlert(
+                                  showAlert(context,
                                       'É necessario um numero par de jogadores');
                                   return;
                                 }
                                 if (widget.cupController.numberOfTeam <= 0) {
-                                  showAlert('Informe a quantidade de times');
+                                  showAlert(
+                                      context, 'Informe a quantidade de times');
                                   return;
                                 }
 

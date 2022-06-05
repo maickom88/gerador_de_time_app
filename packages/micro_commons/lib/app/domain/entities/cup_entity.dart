@@ -7,7 +7,7 @@ class CupEntity {
   final String? guid;
   final String responsibleEmail;
   final int time;
-  final SportEntity sport;
+  final SportEntity? sport;
   final int timeAdditions;
   final TeamEntity? winner;
   final bool isDraft;
@@ -17,7 +17,7 @@ class CupEntity {
     this.guid,
     required this.responsibleEmail,
     required this.time,
-    required this.sport,
+    this.sport,
     required this.timeAdditions,
     required this.winner,
     required this.isDraft,
@@ -43,9 +43,9 @@ class CupEntity {
       guid: map['guid'],
       responsibleEmail: map['responsible_email'] ?? '',
       time: map['time']?.toInt() ?? 0,
-      sport: SportEntity.fromMap(map['sport']),
+      sport: map['sport'] != null ? SportEntity.fromMap(map['sport']) : null,
       timeAdditions: map['time_additions']?.toInt() ?? 0,
-      winner: TeamEntity.fromMap(map['winner']),
+      winner: map['winner'] != null ? TeamEntity.fromMap(map['winner']) : null,
       isDraft: map['is_draft'] ?? false,
       date: DateTime.parse(map['created_at']),
       teams: List<TeamEntity>.from(

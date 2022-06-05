@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:micro_commons/app/components/circle_teams.dart';
 import 'package:micro_commons/app/domain/entities/player_entity.dart';
+import 'package:micro_commons/utils/alert_util.dart';
 import 'package:micro_core/core/components/animation.dart';
 import 'package:micro_core/core/theme/theme.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
@@ -245,6 +246,10 @@ class _ConfigCupPageState extends State<ConfigCupPage> {
                           itemCount: widget.controller.draw?.teams.length,
                           itemBuilder: (_, index) {
                             final team = widget.controller.draw?.teams[index];
+                            if (team?.color == null && team?.title == null) {
+                              team?.title = 'Equipe ${index + 1}';
+                              team?.color = ColorsRadom.colors[index];
+                            }
                             return CardTeam(
                               color: team?.color ?? ColorsRadom.colors[index],
                               title: team?.title ?? 'Equipe ${index + 1}',
@@ -293,8 +298,11 @@ class _ConfigCupPageState extends State<ConfigCupPage> {
           ),
           onPressed: () {
             HapticFeedback.lightImpact();
-            AppDefault.navigateTo(context,
-                routeName: '/resume-game', withReturn: false);
+            if (widget.controller.time.value <= 0) {
+              showAlert(context, "Informe o tempo da partida");
+              return;
+            }
+            widget.controller.registerTeam(context);
           },
         ),
       ).withSymPadding(),

@@ -47,7 +47,9 @@ class HistoricController extends ValueNotifier<HistoricState> {
               ? element.winner!.name
                   .toLowerCase()
                   .contains(search.toLowerCase())
-              : element.sport.name.toLowerCase().contains(search.toLowerCase()))
+              : element.sport!.name
+                  .toLowerCase()
+                  .contains(search.toLowerCase()))
           .toList();
     }
   }
