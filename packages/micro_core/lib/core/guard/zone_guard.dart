@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 
 import '../customs/custum_dio.dart';
 import '../customs/custum_firebase_auth.dart';
+import '../customs/custum_firebase_message.dart';
 import '../customs/custum_local_storage.dart';
 import '../customs/custum_remote_config.dart';
 
@@ -18,6 +19,7 @@ class ZoneGuard {
         await CustumRemoteConfig.instance.initialize();
         await CustumLocalStorage.instance.initialize();
         final token = await CustumFirebaseAuth.getToken();
+        CustumFirebaseMessage.instance.initialize();
         CustumDio.instance
             .initialize(CustumRemoteConfig.instance.apiBase, token: token);
         FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;

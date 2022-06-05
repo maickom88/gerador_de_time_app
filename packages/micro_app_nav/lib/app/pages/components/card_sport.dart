@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:micro_core/core/customs/custum_local_notification.dart';
 import 'package:micro_core/core/theme/theme.dart';
 
 import '../../../core/constants/local_image.dart';
@@ -126,7 +127,15 @@ class CardSport extends StatelessWidget {
                                     ),
                                   ),
                                 )),
-                                onPressed: () => HapticFeedback.lightImpact(),
+                                onPressed: () {
+                                  HapticFeedback.lightImpact();
+                                  CustumLocalNotification.instance
+                                      .showLocalNotification(
+                                    id: title.hashCode,
+                                    title: title,
+                                    description: description,
+                                  );
+                                },
                                 child: Text(
                                   'Iniciar',
                                   style: AppTypography.t16()
