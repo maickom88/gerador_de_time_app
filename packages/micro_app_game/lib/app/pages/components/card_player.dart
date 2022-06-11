@@ -1,18 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:uuid/uuid.dart';
+import 'package:micro_commons/app/components/avatar_photo.dart';
+import 'package:micro_commons/app/components/model_bottom_performace.dart';
+import 'package:micro_commons/app/controllers/performace_controller.dart';
+import 'package:micro_commons/app/factories/build_resources.dart';
+import 'package:micro_commons/core/constants/local_image.dart';
 import 'package:micro_core/core/theme/theme.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
-import 'avatar_game.dart';
-import 'modal_bottom_performace.dart';
-
 class CardPlayer extends StatefulWidget {
   final String name;
-  final String photo;
+  final String? photo;
   final String position;
+  final String guid;
+  final int? skillValue;
+  final Function(bool value) isSelect;
+  final bool select;
   const CardPlayer({
     Key? key,
     required this.name,
+    required this.isSelect,
+    required this.select,
+    this.skillValue = 0,
+    required this.guid,
     required this.position,
     required this.photo,
   }) : super(key: key);
@@ -22,10 +33,8 @@ class CardPlayer extends StatefulWidget {
 }
 
 class _CardPlayerState extends State<CardPlayer> {
-  late bool showMoreInfo;
   @override
   void initState() {
-    showMoreInfo = false;
     super.initState();
   }
 
@@ -36,24 +45,24 @@ class _CardPlayerState extends State<CardPlayer> {
       child: GestureDetector(
         onTap: () {
           setState(() {
-            showMoreInfo = !showMoreInfo;
+            widget.isSelect(!widget.select);
           });
         },
         child: AnimatedContainer(
-          width: showMoreInfo ? AppDefault.width(context).percent(80) : 120,
+          width: widget.select ? AppDefault.width(context).percent(80) : 120,
           padding: const EdgeInsets.all(10),
-          height: 130,
+          height: 138,
           decoration: BoxDecoration(
             color: AppColor.lightColor,
             borderRadius: BorderRadius.circular(17),
-            border: showMoreInfo
+            border: widget.select
                 ? Border.all(
                     width: 2,
                     color: Theme.of(context).secondaryHeaderColor,
                   )
                 : null,
             boxShadow:
-                showMoreInfo ? AppDefault.defaultBoxShadow(blur: 1) : null,
+                widget.select ? AppDefault.defaultBoxShadow(blur: 1) : null,
           ),
           duration: const Duration(milliseconds: 300),
           curve: Curves.linear,
@@ -61,16 +70,31 @@ class _CardPlayerState extends State<CardPlayer> {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              AvatarPhoto(
-                icon: Iconsax.trend_up,
-                photo: widget.photo,
-                onTap: () {
-                  showCupertinoModalBottomSheet(
-                    context: context,
-                    builder: (context) => const ModelBottomPerformance(),
-                  );
-                },
-              ),
+              Builder(builder: (context) {
+                const locaImage = ProfileImage.hand1;
+                return AvatarPhoto(
+                  icon: Iconsax.trend_up,
+                  isLoadImageLocal: widget.photo == null ? true : false,
+                  photo: widget.photo != null ? widget.photo! : locaImage,
+                  heroTag: const Uuid().v1(),
+                  onTap: () {
+                    showCupertinoModalBottomSheet(
+                      context: context,
+                      builder: (context) => ModelBottomPerformance(
+                          photo:
+                              widget.photo != null ? widget.photo! : locaImage,
+                          isLoadLocalImage: widget.photo == null ? true : false,
+                          heroTag: widget.name.hashCode.toString(),
+                          name: widget.name,
+                          position: widget.position,
+                          guid: widget.guid,
+                          controller:
+                              PerformaceController(getPerformacePlayerUsecase)
+                                ..getPerformace(widget.guid)),
+                    );
+                  },
+                );
+              }),
               Expanded(
                 child: SingleChildScrollView(
                   child: Column(
@@ -87,26 +111,20 @@ class _CardPlayerState extends State<CardPlayer> {
                         physics: const NeverScrollableScrollPhysics(),
                         child: Row(
                           children: [
-                            const Icon(Iconsax.star1,
-                                    size: 25, color: AppColor.primaryColor)
-                                .withRightPadding(rightPadding: 0),
-                            const Icon(Iconsax.star1,
-                                    size: 25, color: AppColor.primaryColor)
-                                .withRightPadding(rightPadding: 0),
-                            const Icon(Iconsax.star1,
-                                    size: 25, color: AppColor.primaryColor)
-                                .withRightPadding(rightPadding: 5),
-                            const Icon(Iconsax.star,
-                                    size: 19, color: AppColor.primaryColor)
-                                .withRightPadding(rightPadding: 5),
-                            const Icon(Iconsax.star,
-                                    size: 19, color: AppColor.primaryColor)
-                                .withRightPadding(rightPadding: 5),
+                            ...List.generate(
+                              5,
+                              (value) => Icon(
+                                  value < widget.skillValue!
+                                      ? Iconsax.star1
+                                      : Iconsax.star,
+                                  size: widget.skillValue! > value ? 25 : 19,
+                                  color: AppColor.primaryColor),
+                            ).toList(),
                           ],
-                        ),
+                        ).withBottomPadding(bottomPadding: 10),
                       ),
                       Container(
-                        height: 30,
+                        height: 28,
                         width: 185,
                         decoration: BoxDecoration(
                           color: Colors.white,

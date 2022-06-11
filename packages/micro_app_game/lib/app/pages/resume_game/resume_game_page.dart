@@ -1,19 +1,20 @@
 import 'package:adaptive_action_sheet/adaptive_action_sheet.dart';
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:loading_indicator/loading_indicator.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:loading_indicator/loading_indicator.dart';
 import 'package:micro_commons/app/components/circle_teams.dart';
 import 'package:micro_commons/app/components/error_page.dart';
+import 'package:micro_commons/app/domain/entities/player_entity.dart';
+import 'package:micro_commons/utils/alert_util.dart';
 import 'package:micro_core/core/theme/theme.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
-import '../../../core/colors/colors.dart';
-import '../game/game_page.dart';
+import '../components/card_info.dart';
 import '../controllers/resume_game_controller.dart';
-import '../states/cup_state.dart';
+import '../states/resume_state.dart';
 
 class ResumeGamePage extends StatefulWidget {
   final ResumeController controller;
@@ -204,7 +205,7 @@ class _ResumeGamePageState extends State<ResumeGamePage> {
                                         ),
                                         Column(children: [
                                           Text(
-                                            team.vitories.toString(),
+                                            team.victories.toString(),
                                             style: const TextStyle(
                                                 color: AppColor.textLight),
                                           )
@@ -236,7 +237,7 @@ class _ResumeGamePageState extends State<ResumeGamePage> {
                           ),
                           AppDefault.defaultSpaceHeight(height: 40),
                           Text(
-                            'Futebol',
+                            'Informações',
                             style: AppTypography.t16(),
                           ).withBottomPadding(),
                           const CardInfoGame(),
@@ -292,7 +293,7 @@ class _ResumeGamePageState extends State<ResumeGamePage> {
               showCupertinoModalBottomSheet(
                   context: context,
                   builder: (BuildContext context) {
-                    return const InitialGameModal();
+                    return InitialGameModal(controller: widget.controller);
                   });
             },
           ),
@@ -302,85 +303,13 @@ class _ResumeGamePageState extends State<ResumeGamePage> {
   }
 }
 
-class CardInfoGame extends StatelessWidget {
-  const CardInfoGame({
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(10),
-        color: AppColor.lightColor,
-      ),
-      child: Column(
-        children: [
-          Row(
-            children: [
-              const Text(' 🏆', style: TextStyle(fontSize: 20.0))
-                  .withRightPadding(),
-              Expanded(
-                child: Container(
-                  padding: const EdgeInsets.all(8),
-                  decoration: const BoxDecoration(
-                    border: Border(
-                        bottom:
-                            BorderSide(width: 1, color: AppColor.textLight)),
-                  ),
-                  child: const Text('Total de vitorias',
-                      style: TextStyle(color: AppColor.textLight)),
-                ),
-              )
-            ],
-          ),
-          Row(
-            children: [
-              const Text(' ⚽️', style: TextStyle(fontSize: 20.0))
-                  .withRightPadding(),
-              Expanded(
-                child: Container(
-                  padding: const EdgeInsets.all(8),
-                  decoration: const BoxDecoration(
-                    border: Border(
-                        bottom:
-                            BorderSide(width: 1, color: AppColor.textLight)),
-                  ),
-                  child: const Text('Total de gols marcados',
-                      style: TextStyle(color: AppColor.textLight)),
-                ),
-              )
-            ],
-          ),
-          Row(
-            children: [
-              const Text('-⚽️', style: TextStyle(fontSize: 20.0))
-                  .withRightPadding(),
-              Expanded(
-                child: Container(
-                  padding: const EdgeInsets.all(8),
-                  decoration: const BoxDecoration(
-                    border: Border(
-                        bottom:
-                            BorderSide(width: 1, color: AppColor.textLight)),
-                  ),
-                  child: const Text('Saldo de gols negativos',
-                      style: TextStyle(color: AppColor.textLight)),
-                ),
-              )
-            ],
-          ),
-        ],
-      ),
-    );
-  }
-}
-
 class CardInfoPlay extends StatelessWidget {
+  final int time;
+  final int timeAddition;
   const CardInfoPlay({
     Key? key,
+    required this.time,
+    this.timeAddition = 0,
   }) : super(key: key);
 
   @override
@@ -406,8 +335,8 @@ class CardInfoPlay extends StatelessWidget {
                         bottom:
                             BorderSide(width: 1, color: AppColor.textLight)),
                   ),
-                  child: const Text('10 minutos',
-                      style: TextStyle(color: AppColor.textLight)),
+                  child: Text('$time minutos',
+                      style: const TextStyle(color: AppColor.textLight)),
                 ),
               )
             ],
@@ -424,8 +353,8 @@ class CardInfoPlay extends StatelessWidget {
                         bottom:
                             BorderSide(width: 1, color: AppColor.textLight)),
                   ),
-                  child: const Text('2 minutos',
-                      style: TextStyle(color: AppColor.textLight)),
+                  child: Text('$timeAddition minutos',
+                      style: const TextStyle(color: AppColor.textLight)),
                 ),
               )
             ],
@@ -437,8 +366,10 @@ class CardInfoPlay extends StatelessWidget {
 }
 
 class InitialGameModal extends StatelessWidget {
+  final ResumeController controller;
   const InitialGameModal({
     Key? key,
+    required this.controller,
   }) : super(key: key);
 
   @override
@@ -477,59 +408,90 @@ class InitialGameModal extends StatelessWidget {
                 ],
               ).withBottomPadding(),
               AppDefault.defaultSpaceHeight(),
-              Row(
-                children: [
-                  Expanded(
-                    child: CarouselSlider.builder(
-                      itemCount: 4,
-                      itemBuilder: (context, index, pageViewIndex) =>
-                          Transform.translate(
-                        offset: const Offset(18, 0),
-                        child: CardTeam(
-                          color: ColorsRadom.colors[index],
-                          title: 'Equipe $index',
+              ValueListenableBuilder(
+                  valueListenable: controller,
+                  builder: (context, value, child) {
+                    return Row(
+                      children: [
+                        Expanded(
+                          child: CarouselSlider.builder(
+                            carouselController:
+                                controller.carouselControllerLeft,
+                            itemCount: controller.teamsLeft.length,
+                            itemBuilder: (context, index, pageViewIndex) =>
+                                Transform.translate(
+                              offset: const Offset(18, 0),
+                              child: CardTeam(
+                                color: Color(int.parse(
+                                    controller.teamsLeft[index]!.color)),
+                                title: controller.teamsLeft[index]!.name,
+                                players: controller.teamsLeft[index]!.players,
+                              ),
+                            ),
+                            options: CarouselOptions(
+                              height: 150,
+                              viewportFraction: 0.8,
+                              initialPage: 0,
+                              enableInfiniteScroll:
+                                  controller.teamsLeft.length > 1,
+                              enlargeStrategy: CenterPageEnlargeStrategy.height,
+                              enlargeCenterPage: true,
+                              onPageChanged: (page, _) {
+                                controller
+                                    .onEventLeft(controller.teamsLeft[page]!);
+                              },
+                            ),
+                          ).withBottomPadding(),
                         ),
-                      ),
-                      options: CarouselOptions(
-                        height: 150,
-                        viewportFraction: 0.8,
-                        initialPage: 0,
-                        enlargeStrategy: CenterPageEnlargeStrategy.height,
-                        enlargeCenterPage: true,
-                        onPageChanged: (page, _) {},
-                      ),
-                    ).withBottomPadding(),
-                  ),
-                  Text('X',
-                          style: AppTypography.t28WithW800()
-                              .copyWith(color: AppColor.textLight))
-                      .withLeftPadding()
-                      .withRightPadding(),
-                  Expanded(
-                    child: CarouselSlider.builder(
-                      itemCount: 4,
-                      itemBuilder: (context, index, pageViewIndex) =>
-                          Transform.translate(
-                        offset: const Offset(-18, 0),
-                        child: CardTeam(
-                          color: ColorsRadom.colors[index],
-                          title: 'Equipe $index',
-                        ),
-                      ),
-                      options: CarouselOptions(
-                        height: 150,
-                        viewportFraction: 0.8,
-                        initialPage: 0,
-                        enlargeStrategy: CenterPageEnlargeStrategy.height,
-                        enlargeCenterPage: true,
-                        onPageChanged: (page, _) {},
-                      ),
-                    ).withBottomPadding(),
-                  ),
-                ],
-              ),
+                        Text('X',
+                                style: AppTypography.t28WithW800()
+                                    .copyWith(color: AppColor.textLight))
+                            .withLeftPadding()
+                            .withRightPadding(),
+                        ValueListenableBuilder(
+                            valueListenable: controller,
+                            builder: (context, value, child) {
+                              return Expanded(
+                                child: CarouselSlider.builder(
+                                  carouselController:
+                                      controller.carouselControllerRight,
+                                  itemCount: controller.teamsRight.length,
+                                  itemBuilder:
+                                      (context, index, pageViewIndex) =>
+                                          Transform.translate(
+                                    offset: const Offset(-18, 0),
+                                    child: CardTeam(
+                                      color: Color(int.parse(
+                                          controller.teamsRight[index]!.color)),
+                                      title: controller.teamsRight[index]!.name,
+                                      players:
+                                          controller.teamsRight[index]!.players,
+                                    ),
+                                  ),
+                                  options: CarouselOptions(
+                                      height: 150,
+                                      viewportFraction: 0.8,
+                                      initialPage: 0,
+                                      enableInfiniteScroll:
+                                          controller.teamsRight.length > 1,
+                                      enlargeStrategy:
+                                          CenterPageEnlargeStrategy.height,
+                                      enlargeCenterPage: true,
+                                      onPageChanged: (page, _) {
+                                        controller.onEventRight(
+                                            controller.teamsRight[page]!);
+                                      }),
+                                ).withBottomPadding(),
+                              );
+                            }),
+                      ],
+                    );
+                  }),
               AppDefault.defaultSpaceHeight(),
-              const CardInfoPlay()
+              CardInfoPlay(
+                time: controller.configCup.time,
+                timeAddition: controller.configCup.timeAdditions ?? 0,
+              )
             ],
           ).withSymPadding(),
           floatingActionButtonLocation:
@@ -560,7 +522,11 @@ class InitialGameModal extends StatelessWidget {
               ),
               onPressed: () {
                 HapticFeedback.lightImpact();
-                AppDefault.navigateToWidget(context, widget: const GamePage());
+                if (controller.teamLeft.guid == controller.teamRight.guid) {
+                  showAlert(context, "Selecione um time adversario");
+                  return;
+                }
+                controller.initializeMatch(context);
               },
             ),
           ).withSymPadding(),
@@ -573,10 +539,12 @@ class InitialGameModal extends StatelessWidget {
 class CardTeam extends StatelessWidget {
   final Color color;
   final String title;
+  final List<PlayerEntity> players;
   const CardTeam({
     Key? key,
     required this.color,
     required this.title,
+    required this.players,
   }) : super(key: key);
 
   @override
@@ -605,10 +573,14 @@ class CardTeam extends StatelessWidget {
               ),
             ],
           ),
-          // Transform.scale(
-          //   scale: 0.7,
-          //   child: CircleTeams(),
-          // ),
+          Transform.scale(
+            scale: 0.7,
+            child: CircleTeams(
+              players: players,
+              firstPositionRight: 60,
+              secondPositionRight: 40,
+            ),
+          ),
         ],
       ),
     );

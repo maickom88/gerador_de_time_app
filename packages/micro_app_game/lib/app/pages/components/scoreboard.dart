@@ -7,6 +7,7 @@ import 'card_score.dart';
 class Scoreboard extends StatelessWidget {
   final String nameTeam;
   final VoidCallback onTap;
+  final VoidCallback onRemoveGoal;
   final int score;
   final Color color;
 
@@ -16,6 +17,7 @@ class Scoreboard extends StatelessWidget {
     required this.score,
     required this.color,
     required this.onTap,
+    required this.onRemoveGoal,
   }) : super(key: key);
 
   @override
@@ -31,7 +33,7 @@ class Scoreboard extends StatelessWidget {
         Row(
           children: [
             GestureDetector(
-              onTap: () => onTap(),
+              onTap: () => onRemoveGoal(),
               child: const Icon(
                 Iconsax.minus_square,
                 color: AppColor.textLight,
