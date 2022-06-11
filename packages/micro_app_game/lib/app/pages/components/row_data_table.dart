@@ -1,16 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:micro_commons/core/constants/local_image.dart';
 import 'package:micro_core/core/theme/theme.dart';
 
 class RowDataTable extends StatelessWidget {
-  final String avatar;
+  final String? avatar;
   final String name;
   final String? icon;
+  final int? goal;
 
   const RowDataTable({
     Key? key,
     required this.avatar,
     required this.name,
     this.icon,
+    this.goal,
   }) : super(key: key);
 
   @override
@@ -27,11 +30,25 @@ class RowDataTable extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          CircleAvatar(
-            backgroundColor: Colors.grey[200],
-            radius: 15,
-            backgroundImage: NetworkImage(avatar),
-          ).withLeftPadding().withRightPadding(),
+          SizedBox(
+            width: 55,
+            child: ClipOval(
+              child: Builder(
+                builder: (context) {
+                  if (avatar != null) {
+                    return Image.network(
+                      avatar!,
+                      fit: BoxFit.cover,
+                    );
+                  }
+                  return Image.asset(
+                    ProfileImage.hand1,
+                    fit: BoxFit.cover,
+                  );
+                },
+              ),
+            ).withLeftPadding().withRightPadding(),
+          ),
           Expanded(
             child: Text.rich(
               TextSpan(
@@ -39,7 +56,11 @@ class RowDataTable extends StatelessWidget {
                 children: [
                   TextSpan(
                     text: icon,
-                  )
+                  ),
+                  if (goal != null && goal! > 0)
+                    TextSpan(
+                      text: ' ⚽️ +$goal',
+                    ),
                 ],
               ),
             ),

@@ -1,13 +1,36 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:micro_commons/app/domain/entities/player_entity.dart';
+import 'package:micro_commons/app/domain/entities/skill_entity.dart';
+import 'package:micro_commons/utils/alert_util.dart';
 import 'package:micro_core/core/theme/theme.dart';
 
 import 'card_player.dart';
 
-class ModalViewCardTeam extends StatelessWidget {
+class ModalViewCardTeam extends StatefulWidget {
+  final List<PlayerEntity> players;
+  final String title;
+  final Function(PlayerEntity? player) onPlayer;
   const ModalViewCardTeam({
     Key? key,
+    required this.players,
+    required this.onPlayer,
+    this.title = 'Registrar gol',
   }) : super(key: key);
+
+  @override
+  State<ModalViewCardTeam> createState() => _ModalViewCardTeamState();
+}
+
+class _ModalViewCardTeamState extends State<ModalViewCardTeam> {
+  PlayerEntity? playersSelect;
+
+  int? calculeSkill(SkillEntity skill) {
+    int maxSkill = 0;
+    maxSkill =
+        skill.completion + skill.dribble + skill.strength + skill.velocity;
+    return maxSkill ~/ 4;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +63,7 @@ class ModalViewCardTeam extends StatelessWidget {
                   ),
                   Center(
                     child: Text(
-                      'Registrar gol',
+                      widget.title,
                       style: AppTypography.t16().copyWith(),
                     ),
                   ),
@@ -49,6 +72,12 @@ class ModalViewCardTeam extends StatelessWidget {
                     child: GestureDetector(
                       onTap: () {
                         SystemSound.play(SystemSoundType.click);
+                        if (playersSelect == null) {
+                          showAlert(
+                              context, 'Selecione o jogador que fez o gol');
+                          return;
+                        }
+                        widget.onPlayer(playersSelect);
                         AppDefault.close(context);
                       },
                       child: Text(
@@ -62,38 +91,31 @@ class ModalViewCardTeam extends StatelessWidget {
                 ],
               ).withBottomPadding(),
               AppDefault.defaultSpaceHeight(),
-              Text('Atribuir gol', style: AppTypography.t16WithW800())
-                  .withBottomPadding(),
               SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
                 clipBehavior: Clip.none,
                 child: Row(
-                  children: const [
-                    CardPlayer(
-                      name: 'Mauricio P.',
-                      photo:
-                          'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500',
-                      position: 'Pivô',
-                    ),
-                    CardPlayer(
-                      name: 'Mauricio P.',
-                      photo:
-                          'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500',
-                      position: 'Pivô',
-                    ),
-                    CardPlayer(
-                      name: 'Mauricio P.',
-                      photo:
-                          'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500',
-                      position: 'Pivô',
-                    ),
-                    CardPlayer(
-                      name: 'Mauricio P.',
-                      photo:
-                          'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500',
-                      position: 'Pivô',
-                    ),
-                  ],
+                  children: widget.players
+                      .map(
+                        (player) => CardPlayer(
+                          name: player.name,
+                          photo: player.photo,
+                          position: player.position.name,
+                          guid: player.guid!,
+                          skillValue: calculeSkill(player.skills),
+                          isSelect: (bool value) {
+                            setState(() {
+                              if (value) {
+                                playersSelect = player;
+                              } else {
+                                playersSelect = null;
+                              }
+                            });
+                          },
+                          select: player.guid == playersSelect?.guid,
+                        ),
+                      )
+                      .toList(),
                 ),
               )
             ],

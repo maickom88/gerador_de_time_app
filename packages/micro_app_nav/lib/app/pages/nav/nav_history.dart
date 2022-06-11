@@ -68,7 +68,12 @@ class _NavHistoricState extends State<NavHistoric> {
                         child: CupertinoTextField(
                           placeholder: 'Pesquisar',
                           onChanged: (value) {
-                            widget.historicController.searchHistoric(value);
+                            if (value.isNotEmpty) {
+                              widget.historicController.searchHistoric(value);
+                            } else {
+                              widget.historicController.searchResultHistorics =
+                                  [];
+                            }
                           },
                           suffix: IconButton(
                             icon: const Icon(

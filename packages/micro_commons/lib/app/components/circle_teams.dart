@@ -8,10 +8,14 @@ import '../domain/entities/player_entity.dart';
 class CircleTeams extends StatelessWidget {
   final List<PlayerEntity> players;
   final bool isTable;
+  final double? firstPositionRight;
+  final double? secondPositionRight;
   const CircleTeams({
     Key? key,
     required this.players,
     this.isTable = false,
+    this.firstPositionRight,
+    this.secondPositionRight,
   }) : super(key: key);
 
   @override
@@ -26,7 +30,7 @@ class CircleTeams extends StatelessWidget {
           children: [
             if (players.containsAt(0))
               Positioned.fill(
-                right: 85,
+                right: firstPositionRight ?? 85,
                 child: FadeAnimation(
                   delay: 0.3,
                   directionType: DirectionType.translateX,
@@ -61,7 +65,7 @@ class CircleTeams extends StatelessWidget {
               ),
             if (players.containsAt(1))
               Positioned.fill(
-                right: 60,
+                right: secondPositionRight ?? 60,
                 child: FadeAnimation(
                   delay: 0.6,
                   directionType: DirectionType.translateX,

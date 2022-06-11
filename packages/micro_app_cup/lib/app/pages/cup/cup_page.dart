@@ -276,7 +276,7 @@ class _CupPageState extends State<CupPage> {
                                 }
                                 if ((widget.cupController.playerSelected
                                             .length %
-                                        2) !=
+                                        widget.cupController.numberOfTeam) !=
                                     0) {
                                   showAlert(context,
                                       'É necessario um numero par de jogadores');

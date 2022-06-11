@@ -54,6 +54,7 @@ class CustumLocalNotification {
     required String title,
     required String description,
     String? payload,
+    bool withCustumSound = false,
   }) async {
     await flutterLocalNotificationsPlugin.show(
       id,
@@ -61,12 +62,14 @@ class CustumLocalNotification {
       description,
       NotificationDetails(
         android: AndroidNotificationDetails(
-          channel.id,
-          channel.name,
-          channel.description,
-          importance: Importance.max,
-          icon: '@mipmap/launcher_icon',
-        ),
+            channel.id, channel.name, channel.description,
+            importance: Importance.max,
+            icon: '@mipmap/launcher_icon',
+            sound: withCustumSound
+                ? const RawResourceAndroidNotificationSound('som_de_apito.mp3')
+                : null),
+        iOS: IOSNotificationDetails(
+            sound: withCustumSound ? 'som_de_apito.aiff' : null),
       ),
     );
   }

@@ -6,7 +6,7 @@ class TeamEntity {
   final String? guid;
   final String name;
   final String color;
-  final int vitories;
+  final int victories;
   final int goals;
   final int goalsNegative;
   final List<PlayerEntity> players;
@@ -14,7 +14,7 @@ class TeamEntity {
     this.guid,
     required this.name,
     required this.color,
-    required this.vitories,
+    required this.victories,
     required this.goals,
     required this.goalsNegative,
     required this.players,
@@ -25,7 +25,7 @@ class TeamEntity {
       'guid': guid,
       'name': name,
       'color': color,
-      'vitories': vitories,
+      'victories': victories,
       'goals': goals,
       'goals_negative': goalsNegative,
       'players': players.map((x) => x.toMap()).toList(),
@@ -37,7 +37,7 @@ class TeamEntity {
       guid: map['guid'],
       name: map['name'] ?? '',
       color: map['color'] ?? '',
-      vitories: map['vitories']?.toInt() ?? 0,
+      victories: map['victories']?.toInt() ?? 0,
       goals: map['goals']?.toInt() ?? 0,
       goalsNegative: map['goals_negative']?.toInt() ?? 0,
       players: List<PlayerEntity>.from(

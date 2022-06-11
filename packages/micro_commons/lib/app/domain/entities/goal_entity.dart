@@ -1,15 +1,18 @@
 import 'dart:convert';
 
 import 'game_entity.dart';
+import 'player_entity.dart';
 
 class GoalEntity {
   final String? guid;
   final GameEntity game;
+  final PlayerEntity player;
   final String timeGoals;
 
   GoalEntity({
     this.guid,
     required this.game,
+    required this.player,
     required this.timeGoals,
   });
 
@@ -17,6 +20,7 @@ class GoalEntity {
     return {
       'guid': guid,
       'game': game.toMap(),
+      'player': player.toMap(),
       'time_goals': timeGoals,
     };
   }
@@ -25,6 +29,7 @@ class GoalEntity {
     return GoalEntity(
       guid: map['guid'],
       game: GameEntity.fromMap(map['game']),
+      player: PlayerEntity.fromMap(map['player']),
       timeGoals: map['time_goals'] ?? '',
     );
   }
