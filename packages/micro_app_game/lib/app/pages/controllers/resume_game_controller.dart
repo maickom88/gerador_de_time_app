@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:micro_commons/app/components/error_page.dart';
 import 'package:micro_commons/app/components/loading_sport.dart';
+import 'package:in_app_review/in_app_review.dart';
 import 'package:micro_commons/app/domain/entities/config_team_entity.dart';
 import 'package:micro_commons/app/domain/entities/team_entity.dart';
 import 'package:carousel_slider/carousel_slider.dart';
@@ -179,6 +180,11 @@ class ResumeController extends ValueNotifier<ResumeState> {
       await Future.delayed(const Duration(seconds: 2));
       AppDefault.close(context);
       AppDefault.navigateToRemoveAll(context, routeName: '/nav');
+      final inAppReview = InAppReview.instance;
+
+      if (await inAppReview.isAvailable()) {
+        inAppReview.requestReview();
+      }
     });
   }
 

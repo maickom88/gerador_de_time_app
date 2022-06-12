@@ -91,7 +91,7 @@ class CardHistoric extends StatelessWidget {
                     ),
                     Visibility(
                       replacement: Text(
-                        '❌ Não finalizado',
+                        '❌ NÃO FINALIZADA',
                         style: AppTypography.t22WithW300()
                             .copyWith(color: AppColor.textLight),
                       ),
