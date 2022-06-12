@@ -16,11 +16,14 @@ class ModelBottomPerformance extends StatefulWidget {
   final bool isLoadLocalImage;
   final String heroTag;
   final String name;
+
+  final int? skillValue;
   final String position;
   const ModelBottomPerformance({
     Key? key,
     required this.photo,
     required this.controller,
+    this.skillValue = 0,
     required this.guid,
     required this.heroTag,
     required this.name,
@@ -147,21 +150,15 @@ class _ModelBottomPerformanceState extends State<ModelBottomPerformance> {
                           ),
                           Row(
                             children: [
-                              const Icon(Iconsax.star1,
-                                      size: 25, color: AppColor.primaryColor)
-                                  .withRightPadding(rightPadding: 0),
-                              const Icon(Iconsax.star1,
-                                      size: 25, color: AppColor.primaryColor)
-                                  .withRightPadding(rightPadding: 0),
-                              const Icon(Iconsax.star1,
-                                      size: 25, color: AppColor.primaryColor)
-                                  .withRightPadding(rightPadding: 5),
-                              const Icon(Iconsax.star,
-                                      size: 19, color: AppColor.primaryColor)
-                                  .withRightPadding(rightPadding: 5),
-                              const Icon(Iconsax.star,
-                                      size: 19, color: AppColor.primaryColor)
-                                  .withRightPadding(rightPadding: 5),
+                              ...List.generate(
+                                5,
+                                (value) => Icon(
+                                    value < widget.skillValue!
+                                        ? Iconsax.star1
+                                        : Iconsax.star,
+                                    size: widget.skillValue! > value ? 25 : 19,
+                                    color: AppColor.primaryColor),
+                              ).toList(),
                             ],
                           ).withBottomPadding(bottomPadding: 10),
                           Container(

@@ -9,10 +9,10 @@ class CustomInterceptors extends Interceptor {
   @override
   Future<void> onError(DioError err, ErrorInterceptorHandler handler) async {
     if (err.response?.statusCode == 404) {
-      throw NotFound();
+      err.error = NotFound();
     }
     if (err.response?.statusCode == 500) {
-      throw UnexpectedError();
+      err.error = UnexpectedError();
     }
     if (err.response?.statusCode == 401) {
       final result = await CustumFirebaseAuth.getToken();
@@ -30,10 +30,10 @@ class CustomInterceptors extends Interceptor {
 
         return handler.resolve(cloneReq);
       }
-      throw Unauthorized();
+      err.error = Unauthorized();
     }
     if (err.response?.statusCode == 400) {
-      throw UnexpectedError();
+      err.error = UnexpectedError();
     }
     AppLog.writeLog(
         'Error in path: ${err.requestOptions.path}, menssage: ${err.message}');

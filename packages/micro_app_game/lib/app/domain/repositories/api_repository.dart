@@ -15,6 +15,7 @@ abstract class ApiRepository {
   Future<Either<Failure, CupEntity>> initializeCup(CupParams params);
   Future<Either<Failure, TeamEntity>> updateTeam(UpdateTeamParams params);
   Future<Either<Failure, CupEntity>> getCup(String params);
+  Future<Either<Failure, CupEntity>> finishCup(String params);
   Future<Either<Failure, void>> removeGoal(String params);
   Future<Either<Failure, MatchEntity>> updateMatch(UpdateMatchParams params);
   Future<Either<Failure, GoalEntity>> registerGoal(GoalParams params);

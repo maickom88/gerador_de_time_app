@@ -7,6 +7,7 @@ import 'package:micro_commons/app/domain/entities/team_entity.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:micro_core/core/theme/theme.dart';
 
+import '../../domain/usecases/finish_cup.dart';
 import '../../domain/usecases/get_cup.dart';
 import '../../domain/usecases/initialize_cup.dart';
 import '../../domain/usecases/initialize_match.dart';
@@ -20,6 +21,7 @@ import 'game_controller.dart';
 
 class ResumeController extends ValueNotifier<ResumeState> {
   final InitializeCup _initializeCup;
+  final FinishCup _finishCup;
   final RegisterGoal _registerGoal;
   final RemoveGoal _removeGoal;
   final GetCup _getCup;
@@ -36,6 +38,7 @@ class ResumeController extends ValueNotifier<ResumeState> {
     this._initializeMatch,
     this._removeGoal,
     this._getCup,
+    this._finishCup,
     this._updateTeam,
     this._updateMatch,
     this._registerGoal,
@@ -138,6 +141,44 @@ class ResumeController extends ValueNotifier<ResumeState> {
             ),
           ));
       getCup();
+    });
+  }
+
+  void finishCup(BuildContext context) async {
+    AppDefault.showDefaultLoad(
+      context,
+      const LoadingSport(
+        message: 'Finalizando jogo...',
+      ),
+    );
+
+    final result =
+        await _finishCup.call((value as ResumeSuccessState).cup.guid!);
+
+    result.fold((resultError) {
+      AppDefault.close(context);
+      showCupertinoModalBottomSheet(
+        context: context,
+        builder: (BuildContext context) {
+          return Container(
+            padding: const EdgeInsets.only(top: 30),
+            height: 380,
+            child: Material(
+              child: ErrorComponent(
+                height: 60,
+                onLoad: () {
+                  AppDefault.close(context);
+                  finishCup(context);
+                },
+              ),
+            ),
+          );
+        },
+      );
+    }, (resultSuccess) async {
+      await Future.delayed(const Duration(seconds: 2));
+      AppDefault.close(context);
+      AppDefault.navigateToRemoveAll(context, routeName: '/nav');
     });
   }
 

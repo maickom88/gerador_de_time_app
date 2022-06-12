@@ -45,259 +45,298 @@ class _ResumeGamePageState extends State<ResumeGamePage> {
   Widget build(BuildContext context) {
     return Material(
       type: MaterialType.transparency,
-      child: Scaffold(
-        backgroundColor: Colors.white,
-        body: SafeArea(
-          child: NestedScrollView(
-            controller: _controller,
-            physics: const BouncingScrollPhysics(),
-            headerSliverBuilder: (_, inner) {
-              return <Widget>[
-                const SliverToBoxAdapter(
-                    child: SizedBox(
-                  height: 20,
-                )),
-                CupertinoSliverNavigationBar(
-                  backgroundColor: Colors.white.withOpacity(0.8),
-                  trailing: Material(
-                    type: MaterialType.transparency,
-                    color: Colors.transparent,
-                    child: Text.rich(
-                      TextSpan(
-                        style: AppTypography.t16()
-                            .copyWith(color: AppColor.secondaryColor),
-                        children: [
-                          TextSpan(
-                              text: _showOnlyIcon ? '' : 'Finalizar copinha '),
-                          const WidgetSpan(
-                            alignment: PlaceholderAlignment.middle,
-                            child: Icon(
-                              Iconsax.cup,
-                              color: AppColor.secondaryColor,
-                            ),
-                          )
-                        ],
-                      ),
-                    ),
-                  ),
-                  leading: GestureDetector(
-                    onTap: () {
-                      SystemSound.play(SystemSoundType.click);
-                      showAdaptiveActionSheet(
-                        context: context,
-                        title: const Text('Cancelar esse campeonato?'),
-                        actions: <BottomSheetAction>[
-                          BottomSheetAction(
-                            title: Text('Sim, cancelar',
-                                style: AppTypography.t14().copyWith(
-                                    color: Colors.red,
-                                    fontWeight: FontWeight.bold)),
-                            onPressed: () {
-                              AppDefault.close(context);
-                              AppDefault.close(context);
-                            },
-                          ),
-                          BottomSheetAction(
-                            title: Text(
-                              'Continuar sem cancelar',
-                              style: AppTypography.t14(),
-                            ),
-                            onPressed: () => AppDefault.close(context),
-                          ),
-                        ],
-                      );
-                    },
-                    child: Material(
-                      color: Colors.transparent,
+      child: WillPopScope(
+        onWillPop: () async {
+          bool isBack = false;
+          SystemSound.play(SystemSoundType.click);
+          await showAdaptiveActionSheet(
+            context: context,
+            title: const Text('Cancelar esse campeonato?'),
+            actions: <BottomSheetAction>[
+              BottomSheetAction(
+                title: Text('Sim, cancelar',
+                    style: AppTypography.t14().copyWith(
+                        color: Colors.red, fontWeight: FontWeight.bold)),
+                onPressed: () {
+                  isBack = true;
+                  AppDefault.close(context);
+                },
+              ),
+              BottomSheetAction(
+                title: Text(
+                  'Continuar sem cancelar',
+                  style: AppTypography.t14(),
+                ),
+                onPressed: () => AppDefault.close(context),
+              ),
+            ],
+          );
+          return isBack;
+        },
+        child: Scaffold(
+          backgroundColor: Colors.white,
+          body: SafeArea(
+            child: NestedScrollView(
+              controller: _controller,
+              physics: const BouncingScrollPhysics(),
+              headerSliverBuilder: (_, inner) {
+                return <Widget>[
+                  const SliverToBoxAdapter(
+                      child: SizedBox(
+                    height: 20,
+                  )),
+                  CupertinoSliverNavigationBar(
+                    backgroundColor: Colors.white.withOpacity(0.8),
+                    trailing: Material(
                       type: MaterialType.transparency,
-                      child: Text(
-                        'Cancelar',
-                        style: AppTypography.t16().copyWith(
-                          height: 2.0,
-                          color: Colors.red[400],
+                      color: Colors.transparent,
+                      child: GestureDetector(
+                        onTap: () => widget.controller.finishCup(context),
+                        child: Text.rich(
+                          TextSpan(
+                            style: AppTypography.t16()
+                                .copyWith(color: AppColor.secondaryColor),
+                            children: [
+                              TextSpan(
+                                  text: _showOnlyIcon
+                                      ? ''
+                                      : 'Finalizar copinha '),
+                              const WidgetSpan(
+                                alignment: PlaceholderAlignment.middle,
+                                child: Icon(
+                                  Iconsax.cup,
+                                  color: AppColor.secondaryColor,
+                                ),
+                              )
+                            ],
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                  largeTitle: Text(
-                    'Copinha',
-                    style: AppTypography.t28WithW800(),
-                  ),
-                  border: Border.all(color: Colors.transparent),
-                ),
-              ];
-            },
-            body: ValueListenableBuilder<ResumeState>(
-                valueListenable: widget.controller,
-                builder: (context, value, child) {
-                  if (value is ResumeErrorState) {
-                    return ErrorComponent(
-                      onLoad: () => widget.controller.initializeCup(),
-                    );
-                  }
-                  if (value is ResumeSuccessState) {
-                    return SingleChildScrollView(
-                      clipBehavior: Clip.none,
-                      physics: const NeverScrollableScrollPhysics(),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                'Futebol',
-                                style: AppTypography.t16(),
-                              ),
-                              Text(
-                                value.cup.date.formateDateString(),
-                                style: AppTypography.t16()
-                                    .copyWith(color: AppColor.textLight),
-                              ),
-                            ],
-                          ).withBottomPadding(),
-                          Container(
-                            width: double.infinity,
-                            padding: const EdgeInsets.symmetric(
-                                vertical: 10, horizontal: 8),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              color: AppColor.lightColor,
+                    leading: GestureDetector(
+                      onTap: () {
+                        SystemSound.play(SystemSoundType.click);
+                        showAdaptiveActionSheet(
+                          context: context,
+                          title: const Text('Cancelar esse campeonato?'),
+                          actions: <BottomSheetAction>[
+                            BottomSheetAction(
+                              title: Text('Sim, cancelar',
+                                  style: AppTypography.t14().copyWith(
+                                      color: Colors.red,
+                                      fontWeight: FontWeight.bold)),
+                              onPressed: () {
+                                AppDefault.close(context);
+                                AppDefault.close(context);
+                              },
                             ),
-                            child: Table(
-                              // defaultColumnWidth: const FixedColumnWidth(120.0),
-                              defaultVerticalAlignment:
-                                  TableCellVerticalAlignment.middle,
-                              border: TableBorder.symmetric(
-                                inside: BorderSide(
-                                  color: Colors.grey.withOpacity(0.1),
-                                  width: 1,
-                                ),
+                            BottomSheetAction(
+                              title: Text(
+                                'Continuar sem cancelar',
+                                style: AppTypography.t14(),
                               ),
+                              onPressed: () => AppDefault.close(context),
+                            ),
+                          ],
+                        );
+                      },
+                      child: Material(
+                        color: Colors.transparent,
+                        type: MaterialType.transparency,
+                        child: Text(
+                          'Cancelar',
+                          style: AppTypography.t16().copyWith(
+                            height: 2.0,
+                            color: Colors.red[400],
+                          ),
+                        ),
+                      ),
+                    ),
+                    largeTitle: Text(
+                      'Copinha',
+                      style: AppTypography.t28WithW800(),
+                    ),
+                    border: Border.all(color: Colors.transparent),
+                  ),
+                ];
+              },
+              body: ValueListenableBuilder<ResumeState>(
+                  valueListenable: widget.controller,
+                  builder: (context, value, child) {
+                    if (value is ResumeErrorState) {
+                      return ErrorComponent(
+                        onLoad: () => widget.controller.initializeCup(),
+                      );
+                    }
+                    if (value is ResumeSuccessState) {
+                      return SingleChildScrollView(
+                        clipBehavior: Clip.none,
+                        physics: const NeverScrollableScrollPhysics(),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                TableRow(children: [
-                                  Column(children: const [
-                                    Text('📣', style: TextStyle(fontSize: 20.0))
+                                Text(
+                                  'Futebol',
+                                  style: AppTypography.t16(),
+                                ),
+                                Text(
+                                  value.cup.date.formateDateString(),
+                                  style: AppTypography.t16()
+                                      .copyWith(color: AppColor.textLight),
+                                ),
+                              ],
+                            ).withBottomPadding(),
+                            Container(
+                              width: double.infinity,
+                              padding: const EdgeInsets.symmetric(
+                                  vertical: 10, horizontal: 8),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                color: AppColor.lightColor,
+                              ),
+                              child: Table(
+                                // defaultColumnWidth: const FixedColumnWidth(120.0),
+                                defaultVerticalAlignment:
+                                    TableCellVerticalAlignment.middle,
+                                border: TableBorder.symmetric(
+                                  inside: BorderSide(
+                                    color: Colors.grey.withOpacity(0.1),
+                                    width: 1,
+                                  ),
+                                ),
+                                children: [
+                                  TableRow(children: [
+                                    Column(children: const [
+                                      Text('📣',
+                                          style: TextStyle(fontSize: 20.0))
+                                    ]),
+                                    Column(children: const [
+                                      Text('🏆',
+                                          style: TextStyle(fontSize: 20.0))
+                                    ]),
+                                    Column(children: const [
+                                      Text('⚽️',
+                                          style: TextStyle(fontSize: 20.0))
+                                    ]),
+                                    Column(children: const [
+                                      Text('- ⚽️',
+                                          style: TextStyle(fontSize: 20.0))
+                                    ]),
+                                    Column(children: const [
+                                      Text('', style: TextStyle(fontSize: 20.0))
+                                    ]),
                                   ]),
-                                  Column(children: const [
-                                    Text('🏆', style: TextStyle(fontSize: 20.0))
-                                  ]),
-                                  Column(children: const [
-                                    Text('⚽️', style: TextStyle(fontSize: 20.0))
-                                  ]),
-                                  Column(children: const [
-                                    Text('- ⚽️',
-                                        style: TextStyle(fontSize: 20.0))
-                                  ]),
-                                  Column(children: const [
-                                    Text('', style: TextStyle(fontSize: 20.0))
-                                  ]),
-                                ]),
-                                ...value.cup.teams
-                                    .map(
-                                      (team) => TableRow(children: [
-                                        Column(
-                                          children: [
-                                            Text(team.name,
+                                  ...value.cup.teams
+                                      .map(
+                                        (team) => TableRow(children: [
+                                          Column(
+                                            children: [
+                                              Text(team.name,
+                                                  style: const TextStyle(
+                                                      color:
+                                                          AppColor.textLight))
+                                            ],
+                                          ),
+                                          Column(children: [
+                                            Text(
+                                              team.victories.toString(),
+                                              style: const TextStyle(
+                                                  color: AppColor.textLight),
+                                            )
+                                          ]),
+                                          Column(children: [
+                                            Text(team.goals.toString(),
                                                 style: const TextStyle(
                                                     color: AppColor.textLight))
-                                          ],
-                                        ),
-                                        Column(children: [
-                                          Text(
-                                            team.victories.toString(),
-                                            style: const TextStyle(
-                                                color: AppColor.textLight),
-                                          )
-                                        ]),
-                                        Column(children: [
-                                          Text(team.goals.toString(),
-                                              style: const TextStyle(
-                                                  color: AppColor.textLight))
-                                        ]),
-                                        Column(children: [
-                                          Text(team.goalsNegative.toString(),
-                                              style: const TextStyle(
-                                                  color: AppColor.textLight))
-                                        ]),
-                                        Column(children: [
-                                          Transform.scale(
-                                            scale: 0.9,
-                                            child: CircleTeams(
-                                              players: team.players,
-                                              isTable: true,
+                                          ]),
+                                          Column(children: [
+                                            Text(team.goalsNegative.toString(),
+                                                style: const TextStyle(
+                                                    color: AppColor.textLight))
+                                          ]),
+                                          Column(children: [
+                                            Transform.scale(
+                                              scale: 0.9,
+                                              child: CircleTeams(
+                                                players: team.players,
+                                                isTable: true,
+                                              ),
                                             ),
-                                          ),
+                                          ]),
                                         ]),
-                                      ]),
-                                    )
-                                    .toList()
-                              ],
+                                      )
+                                      .toList()
+                                ],
+                              ),
+                            ),
+                            AppDefault.defaultSpaceHeight(height: 40),
+                            Text(
+                              'Informações',
+                              style: AppTypography.t16(),
+                            ).withBottomPadding(),
+                            const CardInfoGame(),
+                          ],
+                        ).withSymPadding(),
+                      );
+                    }
+                    return Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: const [
+                        SizedBox(
+                          height: 50,
+                          child: Center(
+                            child: LoadingIndicator(
+                              indicatorType: Indicator.ballPulseSync,
+                              colors: [AppColor.primaryColor],
                             ),
                           ),
-                          AppDefault.defaultSpaceHeight(height: 40),
-                          Text(
-                            'Informações',
-                            style: AppTypography.t16(),
-                          ).withBottomPadding(),
-                          const CardInfoGame(),
-                        ],
-                      ).withSymPadding(),
-                    );
-                  }
-                  return Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: const [
-                      SizedBox(
-                        height: 50,
-                        child: Center(
-                          child: LoadingIndicator(
-                            indicatorType: Indicator.ballPulseSync,
-                            colors: [AppColor.primaryColor],
-                          ),
                         ),
-                      ),
-                    ],
-                  );
-                }),
+                      ],
+                    );
+                  }),
+            ),
           ),
-        ),
-        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-        floatingActionButton: SizedBox(
-          width: double.infinity,
-          height: 50,
-          child: ElevatedButton(
-            style: ButtonStyle(
-              shadowColor: MaterialStateProperty.all(Colors.black),
-              padding: MaterialStateProperty.all(
-                const EdgeInsets.symmetric(horizontal: 20),
+          floatingActionButtonLocation:
+              FloatingActionButtonLocation.centerDocked,
+          floatingActionButton: SizedBox(
+            width: double.infinity,
+            height: 50,
+            child: ElevatedButton(
+              style: ButtonStyle(
+                shadowColor: MaterialStateProperty.all(Colors.black),
+                padding: MaterialStateProperty.all(
+                  const EdgeInsets.symmetric(horizontal: 20),
+                ),
+                shape: MaterialStateProperty.all(
+                  RoundedRectangleBorder(
+                    borderRadius: AppDefault.defaultBorderRadius(radius: 10),
+                  ),
+                ),
+                elevation: MaterialStateProperty.all(3),
+                backgroundColor:
+                    MaterialStateProperty.all(AppColor.secondaryColor),
               ),
-              shape: MaterialStateProperty.all(
-                RoundedRectangleBorder(
-                  borderRadius: AppDefault.defaultBorderRadius(radius: 10),
+              child: Text(
+                'Iniciar partida',
+                style: AppTypography.t16().copyWith(
+                  color: Colors.white,
                 ),
               ),
-              elevation: MaterialStateProperty.all(3),
-              backgroundColor:
-                  MaterialStateProperty.all(AppColor.secondaryColor),
+              onPressed: () {
+                HapticFeedback.lightImpact();
+                showCupertinoModalBottomSheet(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return InitialGameModal(controller: widget.controller);
+                    });
+              },
             ),
-            child: Text(
-              'Iniciar partida',
-              style: AppTypography.t16().copyWith(
-                color: Colors.white,
-              ),
-            ),
-            onPressed: () {
-              HapticFeedback.lightImpact();
-              showCupertinoModalBottomSheet(
-                  context: context,
-                  builder: (BuildContext context) {
-                    return InitialGameModal(controller: widget.controller);
-                  });
-            },
-          ),
-        ).withSymPadding(),
+          ).withSymPadding(),
+        ),
       ),
     );
   }

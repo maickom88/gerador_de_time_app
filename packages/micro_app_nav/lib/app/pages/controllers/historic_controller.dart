@@ -35,6 +35,9 @@ class HistoricController extends ValueNotifier<HistoricState> {
       value = HistoricErrorState(error: resultError);
     }, (resultSuccess) async {
       await Future.delayed(const Duration(seconds: 2));
+      resultSuccess.sort((b, a) {
+        return a.date.compareTo(b.date);
+      });
       value = HistoricSuccessState(cups: resultSuccess);
     });
   }

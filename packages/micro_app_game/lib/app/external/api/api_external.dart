@@ -105,4 +105,17 @@ class ApiExternal implements ApiDatasource {
       throw ServerError();
     }
   }
+
+  @override
+  Future<CupEntity> finishCup(String params) async {
+    try {
+      final result =
+          await _dio.http.post<Map<String, dynamic>>('/cup/$params/finishing');
+      return CupEntity.fromMap(result.data!);
+    } on DioError catch (error) {
+      throw error.error;
+    } on Exception catch (_) {
+      throw ServerError();
+    }
+  }
 }

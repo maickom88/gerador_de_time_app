@@ -85,4 +85,13 @@ class Api implements ApiRepository {
       return Left(error);
     }
   }
+
+  @override
+  Future<Either<Failure, CupEntity>> finishCup(String params) async {
+    try {
+      return Right(await apiDatasource.finishCup(params));
+    } on Failure catch (error) {
+      return Left(error);
+    }
+  }
 }

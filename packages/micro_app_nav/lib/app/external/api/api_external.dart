@@ -104,8 +104,7 @@ class ApiExternal implements ApiDatasource {
     try {
       final result = await _dio.http
           .get<Map<String, dynamic>>('/cup/$params/informations');
-      final cupInformation = CupInformationEntity.fromMap(result.data!);
-      return cupInformation;
+      return CupInformationEntity.fromMap(result.data!);
     } on DioError catch (error) {
       throw error.error;
     } on Exception catch (_) {

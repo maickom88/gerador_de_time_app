@@ -34,6 +34,9 @@ class PositionController extends ValueNotifier<PositionState> {
       value = PositionErrorState(error: resultError);
     }, (resultSuccess) async {
       await Future.delayed(const Duration(seconds: 2));
+      resultSuccess.sort((a, b) {
+        return a.name.toLowerCase().compareTo(b.name.toLowerCase());
+      });
       value = PositionSuccessState(positions: resultSuccess);
     });
   }
