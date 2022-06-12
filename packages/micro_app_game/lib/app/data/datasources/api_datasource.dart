@@ -12,6 +12,7 @@ import '../../domain/usecases/update_team.dart';
 abstract class ApiDatasource {
   Future<CupEntity> initializeCup(CupParams params);
   Future<CupEntity> getCup(String params);
+  Future<CupEntity> finishCup(String params);
   Future<MatchEntity> initializeMatch(MatchParams params);
   Future<MatchEntity> updateMatch(UpdateMatchParams params);
   Future<GoalEntity> registerGoal(GoalParams params);

@@ -28,10 +28,12 @@ class GameController extends ValueNotifier {
     this._updateMatch,
   ) : super(null) {
     countdownController = CountDownController();
+    timeAdditions = match.timeAdditions;
   }
 
   final ValueNotifier<int> _totalTimePause = ValueNotifier<int>(0);
   final ValueNotifier<int> _completeTime = ValueNotifier<int>(0);
+  final ValueNotifier<int?> _timeAdditions = ValueNotifier<int?>(null);
   final ValueNotifier<int> _scoreboardOpposing = ValueNotifier<int>(0);
   final ValueNotifier<int> _scoreboardHome = ValueNotifier<int>(0);
   final ValueNotifier<bool> _isPlay = ValueNotifier<bool>(true);
@@ -44,6 +46,7 @@ class GameController extends ValueNotifier {
   int time = 0;
 
   int get totalTimePause => _totalTimePause.value;
+  int? get timeAdditions => _timeAdditions.value;
   int get completeTime => _completeTime.value;
   int get scoreboardOpposing => _scoreboardOpposing.value;
   int get scoreboardHome => _scoreboardHome.value;
@@ -51,6 +54,7 @@ class GameController extends ValueNotifier {
   List<GoalEntity> get goalsOpposing => _goalsOpposing.value;
   bool get isPlay => _isPlay.value;
   bool get isPause => _isPause.value;
+  bool showAdditions = false;
 
   Future<void> registerGoal(
       {required String guidPlayer, required bool isHome}) async {
@@ -170,6 +174,11 @@ class GameController extends ValueNotifier {
 
   set completeTime(int value) {
     _completeTime.value = value;
+    notifyListeners();
+  }
+
+  set timeAdditions(int? value) {
+    _timeAdditions.value = value;
     notifyListeners();
   }
 

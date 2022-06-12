@@ -279,7 +279,7 @@ class _CupPageState extends State<CupPage> {
                                         widget.cupController.numberOfTeam) !=
                                     0) {
                                   showAlert(context,
-                                      'É necessario um numero par de jogadores');
+                                      'Não é possível formar ${widget.cupController.numberOfTeam} times\ncom ${widget.cupController.playerSelected.length} de jogadores');
                                   return;
                                 }
                                 if (widget.cupController.numberOfTeam <= 0) {

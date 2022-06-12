@@ -372,12 +372,18 @@ class _GamePageState extends State<GamePage> {
                               strokeWidth: 6,
                               timeFormatter: (value) {
                                 widget.controller.time = value;
+
                                 return Duration(seconds: value)
-                                    .toHoursMinutesSeconds();
+                                    .toHoursMinutesSeconds(
+                                        showAdditions:
+                                            widget.controller.showAdditions);
                               },
                               autostart: false,
-                              timeTextStyle: const TextStyle(
-                                  color: AppColor.textLight, fontSize: 16),
+                              timeTextStyle: TextStyle(
+                                  color: AppColor.textLight,
+                                  fontSize: widget.controller.showAdditions
+                                      ? 14
+                                      : 16),
                               valueColor: AppColor.textTitle,
                               backgroundColor: AppColor.textLight,
                               initialPosition: 0,
@@ -385,16 +391,31 @@ class _GamePageState extends State<GamePage> {
                                       minutes: widget.controller.match.time)
                                   .inSeconds,
                               onComplete: () async {
-                                HapticFeedback.vibrate();
-                                await CustumLocalNotification.instance
-                                    .showLocalNotification(
-                                  id: widget.hashCode,
-                                  withCustumSound: true,
-                                  title: "📣  Apita final de jogo",
-                                  description:
-                                      "O tempo do jogo acabou, finalize a partida!",
+                                if (widget.controller.timeAdditions == null ||
+                                    widget.controller.scoreboardHome !=
+                                        widget.controller.scoreboardOpposing) {
+                                  HapticFeedback.vibrate();
+                                  await CustumLocalNotification.instance
+                                      .showLocalNotification(
+                                    id: widget.hashCode,
+                                    withCustumSound: true,
+                                    title: "📣  Apita final de jogo",
+                                    description:
+                                        "O tempo do jogo acabou, finalize a partida!",
+                                  );
+                                  return;
+                                }
+                                widget.controller.isPlay = false;
+                                widget.controller.isPause = true;
+                                widget.controller.countdownController.restart(
+                                  duration: Duration(
+                                          minutes:
+                                              widget.controller.timeAdditions!)
+                                      .inSeconds,
+                                  initialPosition: 0,
                                 );
-                                return;
+                                widget.controller.timeAdditions = null;
+                                widget.controller.showAdditions = true;
                               },
                             ),
                           ),
@@ -402,27 +423,6 @@ class _GamePageState extends State<GamePage> {
                         Row(
                           children: [
                             Visibility(
-                              visible: widget.controller.isPlay,
-                              child: SizedBox(
-                                width: 100,
-                                child: Center(
-                                  child: GestureDetector(
-                                    onTap: () {
-                                      widget.controller.countdownController
-                                          .start();
-                                      widget.controller.isPlay = false;
-                                    },
-                                    child: Text(
-                                      'Iniciar',
-                                      style: AppTypography.t16().copyWith(
-                                          color: AppColor.secondaryColor),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                            Visibility(
-                              visible: !widget.controller.isPlay,
                               child: Visibility(
                                 replacement: SizedBox(
                                   width: 100,
@@ -503,11 +503,17 @@ extension DurationExtensions on Duration {
     return "${_toTwoDigits(inHours)}:$twoDigitMinutes";
   }
 
-  String toHoursMinutesSeconds() {
+  String toHoursMinutesSeconds({required bool showAdditions}) {
     String twoDigitMinutes = _toTwoDigits(inMinutes.remainder(60));
     String twoDigitSeconds = _toTwoDigits(inSeconds.remainder(60));
     if (inHours > 0) {
+      if (showAdditions) {
+        return " 00:00\n+${_toTwoDigits(inHours)}:$twoDigitMinutes:$twoDigitSeconds";
+      }
       return "${_toTwoDigits(inHours)}:$twoDigitMinutes:$twoDigitSeconds";
+    }
+    if (showAdditions) {
+      return " 00:00\n+$twoDigitMinutes:$twoDigitSeconds";
     }
     return "$twoDigitMinutes:$twoDigitSeconds";
   }

@@ -54,6 +54,7 @@ class CardPlayer extends StatelessWidget {
                       isLoadLocalImage: photo == null ? true : false,
                       heroTag: name.hashCode.toString(),
                       name: name,
+                      skillValue: skillValue,
                       position: position,
                       guid: guid,
                       controller:
