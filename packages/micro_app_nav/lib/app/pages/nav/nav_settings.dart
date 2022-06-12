@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:in_app_review/in_app_review.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:micro_commons/app/components/avatar_photo.dart';
 import 'package:micro_core/core/components/animation.dart';
@@ -165,7 +166,9 @@ class _NavSettingsState extends State<NavSettings> {
                         icon: Iconsax.key,
                         label: 'Alterar senha',
                         widget: GestureDetector(
-                          onTap: () => SystemSound.play(SystemSoundType.click),
+                          onTap: () async {
+                            SystemSound.play(SystemSoundType.click);
+                          },
                           child: const Icon(
                             Iconsax.arrow_circle_right,
                             size: 25,
@@ -177,7 +180,14 @@ class _NavSettingsState extends State<NavSettings> {
                         icon: Iconsax.magic_star,
                         label: 'Avaliar o app',
                         widget: GestureDetector(
-                          onTap: () => SystemSound.play(SystemSoundType.click),
+                          onTap: () async {
+                            SystemSound.play(SystemSoundType.click);
+                            final inAppReview = InAppReview.instance;
+
+                            if (await inAppReview.isAvailable()) {
+                              inAppReview.requestReview();
+                            }
+                          },
                           child: const Icon(
                             Iconsax.arrow_circle_right,
                             size: 25,
