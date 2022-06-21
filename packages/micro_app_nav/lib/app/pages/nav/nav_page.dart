@@ -9,6 +9,7 @@ import 'package:micro_core/core/theme/theme.dart';
 import '../controllers/historic_controller.dart';
 import '../controllers/home_controller.dart';
 import '../controllers/logout_controller.dart';
+import '../controllers/notification_controller.dart';
 import '../controllers/position_controller.dart';
 import '../controllers/team_controller.dart';
 import 'nav_controller.dart';
@@ -22,6 +23,7 @@ class NavPage extends StatefulWidget {
   final NavController controller;
   final LogoutController logoutController;
   final HomeController homeController;
+  final NotificationController notificationController;
   final TeamController teamController;
   final PositionController positionController;
   final HistoricController historicController;
@@ -33,6 +35,7 @@ class NavPage extends StatefulWidget {
     required this.logoutController,
     required this.positionController,
     required this.homeController,
+    required this.notificationController,
   }) : super(key: key);
 
   @override
@@ -41,6 +44,7 @@ class NavPage extends StatefulWidget {
 
 class _NavPageState extends State<NavPage> with KeyboardManager {
   late int currentIndex;
+  late bool showNotification;
   late List<Widget> pages;
   @override
   void initState() {
@@ -54,10 +58,11 @@ class _NavPageState extends State<NavPage> with KeyboardManager {
         positionController: widget.positionController,
       ),
       NavHistoric(historicController: widget.historicController),
-      const NavNotification(),
+      NavNotification(controller: widget.notificationController),
       NavSettings(widget.logoutController),
     ];
     currentIndex = 0;
+    showNotification = false;
     super.initState();
   }
 
@@ -68,6 +73,7 @@ class _NavPageState extends State<NavPage> with KeyboardManager {
     widget.logoutController.dispose();
     widget.positionController.dispose();
     widget.teamController.dispose();
+    widget.notificationController.dispose();
     super.dispose();
   }
 
@@ -104,24 +110,43 @@ class _NavPageState extends State<NavPage> with KeyboardManager {
             fixedColor: AppColor.primaryColor,
             showSelectedLabels: true,
             showUnselectedLabels: true,
-            items: const [
-              BottomNavigationBarItem(
+            items: [
+              const BottomNavigationBarItem(
                   activeIcon: Icon(Iconsax.home_15),
                   icon: Icon(Iconsax.home),
                   label: 'Home'),
-              BottomNavigationBarItem(
+              const BottomNavigationBarItem(
                   activeIcon: Icon(Iconsax.note_favorite5),
                   icon: Icon(Iconsax.note_favorite),
                   label: 'Equipe'),
+              const BottomNavigationBarItem(
+                activeIcon: Icon(Iconsax.clock5),
+                icon: Icon(Iconsax.clock),
+                label: 'Historico',
+              ),
               BottomNavigationBarItem(
-                  activeIcon: Icon(Iconsax.clock5),
-                  icon: Icon(Iconsax.clock),
-                  label: 'Historico'),
-              BottomNavigationBarItem(
-                  activeIcon: Icon(Iconsax.notification5),
-                  icon: Icon(Iconsax.notification),
+                  activeIcon: const Icon(Iconsax.notification5),
+                  icon: Stack(
+                    children: [
+                      const Icon(Iconsax.notification),
+                      Visibility(
+                        visible: showNotification,
+                        child: Positioned(
+                          right: 3,
+                          child: Container(
+                            width: 8,
+                            height: 8,
+                            decoration: const BoxDecoration(
+                              color: Colors.red,
+                              shape: BoxShape.circle,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                   label: 'Notificações'),
-              BottomNavigationBarItem(
+              const BottomNavigationBarItem(
                   activeIcon: Icon(Iconsax.setting_45),
                   icon: Icon(Iconsax.setting_4),
                   label: 'Ajustes'),

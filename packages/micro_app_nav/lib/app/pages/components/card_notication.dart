@@ -4,11 +4,13 @@ import 'package:micro_core/core/theme/theme.dart';
 class CardNotification extends StatelessWidget {
   final String title;
   final String description;
+  final String dateTime;
 
   const CardNotification({
     Key? key,
     required this.title,
     required this.description,
+    required this.dateTime,
   }) : super(key: key);
 
   @override
@@ -40,7 +42,7 @@ class CardNotification extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.only(left: 8.0, top: 3),
                 child: Text(
-                  '21 de Outubro',
+                  dateTime,
                   style:
                       AppTypography.t14().copyWith(color: AppColor.textLight),
                 ),
@@ -48,29 +50,35 @@ class CardNotification extends StatelessWidget {
             ],
           ),
           Positioned.fill(
-            top: 10,
+            top: 15,
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
-              child: Container(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(7),
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(title,
-                        style: AppTypography.t22WithW800()
-                            .copyWith(color: const Color(0xff5C5C5C))),
-                    Expanded(
-                      child: Text(
-                        description,
-                        style: AppTypography.t16()
-                            .copyWith(color: AppColor.textLight),
-                      ),
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+              child: IntrinsicHeight(
+                child: Container(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(7),
+                  ),
+                  child: SingleChildScrollView(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(title,
+                                style: AppTypography.t22WithW800()
+                                    .copyWith(height: 1.3)
+                                    .copyWith(color: const Color(0xff5C5C5C)))
+                            .withBottomPadding(bottomPadding: 5),
+                        IntrinsicHeight(
+                          child: Text(
+                            description,
+                            style: AppTypography.t16().copyWith(
+                                color: AppColor.textLight, height: 1.3),
+                          ),
+                        ),
+                      ],
                     ),
-                  ],
+                  ),
                 ),
               ),
             ),

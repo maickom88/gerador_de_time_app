@@ -1,4 +1,5 @@
 import 'package:micro_commons/app/domain/entities/cup_entity.dart';
+import 'package:micro_commons/app/domain/entities/notification_entity.dart';
 import 'package:micro_commons/app/domain/entities/player_entity.dart';
 import 'package:micro_core/core/customs/custum_dio.dart';
 import 'package:dio/dio.dart';
@@ -9,6 +10,7 @@ import '../../domain/entities/cup_information_entity.dart';
 import '../../domain/entities/position_entity.dart';
 import '../../domain/entities/skill_entity.dart';
 import '../../domain/entities/sport_entity.dart';
+import '../../domain/entities/user_entity.dart';
 import '../../domain/usecases/save_player_usecase.dart';
 
 class ApiExternal implements ApiDatasource {
@@ -105,6 +107,46 @@ class ApiExternal implements ApiDatasource {
       final result = await _dio.http
           .get<Map<String, dynamic>>('/cup/$params/informations');
       return CupInformationEntity.fromMap(result.data!);
+    } on DioError catch (error) {
+      throw error.error;
+    } on Exception catch (_) {
+      throw ServerError();
+    }
+  }
+
+  @override
+  Future<List<NotificationEntity>> getNotifications(String params) async {
+    try {
+      final result = await _dio.http.get<List>('/notification/user/$params');
+      final notifications =
+          result.data!.map((cup) => NotificationEntity.fromMap(cup)).toList();
+      return notifications;
+    } on DioError catch (error) {
+      throw error.error;
+    } on Exception catch (_) {
+      throw ServerError();
+    }
+  }
+
+  @override
+  Future<UserEntity> updateUser(UserEntity params) async {
+    try {
+      final result = await _dio.http
+          .put<Map<String, dynamic>>('/user', data: params.toMap());
+      final skill = UserEntity.fromMap(result.data!);
+      return skill;
+    } on DioError catch (error) {
+      throw error.error;
+    } on Exception catch (_) {
+      throw ServerError();
+    }
+  }
+
+  @override
+  Future<void> clearNotification(String params) async {
+    try {
+      await _dio.http.put<void>('/notification/clear/user/$params');
+      return;
     } on DioError catch (error) {
       throw error.error;
     } on Exception catch (_) {

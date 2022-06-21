@@ -1,5 +1,6 @@
 import 'package:micro_core/micro_core.dart';
 
+import 'factories/build_get_notifications.dart';
 import 'factories/build_get_positions_controller.dart';
 import 'factories/build_get_sports_controller.dart';
 import 'factories/build_historic_controller.dart';
@@ -16,11 +17,13 @@ class MicroAppNavResolver implements MicroApp {
   Map<String, WidgetBuildArgs> get routes => {
         '/nav': (_, args) => NavPage(
               controller: buildNavController(),
-              logoutController: buildLoginController(),
+              logoutController: buildLoginController()..initialize(),
               homeController: buildHomeController()..getSports(),
               teamController: buildTeamController()..getPlayers(),
               positionController: buildPositionController(),
               historicController: buildHistoricController()..getHistorics(),
+              notificationController: buildNotificationController()
+                ..getNotifications(),
             ),
       };
 }
