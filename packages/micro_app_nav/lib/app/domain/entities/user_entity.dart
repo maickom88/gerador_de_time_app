@@ -42,4 +42,22 @@ class UserEntity {
 
   factory UserEntity.fromJson(String source) =>
       UserEntity.fromMap(json.decode(source));
+
+  UserEntity copyWith({
+    String? guid,
+    String? email,
+    String? name,
+    bool? firstAccess,
+    String? photo,
+    String? role,
+  }) {
+    return UserEntity(
+      guid: guid ?? this.guid,
+      email: email ?? this.email,
+      name: name ?? this.name,
+      firstAccess: firstAccess ?? this.firstAccess,
+      photo: photo ?? this.photo,
+      role: role ?? this.role,
+    );
+  }
 }
