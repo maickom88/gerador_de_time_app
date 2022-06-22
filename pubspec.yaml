@@ -22,6 +22,8 @@ dependencies:
     path: packages/micro_app_register
   micro_app_nav:
     path: packages/micro_app_nav
+  micro_subscription:
+    path: packages/micro_subscription
   micro_app_cup:
     path: packages/micro_app_cup
   micro_app_config_cup:
