@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:in_app_review/in_app_review.dart';
 import 'package:loading_indicator/loading_indicator.dart';
+import 'package:micro_commons/app/components/delete_account.dart';
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:iconsax/iconsax.dart';
 
 import 'package:uuid/uuid.dart';
@@ -265,8 +267,28 @@ class _NavSettingsState extends State<NavSettings> {
                                 icon: Iconsax.trash,
                                 label: 'Excluir conta',
                                 widget: GestureDetector(
-                                  onTap: () =>
-                                      SystemSound.play(SystemSoundType.click),
+                                  onTap: () {
+                                    SystemSound.play(SystemSoundType.click);
+                                    showCupertinoModalBottomSheet(
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        return Container(
+                                          padding:
+                                              const EdgeInsets.only(top: 30),
+                                          height: AppDefault.height(context)
+                                              .percent(70),
+                                          child: Material(
+                                            child: DeleteAccount(
+                                              onLoad: () {
+                                                AppDefault.close(context);
+                                                print('deletar');
+                                              },
+                                            ),
+                                          ),
+                                        );
+                                      },
+                                    );
+                                  },
                                   child: const Icon(
                                     Iconsax.arrow_circle_right,
                                     size: 25,
