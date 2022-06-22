@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:flutter/services.dart';
+import 'package:micro_core/core/customs/custum_in_app_purchase.dart';
 import 'package:micro_core/core/helpers/keyboard_manenger.dart';
 import 'package:micro_core/core/theme/theme.dart';
 
@@ -40,7 +41,9 @@ class _SubscriptionPageState extends State<SubscriptionPage>
           ),
           actions: [
             TextButton.icon(
-              onPressed: () {},
+              onPressed: () {
+                CustumInAppPurchese.instance.restorePurchases();
+              },
               icon: const Icon(
                 Iconsax.refresh,
                 size: 18,
@@ -105,7 +108,9 @@ class _SubscriptionPageState extends State<SubscriptionPage>
                                     width: double.infinity,
                                     height: 66,
                                     child: ElevatedButton(
-                                      onPressed: () {},
+                                      onPressed: () {
+                                        CustumInAppPurchese.instance.buy();
+                                      },
                                       child: Text(
                                         'Assinar',
                                         style: AppTypography.t16()
@@ -113,13 +118,30 @@ class _SubscriptionPageState extends State<SubscriptionPage>
                                       ),
                                     ),
                                   ).withBottomPadding(),
-                                  Text(
-                                    'Esta assinatura é renovada automaticamente por um mês no valor de US\$ 4.99, a menos que seja cancelada com 24 horas de antecedência. O gratuito é cobrado na sua conta do iTunes na confirmação da compra. Você pode gerenciar suas assinaturas e desativar a renovação automática acessando as Configurações da sua conta. Nenhum cancelamento da assinatura atual é permitido durante o período de assinatura ativa. Qualquer parte não utilizada de um período de teste gratuito será reforçada quando você adquirir uma assinatura dessa publicação. Ao se cadastrar, aceite nossos Termos de Uso e Política de Privacidade.',
+                                  Text.rich(
+                                    TextSpan(
+                                      children: [
+                                        const TextSpan(
+                                            text:
+                                                'Esta assinatura é renovada automaticamente por um mês no valor de US\$ 4.99, a menos que seja cancelada com 24 horas de antecedência. O gratuito é cobrado na sua conta do iTunes na confirmação da compra. Você pode gerenciar suas assinaturas e desativar a renovação automática acessando as Configurações da sua conta. Nenhum cancelamento da assinatura atual é permitido durante o período de assinatura ativa. Qualquer parte não utilizada de um período de teste gratuito será reforçada quando você adquirir uma assinatura dessa publicação. Ao se cadastrar, aceite nossos '),
+                                        TextSpan(
+                                            text: 'Termos de Uso ',
+                                            style: AppTypography.t13WithW800(
+                                                    fontName: 'Inter')
+                                                .copyWith(color: Colors.white)),
+                                        const TextSpan(text: 'e '),
+                                        TextSpan(
+                                            text: 'Política de Privacidade.',
+                                            style: AppTypography.t13WithW800(
+                                                    fontName: 'Inter')
+                                                .copyWith(color: Colors.white))
+                                      ],
+                                    ),
                                     textAlign: TextAlign.center,
                                     style: AppTypography.t12(fontName: 'Inter')
                                         .copyWith(
-                                            color:
-                                                Colors.white.withOpacity(0.6)),
+                                      color: Colors.white.withOpacity(0.6),
+                                    ),
                                   ),
                                 ],
                               ),

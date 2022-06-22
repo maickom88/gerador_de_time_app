@@ -284,7 +284,7 @@ class _NavSettingsState extends State<NavSettings> {
                                             child: DeleteAccount(
                                               onLoad: () {
                                                 AppDefault.close(context);
-                                                print('deletar');
+                                                debugPrint('deletar');
                                               },
                                             ),
                                           ),
