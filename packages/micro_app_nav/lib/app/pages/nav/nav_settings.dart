@@ -183,8 +183,11 @@ class _NavSettingsState extends State<NavSettings> {
                                 icon: Iconsax.medal,
                                 label: 'Ser premium',
                                 widget: GestureDetector(
-                                  onTap: () =>
-                                      SystemSound.play(SystemSoundType.click),
+                                  onTap: () {
+                                    SystemSound.play(SystemSoundType.click);
+                                    AppDefault.navigateTo(context,
+                                        routeName: '/subscription');
+                                  },
                                   child: const Icon(
                                     Iconsax.arrow_circle_right,
                                     size: 25,

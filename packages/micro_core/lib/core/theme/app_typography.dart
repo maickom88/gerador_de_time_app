@@ -21,6 +21,9 @@ class AppTypography {
   static TextStyle t14({String? fontName = fontFamily}) =>
       TextStyle(fontFamily: fontName, fontSize: 14);
 
+  static TextStyle t12({String? fontName = fontFamily}) =>
+      TextStyle(fontFamily: fontName, fontSize: 12);
+
   static TextStyle t22WithW800({String? fontName = fontFamily}) => TextStyle(
       fontFamily: fontName, fontSize: 22, fontWeight: FontWeight.w800);
 
