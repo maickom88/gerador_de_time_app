@@ -255,28 +255,28 @@ class _NavSettingsState extends State<NavSettings> {
                           ),
                           child: Column(
                             children: [
-                              SettingsDetails(
-                                icon: Iconsax.moon,
-                                label: 'Modo escuro',
-                                widget: CupertinoSwitch(
-                                  onChanged: (value) {},
-                                  value: false,
-                                ),
-                              ),
-                              SettingsDetails(
-                                icon: Iconsax.key,
-                                label: 'Alterar senha',
-                                widget: GestureDetector(
-                                  onTap: () async {
-                                    SystemSound.play(SystemSoundType.click);
-                                  },
-                                  child: const Icon(
-                                    Iconsax.arrow_circle_right,
-                                    size: 25,
-                                    color: Color(0xffACACAC),
-                                  ).withRightPadding(rightPadding: 20),
-                                ),
-                              ),
+                              // SettingsDetails(
+                              //   icon: Iconsax.moon,
+                              //   label: 'Modo escuro',
+                              //   widget: CupertinoSwitch(
+                              //     onChanged: (value) {},
+                              //     value: false,
+                              //   ),
+                              // ),
+                              // SettingsDetails(
+                              //   icon: Iconsax.key,
+                              //   label: 'Alterar senha',
+                              //   widget: GestureDetector(
+                              //     onTap: () async {
+                              //       SystemSound.play(SystemSoundType.click);
+                              //     },
+                              //     child: const Icon(
+                              //       Iconsax.arrow_circle_right,
+                              //       size: 25,
+                              //       color: Color(0xffACACAC),
+                              //     ).withRightPadding(rightPadding: 20),
+                              //   ),
+                              // ),
                               SettingsDetails(
                                 icon: Iconsax.magic_star,
                                 label: 'Avaliar o app',

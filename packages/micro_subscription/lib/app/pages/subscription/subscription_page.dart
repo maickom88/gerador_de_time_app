@@ -266,14 +266,14 @@ class CardSubscription extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const TextSubscriptionCard(description: 'Número ilimitado de times'),
           const TextSubscriptionCard(
               description: 'Possibilidade de equilibrar times'),
           const TextSubscriptionCard(
               description: 'Número ilimitado de jogadores'),
+          const TextSubscriptionCard(description: 'Número ilimitado de times'),
           Center(
             child: Text(
-              'Bonús tema escuro',
+              'Bonús: acesso a novos esportes',
               textAlign: TextAlign.center,
               style: AppTypography.t14(fontName: 'Inter')
                   .copyWith(color: Colors.white.withOpacity(0.5)),

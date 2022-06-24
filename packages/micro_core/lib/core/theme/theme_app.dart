@@ -4,6 +4,7 @@ import 'theme.dart';
 
 class ThemeApp {
   static TextTheme textTheme() => const TextTheme();
+  static ThemeData themeDark() => ThemeData.dark();
 
   static ThemeData theme() {
     return ThemeData(
