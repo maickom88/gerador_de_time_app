@@ -4,4 +4,4 @@ import '../pages/controllers/logout_controller.dart';
 import 'build_resources.dart';
 
 LogoutController buildLoginController() =>
-    LogoutController(logoutUsecase, updateUser, storage);
+    LogoutController(logoutUsecase, updateUser, uploadFileUsecase, storage);

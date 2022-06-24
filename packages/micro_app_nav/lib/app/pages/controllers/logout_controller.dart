@@ -1,6 +1,10 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:micro_commons/app/components/error_page.dart';
 import 'package:micro_commons/app/components/loading_sport.dart';
+import 'package:micro_commons/app/domain/usecases/upload_file.dart';
+import 'package:micro_commons/customs/file_picker_custum.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:micro_core/core/theme/theme.dart';
 import 'package:micro_core/core/usecases/usecases.dart';
@@ -14,16 +18,20 @@ import '../states/logout_state.dart';
 class LogoutController extends ValueNotifier<LogoutState> {
   final Logout _logoutUsecase;
   final UpdateUser _updateUser;
+  final UploadFile _uploadFile;
   final SharedPreferences _sharedPreferences;
 
   LogoutController(
     this._logoutUsecase,
     this._updateUser,
+    this._uploadFile,
     this._sharedPreferences,
   ) : super(InitialLogoutState());
 
   late final ValueNotifier<UserEntity?> _userEntity =
       ValueNotifier<UserEntity?>(null);
+
+  final ValueNotifier<double> progressUpload = ValueNotifier<double>(0);
 
   UserEntity? get userEntity => _userEntity.value;
 
@@ -33,6 +41,16 @@ class LogoutController extends ValueNotifier<LogoutState> {
       userEntity = UserEntity.fromJson(_sharedPreferences.getString('user')!);
     }
     value = LogoutSuccessState();
+  }
+
+  Future<void> uploadFile(BuildContext context, File params) async {
+    final result = await _uploadFile.call(params);
+    result.fold((resultError) {}, (resultSuccess) async {
+      await Future.delayed(const Duration(seconds: 1));
+      progressUpload.value = 0;
+      userEntity = userEntity?.copyWith(photo: resultSuccess);
+      updateUser(context);
+    });
   }
 
   Future<void> logout(context) async {
@@ -81,6 +99,7 @@ class LogoutController extends ValueNotifier<LogoutState> {
       await _sharedPreferences.setString('user', userEntity!.toJson());
       await Future.delayed(const Duration(seconds: 2));
       AppDefault.close(context);
+      await CustumFilePicker.instance.closeStream();
     });
   }
 

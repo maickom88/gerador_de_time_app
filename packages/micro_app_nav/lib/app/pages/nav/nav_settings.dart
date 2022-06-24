@@ -1,10 +1,14 @@
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:in_app_review/in_app_review.dart';
 import 'package:loading_indicator/loading_indicator.dart';
 import 'package:micro_commons/app/components/delete_account.dart';
+import 'package:micro_commons/customs/file_picker_custum.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:iconsax/iconsax.dart';
 
 import 'package:uuid/uuid.dart';
@@ -52,6 +56,10 @@ class _NavSettingsState extends State<NavSettings> {
         }
       }
     });
+
+    CustumFilePicker.instance.onProgress.listen((event) {
+      widget.logoutController.progressUpload.value = event;
+    });
     super.initState();
   }
 
@@ -90,23 +98,58 @@ class _NavSettingsState extends State<NavSettings> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Builder(builder: (context) {
-                        const locaImage = ProfileImage.hand1;
-                        return Center(
-                          child: AvatarPhoto(
-                            isLoadImageLocal: widget
-                                    .logoutController.userEntity!.photo.isEmpty
-                                ? true
-                                : false,
-                            photo: widget.logoutController.userEntity!.photo
-                                    .isNotEmpty
-                                ? widget.logoutController.userEntity!.photo
-                                : locaImage,
-                            heroTag: const Uuid().v1(),
-                            onTap: () {},
-                          ),
-                        );
-                      }),
+                      ValueListenableBuilder<double>(
+                          valueListenable:
+                              widget.logoutController.progressUpload,
+                          builder: (context, value, child) {
+                            const locaImage = ProfileImage.hand1;
+                            return Center(
+                              child: Stack(
+                                children: [
+                                  Visibility(
+                                    visible: value > 0,
+                                    child: Container(
+                                      width: 85,
+                                      height: 85,
+                                      decoration: const BoxDecoration(
+                                        color: AppColor.lightColor,
+                                        shape: BoxShape.circle,
+                                      ),
+                                      child: CircularProgressIndicator(
+                                        value: value,
+                                        strokeWidth: 8,
+                                        color: AppColor.secondaryColor,
+                                      ),
+                                    ),
+                                  ),
+                                  AvatarPhoto(
+                                    isLoadImageLocal: widget.logoutController
+                                            .userEntity!.photo.isEmpty
+                                        ? true
+                                        : false,
+                                    photo: widget.logoutController.userEntity!
+                                            .photo.isNotEmpty
+                                        ? widget
+                                            .logoutController.userEntity!.photo
+                                        : locaImage,
+                                    heroTag: const Uuid().v1(),
+                                    onTap: () async {
+                                      HapticFeedback.lightImpact();
+                                      FilePickerResult? result =
+                                          await FilePicker.platform
+                                              .pickFiles(type: FileType.image);
+                                      if (result != null) {
+                                        File file =
+                                            File(result.files.single.path!);
+                                        widget.logoutController
+                                            .uploadFile(context, file);
+                                      }
+                                    },
+                                  ),
+                                ],
+                              ).withBottomPadding(bottomPadding: 5),
+                            );
+                          }),
                       SizedBox(
                         height: 30,
                         child: TextFormField(
