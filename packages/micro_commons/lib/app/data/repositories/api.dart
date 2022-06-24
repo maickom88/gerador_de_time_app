@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:either_dart/either.dart';
 import 'package:micro_core/core/errors/errors.dart';
 
@@ -45,6 +47,15 @@ class Api implements ApiRepository {
       String params) async {
     try {
       return Right(await apiDatasource.getPerformacePlayer(params));
+    } on Failure catch (error) {
+      return Left(error);
+    }
+  }
+
+  @override
+  Future<Either<Failure, String>> uploadFile(File params) async {
+    try {
+      return Right(await apiDatasource.uploadFile(params));
     } on Failure catch (error) {
       return Left(error);
     }

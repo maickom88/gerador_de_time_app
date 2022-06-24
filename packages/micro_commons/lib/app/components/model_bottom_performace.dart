@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:loading_indicator/loading_indicator.dart';
+import 'package:extended_image/extended_image.dart';
 import 'package:micro_core/core/components/animation.dart';
 import 'package:micro_core/core/theme/theme.dart';
 
@@ -114,11 +115,12 @@ class _ModelBottomPerformanceState extends State<ModelBottomPerformance> {
                                   if (!widget.isLoadLocalImage) {
                                     return Hero(
                                       tag: widget.heroTag,
-                                      child: Image.network(
+                                      child: ExtendedImage.network(
                                         widget.photo,
                                         fit: BoxFit.cover,
                                         height: 85,
                                         width: 85,
+                                        timeLimit: const Duration(days: 15),
                                       ),
                                     );
                                   }

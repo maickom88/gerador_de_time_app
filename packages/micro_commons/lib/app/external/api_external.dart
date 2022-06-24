@@ -1,6 +1,9 @@
+import 'dart:io';
+
 import 'package:micro_core/core/customs/custum_dio.dart';
 import 'package:dio/dio.dart';
 
+import '../../customs/file_picker_custum.dart';
 import '../data/datasources/api_datasource.dart';
 import '../data/errors/server_error.dart';
 import '../domain/entities/performace_entity.dart';
@@ -59,6 +62,30 @@ class ApiExternal implements ApiDatasource {
           .get<Map<String, dynamic>>('/player/$params/performace');
       final performace = PerfomaceEntity.fromMap(result.data!);
       return performace;
+    } on DioError catch (error) {
+      throw error.error;
+    } on Exception catch (_) {
+      throw ServerError();
+    }
+  }
+
+  @override
+  Future<String> uploadFile(File params) async {
+    try {
+      String fileName = params.path.split('/').last;
+      FormData formData = FormData.fromMap({
+        "file": await MultipartFile.fromFile(params.path, filename: fileName),
+      });
+
+      final result = await _dio.http.post<Map<String, dynamic>>(
+        '/storage/upload',
+        data: formData,
+        onSendProgress: (int sent, int total) {
+          final progress = sent / total;
+          CustumFilePicker.instance.setValueProgress(progress);
+        },
+      );
+      return result.data!['your file url'];
     } on DioError catch (error) {
       throw error.error;
     } on Exception catch (_) {

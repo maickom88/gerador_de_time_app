@@ -72,7 +72,7 @@ class _NavTeamState extends State<NavTeam> {
                             context: context,
                             builder: (context) => ModelBottomAddPlayer(
                               positionController: widget.positionController,
-                              onSave: (name, guidPosition, skill) async {
+                              onSave: (name, photo, guidPosition, skill) async {
                                 AppDefault.showDefaultLoad(
                                   context,
                                   const LoadingSport(
@@ -85,6 +85,7 @@ class _NavTeamState extends State<NavTeam> {
                                 if (resultSaveSkill) {
                                   final params = SavePlayerParams(
                                     name: name,
+                                    photo: photo,
                                     guidPosition: guidPosition,
                                     guidSkill:
                                         widget.teamController.skill?.guid,
