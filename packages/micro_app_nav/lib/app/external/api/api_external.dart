@@ -1,6 +1,7 @@
 import 'package:micro_commons/app/domain/entities/cup_entity.dart';
 import 'package:micro_commons/app/domain/entities/notification_entity.dart';
 import 'package:micro_commons/app/domain/entities/player_entity.dart';
+import 'package:micro_commons/app/domain/entities/purchase_entity.dart';
 import 'package:micro_core/core/customs/custum_dio.dart';
 import 'package:dio/dio.dart';
 
@@ -147,6 +148,19 @@ class ApiExternal implements ApiDatasource {
     try {
       await _dio.http.put<void>('/notification/clear/user/$params');
       return;
+    } on DioError catch (error) {
+      throw error.error;
+    } on Exception catch (_) {
+      throw ServerError();
+    }
+  }
+
+  @override
+  Future<PurchaseEntity> getPurchase(String params) async {
+    try {
+      final result = await _dio.http
+          .get<Map<String, dynamic>>('/purchase/active/user/$params');
+      return PurchaseEntity.fromMap(result.data!);
     } on DioError catch (error) {
       throw error.error;
     } on Exception catch (_) {

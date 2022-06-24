@@ -1,6 +1,7 @@
 import 'package:micro_commons/app/domain/entities/cup_entity.dart';
 import 'package:micro_commons/app/domain/entities/notification_entity.dart';
 import 'package:micro_commons/app/domain/entities/player_entity.dart';
+import 'package:micro_commons/app/domain/entities/purchase_entity.dart';
 
 import '../../domain/entities/cup_information_entity.dart';
 import '../../domain/entities/position_entity.dart';
@@ -11,6 +12,7 @@ import '../../domain/usecases/save_player_usecase.dart';
 
 abstract class ApiDatasource {
   Future<List<SportEntity>> getSports();
+  Future<PurchaseEntity> getPurchase(String params);
   Future<List<NotificationEntity>> getNotifications(String params);
   Future<void> clearNotification(String params);
   Future<List<PositionEntity>> getPositions();
