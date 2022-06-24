@@ -48,6 +48,12 @@ class HomeController extends ValueNotifier<HomeState> {
     }
   }
 
+  void getUser() {
+    if (_sharedPreferences.containsKey('user')) {
+      userEntity = UserEntity.fromJson(_sharedPreferences.getString('user')!);
+    }
+  }
+
   set userEntity(UserEntity? user) {
     _userEntity.value = user;
     notifyListeners();

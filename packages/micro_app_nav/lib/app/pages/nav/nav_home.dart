@@ -1,9 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:extended_image/extended_image.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:loading_indicator/loading_indicator.dart';
 import 'package:micro_commons/app/components/error_page.dart';
+import 'package:micro_commons/customs/file_picker_custum.dart';
 import 'package:micro_core/core/components/animation.dart';
 import 'package:micro_core/core/theme/theme.dart';
 
@@ -12,7 +14,7 @@ import '../components/card_sport.dart';
 import '../controllers/home_controller.dart';
 import '../states/home_state.dart';
 
-class NavHome extends StatelessWidget {
+class NavHome extends StatefulWidget {
   final HomeController homeController;
   const NavHome({
     Key? key,
@@ -20,14 +22,27 @@ class NavHome extends StatelessWidget {
   }) : super(key: key);
 
   @override
+  State<NavHome> createState() => _NavHomeState();
+}
+
+class _NavHomeState extends State<NavHome> {
+  @override
+  void initState() {
+    CustumFilePicker.instance.onProgress.listen((event) {}).onDone(() async {
+      widget.homeController.getUser();
+    });
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: ValueListenableBuilder<HomeState>(
-          valueListenable: homeController,
+          valueListenable: widget.homeController,
           builder: (context, value, child) {
             if (value is HomeErrorState) {
               return ErrorComponent(
-                onLoad: () => homeController.getSports(),
+                onLoad: () => widget.homeController.getSports(),
               );
             }
             if (value is HomeSuccessState) {
@@ -44,15 +59,34 @@ class NavHome extends StatelessWidget {
                       excludeHeaderSemantics: false,
                       leading: Padding(
                         padding: const EdgeInsets.only(left: 28),
-                        child: ClipOval(
-                          child: Container(
-                            decoration: BoxDecoration(
-                              color: Colors.grey[200],
-                              shape: BoxShape.circle,
-                            ),
-                            child: Image.asset(
-                              LocalImage.defaultLogo,
-                              fit: BoxFit.fill,
+                        child: Container(
+                          width: 85,
+                          height: 85,
+                          decoration: const BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: AppColor.textLight,
+                          ),
+                          child: ClipOval(
+                            child: Builder(
+                              builder: (context) {
+                                if (widget.homeController.userEntity?.photo
+                                        .isNotEmpty ==
+                                    true) {
+                                  return ExtendedImage.network(
+                                    widget.homeController.userEntity!.photo,
+                                    fit: BoxFit.cover,
+                                    height: 85,
+                                    width: 85,
+                                    timeRetry: const Duration(days: 15),
+                                  );
+                                }
+                                return Image.asset(
+                                  ProfileImage.hand1,
+                                  fit: BoxFit.cover,
+                                  height: 85,
+                                  width: 85,
+                                );
+                              },
                             ),
                           ),
                         ),
@@ -66,7 +100,8 @@ class NavHome extends StatelessWidget {
                               children: [
                                 const TextSpan(text: 'Olá'),
                                 TextSpan(
-                                  text: ' ${homeController.userEntity?.name}',
+                                  text:
+                                      ' ${widget.homeController.userEntity?.name}',
                                   style: AppTypography.t28WithW800(),
                                 ),
                               ],
@@ -101,7 +136,7 @@ class NavHome extends StatelessWidget {
                         child: CupertinoTextField(
                           placeholder: 'Pesquisar',
                           onChanged: (value) {
-                            homeController.searchSport(value);
+                            widget.homeController.searchSport(value);
                           },
                           suffix: IconButton(
                             icon: const Icon(
@@ -125,16 +160,17 @@ class NavHome extends StatelessWidget {
                         height: 325,
                         child: ListView.builder(
                           scrollDirection: Axis.horizontal,
-                          itemCount:
-                              homeController.searchResultSports.isNotEmpty
-                                  ? homeController.searchResultSports.length
-                                  : value.sports.length,
+                          itemCount: widget
+                                  .homeController.searchResultSports.isNotEmpty
+                              ? widget.homeController.searchResultSports.length
+                              : value.sports.length,
                           physics: const BouncingScrollPhysics(),
                           itemBuilder: (_, index) {
-                            final sport =
-                                homeController.searchResultSports.isNotEmpty
-                                    ? homeController.searchResultSports[index]
-                                    : value.sports[index];
+                            final sport = widget.homeController
+                                    .searchResultSports.isNotEmpty
+                                ? widget
+                                    .homeController.searchResultSports[index]
+                                : value.sports[index];
                             return FadeAnimation(
                               delay: (1.8 + index) / 4,
                               child: CardSport(

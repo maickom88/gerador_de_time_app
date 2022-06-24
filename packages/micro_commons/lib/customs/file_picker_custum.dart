@@ -10,7 +10,13 @@ class CustumFilePicker {
 
   factory CustumFilePicker() => _singleton;
 
-  void setValueProgress(double progress) {
-    _progress.add(progress);
+  Future<void> setValueProgress(double progress) async {
+    if (!_progress.isClosed) {
+      _progress.add(progress);
+    }
+  }
+
+  Future<void> closeStream() async {
+    await _progress.close();
   }
 }

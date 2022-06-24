@@ -49,9 +49,7 @@ class PositionController extends ValueNotifier<PositionState> {
 
   Future<void> uploadFile(File params) async {
     final result = await _uploadFile.call(params);
-    result.fold((resultError) {
-      value = PositionErrorState(error: resultError);
-    }, (resultSuccess) async {
+    result.fold((resultError) {}, (resultSuccess) async {
       await Future.delayed(const Duration(seconds: 1));
       progressUpload.value = 0;
       photo = resultSuccess;
