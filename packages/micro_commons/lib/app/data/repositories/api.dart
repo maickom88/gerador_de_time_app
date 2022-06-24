@@ -7,6 +7,7 @@ import '../../domain/entities/performace_entity.dart';
 import '../../domain/entities/player_entity.dart';
 import '../../domain/entities/skill_entity.dart';
 import '../../domain/repositories/api_repository.dart';
+import '../../domain/usecases/update_device.dart';
 import '../datasources/api_datasource.dart';
 
 class Api implements ApiRepository {
@@ -56,6 +57,15 @@ class Api implements ApiRepository {
   Future<Either<Failure, String>> uploadFile(File params) async {
     try {
       return Right(await apiDatasource.uploadFile(params));
+    } on Failure catch (error) {
+      return Left(error);
+    }
+  }
+
+  @override
+  Future<Either<Failure, void>> updateDevice(DeviceParams params) async {
+    try {
+      return Right(await apiDatasource.updateDevice(params));
     } on Failure catch (error) {
       return Left(error);
     }

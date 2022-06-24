@@ -1,4 +1,8 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:micro_commons/app/domain/usecases/update_device.dart';
+import 'package:micro_core/core/customs/custum_firebase_message.dart';
 import 'package:micro_core/core/usecases/usecases.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -9,6 +13,7 @@ import '../states/home_state.dart';
 
 class HomeController extends ValueNotifier<HomeState> {
   final GetSports _getSports;
+  final UpdateDevice _updateDevice;
   final SharedPreferences _sharedPreferences;
 
   final ValueNotifier<List<SportEntity>> _searchResultSports =
@@ -21,6 +26,7 @@ class HomeController extends ValueNotifier<HomeState> {
 
   HomeController(
     this._getSports,
+    this._updateDevice,
     this._sharedPreferences,
   ) : super(InitialHomeState());
 
@@ -33,9 +39,21 @@ class HomeController extends ValueNotifier<HomeState> {
     result.fold((resultError) {
       value = HomeErrorState(error: resultError);
     }, (resultSuccess) async {
+      updateDevice();
       await Future.delayed(const Duration(seconds: 2));
       value = HomeSuccessState(sports: resultSuccess);
     });
+  }
+
+  Future<void> updateDevice() async {
+    final token = await CustumFirebaseMessage.instance.getTokenMessage();
+    final params = DeviceParams(
+      guidUser: userEntity!.guid,
+      token: token,
+      platform: Platform.isAndroid ? 'ANDROID' : 'IOS',
+    );
+    final result = await _updateDevice.call(params);
+    result.fold((resultError) {}, (resultSuccess) async {});
   }
 
   void searchSport(String search) {

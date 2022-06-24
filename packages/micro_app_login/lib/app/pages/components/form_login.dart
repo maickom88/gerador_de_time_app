@@ -83,21 +83,21 @@ class _FormLoginState extends State<FormLogin> {
                   const Icon(Iconsax.eye_slash, color: AppColor.textLight),
               errorText: widget.error,
             ),
-          ),
-          Align(
-            alignment: Alignment.centerRight,
-            child: TextButton(
-              onPressed: () {
-                SystemSound.play(SystemSoundType.click);
-              },
-              child: Text(
-                'Esqueceu sua senha?',
-                textAlign: TextAlign.left,
-                style: AppTypography.t16(fontName: 'Inter')
-                    .copyWith(color: Colors.white),
-              ),
-            ),
           ).withBottomPadding(bottomPadding: 30),
+          // Align(
+          //   alignment: Alignment.centerRight,
+          //   child: TextButton(
+          //     onPressed: () {
+          //       SystemSound.play(SystemSoundType.click);
+          //     },
+          //     child: Text(
+          //       'Esqueceu sua senha?',
+          //       textAlign: TextAlign.left,
+          //       style: AppTypography.t16(fontName: 'Inter')
+          //           .copyWith(color: Colors.white),
+          //     ),
+          //   ),
+          // ).withBottomPadding(bottomPadding: 30),
           SizedBox(
             width: double.infinity,
             height: 66,
