@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:micro_core/core/components/animation.dart';
 import 'package:micro_core/core/theme/theme.dart';
+import 'package:extended_image/extended_image.dart';
 
 import '../../core/constants/local_image.dart';
 import '../domain/entities/player_entity.dart';
@@ -48,9 +49,10 @@ class CircleTeams extends StatelessWidget {
                           child: Builder(
                             builder: (context) {
                               if (players[0].photo != null) {
-                                return Image.network(
+                                return ExtendedImage.network(
                                   players[0].photo!,
                                   fit: BoxFit.cover,
+                                  timeLimit: const Duration(days: 15),
                                 );
                               }
                               return Image.asset(
@@ -83,9 +85,10 @@ class CircleTeams extends StatelessWidget {
                           child: Builder(
                             builder: (context) {
                               if (players[1].photo != null) {
-                                return Image.network(
+                                return ExtendedImage.network(
                                   players[1].photo!,
                                   fit: BoxFit.cover,
+                                  timeLimit: const Duration(days: 15),
                                 );
                               }
                               return Image.asset(
@@ -118,9 +121,10 @@ class CircleTeams extends StatelessWidget {
                         child: Builder(
                           builder: (context) {
                             if (players[2].photo != null) {
-                              return Image.network(
+                              return ExtendedImage.network(
                                 players[2].photo!,
                                 fit: BoxFit.cover,
+                                timeLimit: const Duration(days: 15),
                               );
                             }
                             return Image.asset(
@@ -156,9 +160,10 @@ class CircleTeams extends StatelessWidget {
                             child: Builder(
                               builder: (context) {
                                 if (players[3].photo != null) {
-                                  return Image.network(
+                                  return ExtendedImage.network(
                                     players[3].photo!,
                                     fit: BoxFit.cover,
+                                    timeLimit: const Duration(days: 15),
                                   );
                                 }
                                 return Image.asset(
@@ -248,9 +253,10 @@ class CardOnTable extends StatelessWidget {
                     child: Builder(
                       builder: (context) {
                         if (players[2].photo != null) {
-                          return Image.network(
+                          return ExtendedImage.network(
                             players[2].photo!,
                             fit: BoxFit.cover,
+                            timeLimit: const Duration(days: 15),
                           );
                         }
                         return Image.asset(
@@ -286,9 +292,10 @@ class CardOnTable extends StatelessWidget {
                         child: Builder(
                           builder: (context) {
                             if (players[1].photo != null) {
-                              return Image.network(
+                              return ExtendedImage.network(
                                 players[1].photo!,
                                 fit: BoxFit.cover,
+                                timeLimit: const Duration(days: 15),
                               );
                             }
                             return Image.asset(

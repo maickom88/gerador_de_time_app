@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:micro_commons/core/constants/local_image.dart';
 import 'package:micro_core/core/theme/theme.dart';
+import 'package:extended_image/extended_image.dart';
 
 class RowDataTable extends StatelessWidget {
   final String? avatar;
@@ -36,9 +37,10 @@ class RowDataTable extends StatelessWidget {
               child: Builder(
                 builder: (context) {
                   if (avatar != null) {
-                    return Image.network(
+                    return ExtendedImage.network(
                       avatar!,
                       fit: BoxFit.cover,
+                      timeRetry: const Duration(days: 15),
                     );
                   }
                   return Image.asset(

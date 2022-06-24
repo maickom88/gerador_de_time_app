@@ -1,5 +1,8 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:micro_commons/app/domain/entities/skill_entity.dart';
+import 'package:micro_commons/app/domain/usecases/upload_file.dart';
 import 'package:micro_core/core/usecases/usecases.dart';
 
 import '../../domain/entities/position_entity.dart';
@@ -8,11 +11,13 @@ import '../states/position_state.dart';
 
 class PositionController extends ValueNotifier<PositionState> {
   final GetPositions _positions;
-
+  final UploadFile _uploadFile;
   final ValueNotifier<List<PositionEntity>> _searchResultPositions =
       ValueNotifier<List<PositionEntity>>([]);
+  final ValueNotifier<double> progressUpload = ValueNotifier<double>(0);
 
   String? name;
+  String? photo;
   int? strength;
   int? velocity;
   int? completion;
@@ -25,6 +30,7 @@ class PositionController extends ValueNotifier<PositionState> {
 
   PositionController(
     this._positions,
+    this._uploadFile,
   ) : super(InitialPositionState());
 
   Future<void> getPositions() async {
@@ -38,6 +44,17 @@ class PositionController extends ValueNotifier<PositionState> {
         return a.name.toLowerCase().compareTo(b.name.toLowerCase());
       });
       value = PositionSuccessState(positions: resultSuccess);
+    });
+  }
+
+  Future<void> uploadFile(File params) async {
+    final result = await _uploadFile.call(params);
+    result.fold((resultError) {
+      value = PositionErrorState(error: resultError);
+    }, (resultSuccess) async {
+      await Future.delayed(const Duration(seconds: 1));
+      progressUpload.value = 0;
+      photo = resultSuccess;
     });
   }
 

@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:micro_commons/app/components/circle_teams.dart';
 import 'package:micro_commons/app/components/error_page.dart';
 import 'package:loading_indicator/loading_indicator.dart';
+import 'package:extended_image/extended_image.dart';
 import 'package:micro_core/core/components/animation.dart';
 import 'package:micro_core/core/theme/theme.dart';
 
@@ -230,9 +231,10 @@ class RowDetailsCup extends StatelessWidget {
             child: Builder(
               builder: (context) {
                 if (image != null) {
-                  return Image.network(
+                  return ExtendedImage.network(
                     image!,
                     fit: BoxFit.cover,
+                    timeLimit: const Duration(days: 15),
                   );
                 }
                 return Image.asset(

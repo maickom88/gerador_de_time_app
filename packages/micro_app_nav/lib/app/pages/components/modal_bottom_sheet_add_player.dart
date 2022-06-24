@@ -1,6 +1,11 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
+import 'package:extended_image/extended_image.dart';
 import 'package:flutter/services.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:file_picker/file_picker.dart';
+import 'package:micro_commons/customs/file_picker_custum.dart';
 import 'package:micro_core/core/components/animation.dart';
 import 'package:adaptive_action_sheet/adaptive_action_sheet.dart';
 import 'package:micro_core/core/theme/theme.dart';
@@ -15,7 +20,9 @@ import 'skill_component.dart';
 
 class ModelBottomAddPlayer extends StatefulWidget {
   final PositionController positionController;
-  final Function(String name, String guidPosition, SkillEntity skill) onSave;
+  final Function(
+          String name, String? photo, String guidPosition, SkillEntity skill)
+      onSave;
   const ModelBottomAddPlayer({
     Key? key,
     required this.positionController,
@@ -29,6 +36,9 @@ class ModelBottomAddPlayer extends StatefulWidget {
 class _ModelBottomAddPlayerState extends State<ModelBottomAddPlayer> {
   @override
   void initState() {
+    CustumFilePicker.instance.onProgress.listen((event) {
+      widget.positionController.progressUpload.value = event;
+    });
     super.initState();
   }
 
@@ -115,6 +125,7 @@ class _ModelBottomAddPlayerState extends State<ModelBottomAddPlayer> {
                       }
                       widget.onSave(
                         widget.positionController.name!,
+                        widget.positionController.photo,
                         widget.positionController.positionEntity!.guid!,
                         skill,
                       );
@@ -128,20 +139,137 @@ class _ModelBottomAddPlayerState extends State<ModelBottomAddPlayer> {
                   ),
                 ],
               ).withBottomPadding(),
-              Center(
-                child: Container(
-                  width: 85,
-                  height: 85,
-                  decoration: const BoxDecoration(
-                    color: AppColor.lightColor,
-                    shape: BoxShape.circle,
-                  ),
-                  child: const Icon(
-                    Iconsax.camera,
-                    size: 38,
-                  ),
-                ).withBottomPadding(),
-              ),
+              ValueListenableBuilder<double>(
+                  valueListenable: widget.positionController.progressUpload,
+                  builder: (context, value, child) {
+                    if (widget.positionController.photo != null) {
+                      return Center(
+                        child: Stack(
+                          children: [
+                            Visibility(
+                              visible: value > 0,
+                              child: Container(
+                                width: 85,
+                                height: 85,
+                                decoration: const BoxDecoration(
+                                  color: AppColor.lightColor,
+                                  shape: BoxShape.circle,
+                                ),
+                                child: CircularProgressIndicator(
+                                  value: value,
+                                  strokeWidth: 8,
+                                  color: AppColor.secondaryColor,
+                                ),
+                              ),
+                            ),
+                            Container(
+                              width: 85,
+                              height: 85,
+                              decoration: const BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: AppColor.textLight,
+                              ),
+                              child: ClipOval(
+                                child: ExtendedImage.network(
+                                  widget.positionController.photo!,
+                                  cache: true,
+                                  fit: BoxFit.cover,
+                                  timeRetry: const Duration(days: 10),
+                                ),
+                              ),
+                            ),
+                            Positioned.fill(
+                              right: 0,
+                              top: 0,
+                              child: Align(
+                                alignment: Alignment.topRight,
+                                child: ClipRRect(
+                                  borderRadius:
+                                      AppDefault.defaultBorderRadius(),
+                                  child: BackdropFilter(
+                                    filter: ImageFilter.blur(
+                                        sigmaX: 13.0, sigmaY: 13.0),
+                                    child: GestureDetector(
+                                      onTap: () async {
+                                        HapticFeedback.lightImpact();
+                                        FilePickerResult? result =
+                                            await FilePicker.platform.pickFiles(
+                                                type: FileType.image);
+                                        if (result != null) {
+                                          File file =
+                                              File(result.files.single.path!);
+                                          widget.positionController
+                                              .uploadFile(file);
+                                        }
+                                      },
+                                      child: Container(
+                                        width: 40,
+                                        height: 40,
+                                        decoration: BoxDecoration(
+                                          color: AppColor.secondaryColor
+                                              .withOpacity(0.4),
+                                          shape: BoxShape.circle,
+                                        ),
+                                        child: const Icon(
+                                          Iconsax.camera,
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ).withBottomPadding();
+                    }
+                    return Center(
+                      child: GestureDetector(
+                        onTap: () async {
+                          HapticFeedback.lightImpact();
+                          FilePickerResult? result = await FilePicker.platform
+                              .pickFiles(type: FileType.image);
+                          if (result != null) {
+                            File file = File(result.files.single.path!);
+                            widget.positionController.uploadFile(file);
+                          }
+                        },
+                        child: Stack(
+                          children: [
+                            Visibility(
+                              visible: value > 0,
+                              child: Container(
+                                width: 85,
+                                height: 85,
+                                decoration: const BoxDecoration(
+                                  color: AppColor.lightColor,
+                                  shape: BoxShape.circle,
+                                ),
+                                child: CircularProgressIndicator(
+                                  value: value,
+                                  strokeWidth: 8,
+                                  color: AppColor.secondaryColor,
+                                ),
+                              ),
+                            ),
+                            Container(
+                              width: 85,
+                              height: 85,
+                              decoration: const BoxDecoration(
+                                color: AppColor.lightColor,
+                                shape: BoxShape.circle,
+                              ),
+                              child: const Icon(
+                                Iconsax.camera,
+                                size: 38,
+                              ),
+                            ).withBottomPadding(),
+                          ],
+                        ),
+                      ),
+                    );
+                  }),
               TextField(
                 onChanged: (value) => widget.positionController.name = value,
                 decoration: const InputDecoration(

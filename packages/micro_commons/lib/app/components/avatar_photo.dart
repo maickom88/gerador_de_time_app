@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:extended_image/extended_image.dart';
 import 'package:micro_core/core/theme/theme.dart';
 import 'package:iconsax/iconsax.dart';
 
@@ -39,11 +40,12 @@ class AvatarPhoto extends StatelessWidget {
                   if (!isLoadImageLocal) {
                     return Hero(
                       tag: heroTag,
-                      child: Image.network(
+                      child: ExtendedImage.network(
                         photo,
                         fit: BoxFit.cover,
                         height: 85,
                         width: 85,
+                        timeRetry: const Duration(days: 15),
                       ),
                     );
                   }
