@@ -12,6 +12,7 @@ dependencies:
   extended_image: ^4.1.0
   lottie: ^1.1.0
   iconsax: ^0.0.8
+  file_picker: ^4.6.1
   modal_bottom_sheet: ^2.0.0
   adaptive_action_sheet: ^2.0.0
   in_app_review: ^2.0.4

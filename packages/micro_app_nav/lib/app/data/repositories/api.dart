@@ -2,6 +2,7 @@ import 'package:either_dart/either.dart';
 import 'package:micro_commons/app/domain/entities/cup_entity.dart';
 import 'package:micro_commons/app/domain/entities/notification_entity.dart';
 import 'package:micro_commons/app/domain/entities/player_entity.dart';
+import 'package:micro_commons/app/domain/entities/purchase_entity.dart';
 import 'package:micro_core/core/errors/errors.dart';
 
 import '../../domain/entities/cup_information_entity.dart';
@@ -106,6 +107,15 @@ class Api implements ApiRepository {
   Future<Either<Failure, void>> clearNotification(String params) async {
     try {
       return Right(await apiDatasource.clearNotification(params));
+    } on Failure catch (error) {
+      return Left(error);
+    }
+  }
+
+  @override
+  Future<Either<Failure, PurchaseEntity>> getPurchase(String params) async {
+    try {
+      return Right(await apiDatasource.getPurchase(params));
     } on Failure catch (error) {
       return Left(error);
     }

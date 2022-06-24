@@ -19,5 +19,15 @@ class UnexpectedError implements Failure {
 
 class Unauthorized implements Failure {
   @override
-  String get message => 'Acesso não autoriz';
+  String get message => 'Acesso não autorizado';
+}
+
+class NotAvailable implements Failure {
+  @override
+  String get message => 'Não está disponivél no momento';
+}
+
+class FailedRestored implements Failure {
+  @override
+  String get message => 'Falha ao tentar restaurar compra';
 }

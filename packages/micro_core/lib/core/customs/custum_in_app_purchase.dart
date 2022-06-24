@@ -1,13 +1,17 @@
 import 'dart:async';
 
-import 'package:flutter/services.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
-import 'package:logger/logger.dart';
+
+import '../errors/errors.dart';
 
 class CustumInAppPurchese {
   StreamSubscription<List<PurchaseDetails>>? _subscription;
+  static final StreamController<PurchaseDetails> _purchaseController =
+      StreamController<PurchaseDetails>();
+  Stream<PurchaseDetails> onBuy =
+      _purchaseController.stream.asBroadcastStream();
   InAppPurchase get inAppPurchase => InAppPurchase.instance;
-  Logger get logger => Logger();
+
   String get productId => 'teste';
   set productId(String newProductId) => productId = newProductId;
 
@@ -23,7 +27,7 @@ class CustumInAppPurchese {
     }, onDone: () {
       _subscription?.cancel();
     }, onError: (error) {
-      logger.e('Error! ${error.toString()}', 'Error on purchases Stream');
+      _purchaseController.addError(UnexpectedError());
     });
   }
 
@@ -31,33 +35,22 @@ class CustumInAppPurchese {
     await _subscription?.cancel();
   }
 
-  void restorePurchases() async {
+  Future<void> restorePurchases() async {
     if (!await inAppPurchase.isAvailable()) {
-      logger.i('In App Purchases not available');
+      _purchaseController.addError(NotAvailable());
       return;
     }
     try {
       await inAppPurchase.restorePurchases();
       // ignore: avoid_catches_without_on_clauses
     } catch (error) {
-      logger.e('Error! ${error.toString()}', 'Trying to restore buy');
+      _purchaseController.addError(FailedRestored());
     }
-    logger.i('In App Purchases restore');
   }
 
   Future<void> _listenToPurchaseUpdated(
       List<PurchaseDetails> purchaseDetailsList) async {
     for (var purchaseDetails in purchaseDetailsList) {
-      logger.v(
-        {
-          'productID': purchaseDetails.productID,
-          'status': purchaseDetails.status,
-          'purchaseID': purchaseDetails.purchaseID,
-          'error': purchaseDetails.error,
-          'peddingCompletePurchase': purchaseDetails.pendingCompletePurchase,
-        },
-      );
-
       switch (purchaseDetails.status) {
         case PurchaseStatus.pending:
           break;
@@ -66,17 +59,14 @@ class CustumInAppPurchese {
           final valid = await _verifyPurchase(purchaseDetails);
           if (valid) {
             if (purchaseDetails.status == PurchaseStatus.purchased) {
-              //avisar que a compra foi feita com sucesso;
+              await deliverProduct(purchaseDetails);
             }
-          } else {
-            logger.e('Error! $purchaseDetails', 'Purchase verification failed');
           }
           break;
         case PurchaseStatus.error:
-          logger.e('Error! ${purchaseDetails.error}', 'Error with purchase');
+          _purchaseController.addError(UnexpectedError());
           break;
         case PurchaseStatus.canceled:
-          logger.i('In App Purchases canceled');
           break;
       }
       if (purchaseDetails.pendingCompletePurchase) {
@@ -85,38 +75,30 @@ class CustumInAppPurchese {
     }
   }
 
+  Future<void> deliverProduct(PurchaseDetails details) async {
+    _purchaseController.add(details);
+  }
+
   Future<bool> _verifyPurchase(PurchaseDetails purchaseDetails) {
-    logger.i('Verifying purchase', purchaseDetails.verificationData);
     return Future<bool>.value(true);
   }
 
   Future<void> buy() async {
     if (!await inAppPurchase.isAvailable()) {
-      logger.i('In App Purchases not available');
+      _purchaseController.addError(NotAvailable());
       return;
     }
-
-    logger.i('querying the store with queryProductsDetails()');
-
     final response = await inAppPurchase.queryProductDetails({productId});
-
     if (response.error != null) {
-      logger.e('Error! ${response.error}',
-          'There was an error when making the purchase');
+      _purchaseController.addError(UnexpectedError());
       return;
     }
-
     if (response.productDetails.length != 1) {
-      logger.e('Error! Product does not exist',
-          'There was an error when making the purchase');
+      _purchaseController.addError(NotFound());
       return;
     }
-
     final productDetails = response.productDetails.single;
-    logger.i('Making the purchase');
     final purchaseParam = PurchaseParam(productDetails: productDetails);
-    final success =
-        await inAppPurchase.buyConsumable(purchaseParam: purchaseParam);
-    logger.i('request was sent with success', success);
+    await inAppPurchase.buyConsumable(purchaseParam: purchaseParam);
   }
 }
