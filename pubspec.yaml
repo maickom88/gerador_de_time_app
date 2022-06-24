@@ -39,6 +39,7 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^1.0.4
+  flutter_native_splash: ^2.0.0
 
 flutter:
   uses-material-design: true
@@ -65,3 +66,9 @@ flutter:
           weight: 800
         - asset: assets/fonts/inter_light.ttf
           weight: 200
+
+flutter_native_splash:
+  flutter_native_splash:
+  image: "assets/images/icon_splash_screen.png"
+  color: "4780EA"
+  android_disable_fullscreen: true
