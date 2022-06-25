@@ -1,4 +1,4 @@
-package com.example.gerador_de_times
+package br.gerador_de_times
 
 import io.flutter.embedding.android.FlutterActivity
 

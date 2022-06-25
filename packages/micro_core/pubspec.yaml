@@ -16,7 +16,7 @@ dependencies:
   in_app_purchase: ^3.0.6
   logger: ^1.1.0
   flutter_local_notifications: ^5.0.0+4
-  firebase_messaging: ^10.0.0
+  firebase_messaging: ^11.4.2
   firebase_core: ^1.16.0
   simple_animations: ^3.0.0
   firebase_crashlytics: ^2.7.2

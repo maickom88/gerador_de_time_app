@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:flutter/services.dart';
 import 'package:micro_commons/app/components/error_message.dart';
+import 'package:micro_commons/app/components/policy_and_privacity.dart';
+import 'package:micro_commons/app/components/terms_of_conditions.dart';
 import 'package:micro_core/core/components/animation.dart';
 import 'package:micro_core/core/customs/custum_in_app_purchase.dart';
 import 'package:loading_indicator/loading_indicator.dart';
@@ -207,19 +209,45 @@ class _SubscriptionPageState extends State<SubscriptionPage>
                                           const TextSpan(
                                               text:
                                                   'Esta assinatura é renovada automaticamente por um mês no valor de US\$ 4.99, a menos que seja cancelada com 24 horas de antecedência. O gratuito é cobrado na sua conta do iTunes na confirmação da compra. Você pode gerenciar suas assinaturas e desativar a renovação automática acessando as Configurações da sua conta. Nenhum cancelamento da assinatura atual é permitido durante o período de assinatura ativa. Qualquer parte não utilizada de um período de teste gratuito será reforçada quando você adquirir uma assinatura dessa publicação. Ao se cadastrar, aceite nossos '),
-                                          TextSpan(
-                                              text: 'Termos de Uso ',
-                                              style: AppTypography.t13WithW800(
-                                                      fontName: 'Inter')
-                                                  .copyWith(
-                                                      color: Colors.white)),
+                                          WidgetSpan(
+                                            child: GestureDetector(
+                                              onTap: () {
+                                                AppDefault.navigateToWidget(
+                                                  context,
+                                                  widget:
+                                                      const TermsOfConditions(),
+                                                );
+                                              },
+                                              child: Text(
+                                                'Termos de Uso ',
+                                                style:
+                                                    AppTypography.t13WithW800(
+                                                            fontName: 'Inter')
+                                                        .copyWith(
+                                                            color:
+                                                                Colors.white),
+                                              ),
+                                            ),
+                                          ),
                                           const TextSpan(text: 'e '),
-                                          TextSpan(
-                                              text: 'Política de Privacidade.',
-                                              style: AppTypography.t13WithW800(
-                                                      fontName: 'Inter')
-                                                  .copyWith(
-                                                      color: Colors.white))
+                                          WidgetSpan(
+                                            child: GestureDetector(
+                                              onTap: () {
+                                                AppDefault.navigateToWidget(
+                                                    context,
+                                                    widget:
+                                                        const PolityAndPrivacy());
+                                              },
+                                              child: Text(
+                                                  'Política de Privacidade.',
+                                                  style:
+                                                      AppTypography.t13WithW800(
+                                                              fontName: 'Inter')
+                                                          .copyWith(
+                                                              color: Colors
+                                                                  .white)),
+                                            ),
+                                          )
                                         ],
                                       ),
                                       textAlign: TextAlign.center,

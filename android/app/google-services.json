@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "153171042260",
+    "project_id": "gerador-de-time",
+    "storage_bucket": "gerador-de-time.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:153171042260:android:b34c5725e1659d6ca38041",
+        "android_client_info": {
+          "package_name": "br.gerador_de_times"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "153171042260-746kg2pd8l33rup10lv0lecb15u05ge2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCD-Y112_ISBKUButfy7igUOszdXXv2iqE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "153171042260-746kg2pd8l33rup10lv0lecb15u05ge2.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "153171042260-ond5ufl9dpr2g0mkeeq15a43n6asao7s.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.gerador-de-times"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

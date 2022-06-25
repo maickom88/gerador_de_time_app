@@ -43,9 +43,6 @@ class CustumFirebaseMessage {
 
   Future<String?> getTokenMessage() async {
     final token = await FirebaseMessaging.instance.getToken();
-    debugPrint('========================================');
-    debugPrint('TOKEN ON FIREBASE: $token');
-    debugPrint('========================================');
     return token;
   }
 }
