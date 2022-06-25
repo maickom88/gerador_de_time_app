@@ -6,6 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:in_app_review/in_app_review.dart';
 import 'package:loading_indicator/loading_indicator.dart';
 import 'package:micro_commons/app/components/delete_account.dart';
+import 'package:micro_commons/app/components/settings_details.dart';
 import 'package:micro_commons/customs/file_picker_custum.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:file_picker/file_picker.dart';
@@ -18,7 +19,6 @@ import 'package:micro_core/core/components/animation.dart';
 import 'package:micro_core/core/theme/theme.dart';
 
 import '../../../core/constants/local_image.dart';
-import '../components/settings_details.dart';
 import '../controllers/logout_controller.dart';
 import '../states/logout_state.dart';
 
@@ -300,8 +300,12 @@ class _NavSettingsState extends State<NavSettings> {
                                 icon: Iconsax.message_notif,
                                 label: 'Ajuda',
                                 widget: GestureDetector(
-                                  onTap: () =>
-                                      SystemSound.play(SystemSoundType.click),
+                                  onTap: () {
+                                    SystemSound.play(SystemSoundType.click);
+
+                                    AppDefault.navigateTo(context,
+                                        routeName: '/help');
+                                  },
                                   child: const Icon(
                                     Iconsax.arrow_circle_right,
                                     size: 25,

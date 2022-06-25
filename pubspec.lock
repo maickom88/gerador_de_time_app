@@ -597,6 +597,13 @@ packages:
       relative: true
     source: path
     version: "0.0.1"
+  micro_help:
+    dependency: "direct main"
+    description:
+      path: "packages/micro_help"
+      relative: true
+    source: path
+    version: "0.0.1"
   micro_subscription:
     dependency: "direct main"
     description:

@@ -125,7 +125,7 @@ class Bullet extends Text {
     int? maxLines,
     String? semanticsLabel,
   }) : super(
-          '• ${data}',
+          '• $data',
           key: key,
           style: style,
           textAlign: textAlign,

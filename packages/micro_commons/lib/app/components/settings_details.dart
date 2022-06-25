@@ -3,13 +3,13 @@ import 'package:micro_core/core/theme/theme.dart';
 
 class SettingsDetails extends StatelessWidget {
   final String label;
-  final IconData icon;
+  final IconData? icon;
   final Widget widget;
   const SettingsDetails({
     Key? key,
     required this.label,
     required this.widget,
-    required this.icon,
+    this.icon,
   }) : super(key: key);
 
   @override
@@ -22,11 +22,12 @@ class SettingsDetails extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Icon(
-            icon,
-            size: 25,
-            color: const Color(0xffACACAC),
-          ).withRightPadding(rightPadding: 20),
+          if (icon != null)
+            Icon(
+              icon,
+              size: 25,
+              color: const Color(0xffACACAC),
+            ).withRightPadding(rightPadding: 20),
           Expanded(
             child: Container(
               height: 50,

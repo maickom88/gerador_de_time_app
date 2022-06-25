@@ -6,6 +6,7 @@ import 'package:micro_app_nav/app/micro_app_nav_resolver.dart';
 import 'package:micro_app_register/app/micro_app_regeister_resolver.dart';
 import 'package:micro_app_welcome/micro_app_welcome.dart';
 import 'package:micro_core/micro_core.dart';
+import 'package:micro_help/app/micro_app_help_resolver.dart';
 import 'package:micro_subscription/app/micro_app_subscription_resolver.dart';
 
 class Resolvers {
@@ -18,5 +19,6 @@ class Resolvers {
     MicroAppConfigCupResolver(),
     MicroAppResumeGameResolver(),
     MicroAppSubscriptionResolver(),
+    MicroAppHelpResolver(),
   ];
 }
