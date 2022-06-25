@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.gerador_de_times">
+    package="br.gerador_de_times">
    <application
-        android:label="gerador_de_times"
+        android:label="Gerador de Times"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"
