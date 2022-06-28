@@ -8,6 +8,7 @@ class LocalImage {
   static const String sportLottie2 = 'assets/animations/load_sport_2.json';
   static const String error = 'assets/animations/error.json';
   static const String error2 = 'assets/animations/error2.json';
+  static const String emptyImage = 'assets/images/prench.png';
 }
 
 class ProfileImage {

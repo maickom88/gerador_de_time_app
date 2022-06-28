@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:loading_indicator/loading_indicator.dart';
+import 'package:micro_commons/app/components/empty_data.dart';
 import 'package:micro_commons/app/components/error_page.dart';
 import 'package:micro_core/core/components/animation.dart';
 import 'package:micro_core/core/theme/theme.dart';
@@ -93,31 +94,42 @@ class _NavHistoricState extends State<NavHistoric> {
                           ),
                         ),
                       ).withBottomPadding(bottomPadding: 30),
-                      ListView.builder(
-                        itemCount: widget.historicController
-                                .searchResultHistorics.isNotEmpty
-                            ? widget
-                                .historicController.searchResultHistorics.length
-                            : value.cups.length,
-                        shrinkWrap: true,
-                        physics: const NeverScrollableScrollPhysics(),
-                        itemBuilder: (_, index) {
-                          final cup = widget.historicController
+                      Visibility(
+                        replacement: const FadeAnimation(
+                          delay: 0.1,
+                          child: WidgetEmptyData(
+                            title: 'Seu historico está vazio',
+                            description:
+                                'Você irá visualizar as copinhas finalizadas aqui',
+                          ),
+                        ),
+                        visible: value.cups.isNotEmpty,
+                        child: ListView.builder(
+                          itemCount: widget.historicController
                                   .searchResultHistorics.isNotEmpty
-                              ? widget.historicController
-                                  .searchResultHistorics[index]
-                              : value.cups[index];
-                          return FadeAnimation(
-                            delay: (1.0 + index) / 4,
-                            child: CardHistoric(
-                              isDraft: cup.isDraft,
-                              title: cup.sport?.name ?? 'Futebol',
-                              nameWinner: cup.winner?.name.toUpperCase(),
-                              date: cup.date,
-                              guidCup: cup.guid!,
-                            ),
-                          );
-                        },
+                              ? widget.historicController.searchResultHistorics
+                                  .length
+                              : value.cups.length,
+                          shrinkWrap: true,
+                          physics: const NeverScrollableScrollPhysics(),
+                          itemBuilder: (_, index) {
+                            final cup = widget.historicController
+                                    .searchResultHistorics.isNotEmpty
+                                ? widget.historicController
+                                    .searchResultHistorics[index]
+                                : value.cups[index];
+                            return FadeAnimation(
+                              delay: (1.0 + index) / 4,
+                              child: CardHistoric(
+                                isDraft: cup.isDraft,
+                                title: cup.sport?.name ?? 'Futebol',
+                                nameWinner: cup.winner?.name.toUpperCase(),
+                                date: cup.date,
+                                guidCup: cup.guid!,
+                              ),
+                            );
+                          },
+                        ),
                       )
                     ],
                   ).withSymPadding(),

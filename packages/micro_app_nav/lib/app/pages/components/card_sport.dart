@@ -37,6 +37,7 @@ class CardSport extends StatelessWidget {
             child: CachedNetworkImage(
               fit: BoxFit.cover,
               height: 320,
+              width: double.infinity,
               imageUrl: photoUrl,
               placeholder: (context, url) => Container(color: Colors.grey[200]),
               errorWidget: (context, url, error) => Padding(

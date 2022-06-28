@@ -5,6 +5,7 @@ import 'package:loading_indicator/loading_indicator.dart';
 import 'package:micro_commons/app/components/card_player.dart';
 import 'package:micro_commons/app/components/error_page.dart';
 import 'package:micro_commons/app/domain/entities/skill_entity.dart';
+import 'package:micro_commons/app/domain/entities/user_entity.dart';
 import 'package:micro_commons/utils/alert_util.dart';
 import 'package:micro_core/core/components/animation.dart';
 import 'package:micro_core/core/theme/theme.dart';
@@ -64,16 +65,6 @@ class _CupPageState extends State<CupPage> {
               )),
               CupertinoSliverNavigationBar(
                 backgroundColor: Colors.white.withOpacity(0.8),
-                trailing: GestureDetector(
-                  onTap: () {
-                    HapticFeedback.lightImpact();
-                  },
-                  child: const Icon(
-                    Iconsax.edit,
-                    color: AppColor.secondaryColor,
-                    size: 25,
-                  ),
-                ),
                 leading: GestureDetector(
                   onTap: () {
                     SystemSound.play(SystemSoundType.click);
@@ -148,10 +139,23 @@ class _CupPageState extends State<CupPage> {
                                       style: AppTypography.t14()
                                           .copyWith(color: AppColor.textLight),
                                     ),
-                                    CupertinoSwitch(
-                                      value: widget.cupController.balanceTeams,
-                                      onChanged: (value) => widget
-                                          .cupController.balanceTeams = value,
+                                    Visibility(
+                                      replacement: CupertinoSwitch(
+                                        value: false,
+                                        onChanged: (value) {
+                                          AppDefault.navigateTo(context,
+                                              routeName: '/subscription');
+                                        },
+                                      ),
+                                      visible: widget
+                                              .cupController.userEntity?.role ==
+                                          RoleEnum.premium,
+                                      child: CupertinoSwitch(
+                                        value:
+                                            widget.cupController.balanceTeams,
+                                        onChanged: (value) => widget
+                                            .cupController.balanceTeams = value,
+                                      ),
                                     )
                                   ],
                                 ).withBottomPadding(bottomPadding: 8),

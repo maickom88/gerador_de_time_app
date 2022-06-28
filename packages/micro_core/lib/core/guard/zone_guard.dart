@@ -21,9 +21,9 @@ class ZoneGuard {
         await CustumLocalStorage.instance.initialize();
         final token = await CustumFirebaseAuth.getToken();
         await CustumFirebaseMessage.instance.initialize();
+        await CustumInAppPurchese.instance.initialize();
         await CustumDio.instance
             .initialize(CustumRemoteConfig.instance.apiBase, token: token);
-        await CustumInAppPurchese.instance.initialize();
         FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
         body.call();
       },

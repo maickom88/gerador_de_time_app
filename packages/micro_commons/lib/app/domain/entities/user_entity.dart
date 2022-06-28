@@ -6,7 +6,7 @@ class UserEntity {
   final String name;
   final bool firstAccess;
   final String photo;
-  final String role;
+  final RoleEnum role;
   UserEntity({
     required this.guid,
     required this.email,
@@ -23,7 +23,7 @@ class UserEntity {
       'name': name,
       'first_access': firstAccess,
       'photo': photo,
-      'role': role,
+      'role': role.roleToString(),
     };
   }
 
@@ -34,7 +34,7 @@ class UserEntity {
       name: map['name'] ?? '',
       firstAccess: map['first_access'] ?? false,
       photo: map['photo'] ?? '',
-      role: map['role'] ?? '',
+      role: (map['role'] as String).toRoleEnum(),
     );
   }
 
@@ -42,4 +42,32 @@ class UserEntity {
 
   factory UserEntity.fromJson(String source) =>
       UserEntity.fromMap(json.decode(source));
+}
+
+enum RoleEnum { premium, free, admin }
+
+extension ConvertStringInRole on String {
+  RoleEnum toRoleEnum() {
+    switch (this) {
+      case 'PREMIUM':
+        return RoleEnum.premium;
+      case 'ADMIN':
+        return RoleEnum.admin;
+      default:
+        return RoleEnum.free;
+    }
+  }
+}
+
+extension ConvertRoleInString on RoleEnum {
+  String roleToString() {
+    switch (this) {
+      case RoleEnum.premium:
+        return 'PREMIUM';
+      case RoleEnum.admin:
+        return 'ADMIN';
+      default:
+        return 'FREE';
+    }
+  }
 }

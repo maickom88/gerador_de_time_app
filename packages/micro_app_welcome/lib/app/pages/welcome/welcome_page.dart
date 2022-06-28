@@ -124,12 +124,12 @@ class _WelcomePageState extends State<WelcomePage> {
                                   WelcomeWidget(
                                     title: 'Sorteie equipes\ne administre',
                                     description:
-                                        'Separe os jogadores, visualize por tabelas veja as estatisticas finais e relatorios da pelada!',
+                                        'Separe os jogadores, visualize por tabelas veja as estatísticas finais e relatórios da pelada!',
                                   ),
                                   WelcomeWidget(
                                     title: 'Veja os melhores da\npelada',
                                     description:
-                                        'Visualize os jogadores com mais gols, os melhores times por pelada em ranking',
+                                        'Visualize os jogadores com mais gols, as melhores equipes por pelada em ranking',
                                   ),
                                 ],
                               ),

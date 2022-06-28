@@ -3,6 +3,7 @@ import "dart:math";
 class LocalImage {
   static const String error2 = 'assets/animations/error2.json';
   static const String help = 'assets/animations/help.json';
+  static const String emptyImage = 'assets/images/prench.png';
   static const String deleteAccount = 'assets/animations/delete_account.json';
   static const String sportLottie = 'assets/animations/load_sport.json';
 }

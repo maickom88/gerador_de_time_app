@@ -2,7 +2,9 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:micro_commons/app/domain/usecases/update_device.dart';
+import 'package:micro_core/core/customs/custum_firebase_auth.dart';
 import 'package:micro_core/core/customs/custum_firebase_message.dart';
+import 'package:micro_core/core/customs/custum_remote_config.dart';
 import 'package:micro_core/core/usecases/usecases.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -34,6 +36,14 @@ class HomeController extends ValueNotifier<HomeState> {
     value = HomeLoandingState();
     if (_sharedPreferences.containsKey('user')) {
       userEntity = UserEntity.fromJson(_sharedPreferences.getString('user')!);
+
+      if (userEntity == null || userEntity?.guid == null) {
+        await CustumRemoteConfig.instance.forceFetch();
+        await CustumFirebaseAuth.logout();
+      }
+    } else {
+      await CustumRemoteConfig.instance.forceFetch();
+      await CustumFirebaseAuth.logout();
     }
     final result = await _getSports.call(NoParams());
     result.fold((resultError) {
