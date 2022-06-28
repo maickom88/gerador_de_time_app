@@ -16,6 +16,8 @@ class CustumDio {
     _dio.interceptors.add(CustomInterceptors());
     _dio.options.baseUrl = baseUrl;
     _dio.options.headers['x-api-key'] = token;
+    _dio.options.connectTimeout = 60 * 1000;
+    _dio.options.receiveTimeout = 60 * 1000;
   }
 
   Future<void> setToken(String? token) async {

@@ -14,4 +14,8 @@ class CustumFirebaseAuth {
     }
     return '';
   }
+
+  static Future<void> logout() async {
+    await FirebaseAuth.instance.signOut();
+  }
 }

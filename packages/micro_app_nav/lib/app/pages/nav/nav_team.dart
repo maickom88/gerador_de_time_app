@@ -3,8 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:micro_commons/app/components/card_player.dart';
+import 'package:micro_commons/app/components/empty_data.dart';
 import 'package:micro_commons/app/components/error_page.dart';
 import 'package:micro_commons/app/components/loading_sport.dart';
+import 'package:micro_commons/app/domain/entities/user_entity.dart';
 import 'package:micro_core/core/components/animation.dart';
 import 'package:loading_indicator/loading_indicator.dart';
 import 'package:micro_core/core/theme/theme.dart';
@@ -68,6 +70,14 @@ class _NavTeamState extends State<NavTeam> {
                       trailing: GestureDetector(
                         onTap: () async {
                           HapticFeedback.lightImpact();
+                          if (widget.teamController.userEntity?.role ==
+                              RoleEnum.free) {
+                            if (value.players.length >= 25) {
+                              AppDefault.navigateTo(context,
+                                  routeName: '/subscription');
+                              return;
+                            }
+                          }
                           await showCupertinoModalBottomSheet(
                             context: context,
                             builder: (context) => ModelBottomAddPlayer(
@@ -349,77 +359,92 @@ class _NavTeamState extends State<NavTeam> {
                           ),
                         ),
                       ).withBottomPadding(),
-                      ListView.builder(
-                          shrinkWrap: true,
-                          physics: const NeverScrollableScrollPhysics(),
-                          itemCount: widget
-                                  .teamController.searchResultPlayer.isNotEmpty
-                              ? widget.teamController.searchResultPlayer.length
-                              : value.players.length,
-                          itemBuilder: (_, index) {
-                            final player = widget.teamController
-                                    .searchResultPlayer.isNotEmpty
+                      Visibility(
+                        replacement: const FadeAnimation(
+                          delay: 0.1,
+                          child: WidgetEmptyData(
+                            description:
+                                'Adicione os jogadores no ícone acima para iniciar uma copinha.',
+                            title: 'Lista de jogadores vazia',
+                          ),
+                        ),
+                        visible: value.players.isNotEmpty,
+                        child: ListView.builder(
+                            shrinkWrap: true,
+                            physics: const NeverScrollableScrollPhysics(),
+                            itemCount: widget.teamController.searchResultPlayer
+                                    .isNotEmpty
                                 ? widget
-                                    .teamController.searchResultPlayer[index]
-                                : value.players[index];
-                            return FadeAnimation(
-                              delay: (1.0 + index) / 4,
-                              child: ListTile(
-                                leading: isEditing
-                                    ? FadeAnimation(
-                                        delay: 0,
-                                        directionType: DirectionType.translateX,
-                                        child: Checkbox(
-                                          checkColor: Colors.white,
-                                          fillColor: MaterialStateProperty.all(
-                                              AppColor.secondaryColor),
-                                          value: widget.teamController
-                                                  .playerSelected.isNotEmpty
-                                              ? widget.teamController
-                                                      .playerSelected
-                                                      .where(
-                                                        (element) =>
-                                                            element.guid ==
-                                                            player.guid,
-                                                      )
-                                                      .isEmpty
-                                                  ? false
-                                                  : true
-                                              : false,
-                                          shape: const CircleBorder(),
-                                          onChanged: (bool? value) {
-                                            if (value!) {
-                                              setState(() {
-                                                widget.teamController
-                                                    .playerSelected
-                                                    .add(player);
-                                              });
-                                            } else {
-                                              setState(
-                                                () {
+                                    .teamController.searchResultPlayer.length
+                                : value.players.length,
+                            itemBuilder: (_, index) {
+                              final player = widget.teamController
+                                      .searchResultPlayer.isNotEmpty
+                                  ? widget
+                                      .teamController.searchResultPlayer[index]
+                                  : value.players[index];
+                              return FadeAnimation(
+                                delay: (1.0 + index) / 4,
+                                child: ListTile(
+                                  leading: isEditing
+                                      ? FadeAnimation(
+                                          delay: 0,
+                                          directionType:
+                                              DirectionType.translateX,
+                                          child: Checkbox(
+                                            checkColor: Colors.white,
+                                            fillColor:
+                                                MaterialStateProperty.all(
+                                                    AppColor.secondaryColor),
+                                            value: widget.teamController
+                                                    .playerSelected.isNotEmpty
+                                                ? widget.teamController
+                                                        .playerSelected
+                                                        .where(
+                                                          (element) =>
+                                                              element.guid ==
+                                                              player.guid,
+                                                        )
+                                                        .isEmpty
+                                                    ? false
+                                                    : true
+                                                : false,
+                                            shape: const CircleBorder(),
+                                            onChanged: (bool? value) {
+                                              if (value!) {
+                                                setState(() {
                                                   widget.teamController
                                                       .playerSelected
-                                                      .removeWhere((element) =>
-                                                          element.guid ==
-                                                          player.guid);
-                                                },
-                                              );
-                                            }
-                                          },
-                                        ),
-                                      )
-                                    : null,
-                                title: CardPlayer(
-                                  photo: player.photo,
-                                  name: player.name.splitConvertName(),
-                                  position: player.position.name,
-                                  guid: player.guid!,
-                                  skillValue: widget.positionController
-                                      .calculeSkill(player.skills),
+                                                      .add(player);
+                                                });
+                                              } else {
+                                                setState(
+                                                  () {
+                                                    widget.teamController
+                                                        .playerSelected
+                                                        .removeWhere(
+                                                            (element) =>
+                                                                element.guid ==
+                                                                player.guid);
+                                                  },
+                                                );
+                                              }
+                                            },
+                                          ),
+                                        )
+                                      : null,
+                                  title: CardPlayer(
+                                    photo: player.photo,
+                                    name: player.name.splitConvertName(),
+                                    position: player.position.name,
+                                    guid: player.guid!,
+                                    skillValue: widget.positionController
+                                        .calculeSkill(player.skills),
+                                  ),
                                 ),
-                              ),
-                            );
-                          }),
+                              );
+                            }),
+                      ),
                     ],
                   ).withSymPadding(),
                 ),
