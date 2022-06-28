@@ -56,7 +56,7 @@ class _TermsOfConditionsState extends State<TermsOfConditions> {
               children: [
                 Center(
                   child: Text(
-                    'Termos & condições de Uso do gerador de Times para os usuparios',
+                    'Termos & Condições de Uso do Gerador de Times para os usuários',
                     textAlign: TextAlign.center,
                     style: AppTypography.t14()
                         .copyWith(color: AppColor.secondaryLightColor),
@@ -125,7 +125,7 @@ class Bullet extends Text {
     int? maxLines,
     String? semanticsLabel,
   }) : super(
-          '• ${data}',
+          '• $data',
           key: key,
           style: style,
           textAlign: textAlign,

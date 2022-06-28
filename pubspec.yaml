@@ -30,6 +30,8 @@ dependencies:
     path: packages/micro_app_config_cup
   micro_app_game:
     path: packages/micro_app_game
+  micro_help:
+    path: packages/micro_help
 
   
 

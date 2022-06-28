@@ -1,0 +1,32 @@
+name: micro_help
+description: A new Flutter package project.
+version: 0.0.1
+
+publish_to: "none"
+
+environment:
+  sdk: ">=2.16.2 <3.0.0"
+  flutter: ">=1.17.0"
+dependencies:
+  flutter:
+    sdk: flutter
+
+  micro_core:
+    path: ../micro_core
+  dependencies:
+    path: ../dependencies
+  micro_commons:
+    path: ../micro_commons
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^1.0.4
+
+flutter:
+  uses-material-design: true
+
+  assets:
+    - assets/
+    - assets/images/
+    - assets/animations/
