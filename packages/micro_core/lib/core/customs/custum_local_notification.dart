@@ -66,14 +66,11 @@ class CustumLocalNotification {
       description,
       NotificationDetails(
         android: AndroidNotificationDetails(
-            channel.id, channel.name, channel.description,
-            importance: Importance.max,
-            // icon: '@mipmap/launcher_icon',
-            sound: withCustumSound
-                ? const RawResourceAndroidNotificationSound('som_de_apito.mp3')
-                : null),
-        iOS: IOSNotificationDetails(
-            sound: withCustumSound ? 'som_de_apito.aiff' : null),
+          channel.id,
+          channel.name,
+          channel.description,
+          importance: Importance.max,
+        ),
       ),
     );
   }
@@ -100,6 +97,6 @@ class CustumLocalNotification {
   }
 
   Future<void> cancel() async {
-    await flutterLocalNotificationsPlugin.cancel(0);
+    await flutterLocalNotificationsPlugin.cancelAll();
   }
 }

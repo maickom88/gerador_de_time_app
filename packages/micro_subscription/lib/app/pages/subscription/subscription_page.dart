@@ -54,7 +54,13 @@ class _SubscriptionPageState extends State<SubscriptionPage>
                 );
               });
         });
+
+    getProducts();
     super.initState();
+  }
+
+  Future<void> getProducts() async {
+    await CustumInAppPurchese.instance.getProducts();
   }
 
   @override

@@ -35,6 +35,15 @@ class CustumInAppPurchese {
     await _subscription?.cancel();
   }
 
+  Future<List<ProductDetails>> getProducts() async {
+    final ProductDetailsResponse productDetailResponse =
+        await inAppPurchase.queryProductDetails({productId}.toSet());
+    if (productDetailResponse.error != null) {
+      return productDetailResponse.productDetails;
+    }
+    return [];
+  }
+
   Future<void> restorePurchases() async {
     if (!await inAppPurchase.isAvailable()) {
       _purchaseController.addError(NotAvailable());
@@ -88,7 +97,8 @@ class CustumInAppPurchese {
       _purchaseController.addError(NotAvailable());
       return;
     }
-    final response = await inAppPurchase.queryProductDetails({productId});
+    final response =
+        await inAppPurchase.queryProductDetails({productId}.toSet());
     if (response.error != null) {
       _purchaseController.addError(UnexpectedError());
       return;
