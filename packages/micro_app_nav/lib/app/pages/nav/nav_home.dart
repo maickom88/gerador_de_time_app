@@ -42,7 +42,7 @@ class _NavHomeState extends State<NavHome> {
           builder: (context, value, child) {
             if (value is HomeErrorState) {
               return ErrorComponent(
-                onLoad: () => widget.homeController.getSports(),
+                onLoad: () => widget.homeController.getSports(context),
               );
             }
             if (value is HomeSuccessState) {
@@ -98,10 +98,11 @@ class _NavHomeState extends State<NavHome> {
                             TextSpan(
                               style: AppTypography.t28(),
                               children: [
-                                const TextSpan(text: 'Olá'),
+                                const TextSpan(text: 'Olá '),
                                 TextSpan(
                                   text:
-                                      ' ${widget.homeController.userEntity?.name}',
+                                      widget.homeController.userEntity?.name ??
+                                          '',
                                   style: AppTypography.t28WithW800(),
                                 ),
                               ],

@@ -9,15 +9,13 @@ import 'package:micro_core/core/helpers/keyboard_manenger.dart';
 import 'package:micro_core/core/theme/theme.dart';
 
 import '../../domain/entities/position_entity.dart';
-import '../controllers/position_controller.dart';
+import '../controllers/custum_position_controller.dart';
 import '../states/position_state.dart';
 
 class PageSearchPosition extends StatelessWidget with KeyboardManager {
-  final PositionController positionController;
   final Function(PositionEntity position) onPosition;
   const PageSearchPosition({
     Key? key,
-    required this.positionController,
     required this.onPosition,
   }) : super(key: key);
 
@@ -26,12 +24,14 @@ class PageSearchPosition extends StatelessWidget with KeyboardManager {
     return GestureDetector(
       onTap: () => hideKeyboard(context),
       child: CupertinoPageScaffold(
+        backgroundColor: Colors.white,
         child: ValueListenableBuilder<PositionState>(
-          valueListenable: positionController,
+          valueListenable: CustumPositionController.instance.controller,
           builder: (context, value, child) {
             if (value is PositionErrorState) {
               return ErrorComponent(
-                onLoad: () => positionController.getPositions(),
+                onLoad: () =>
+                    CustumPositionController.instance.controller.getPositions(),
               );
             }
             if (value is PositionSuccessState) {
@@ -44,7 +44,7 @@ class PageSearchPosition extends StatelessWidget with KeyboardManager {
                       height: 20,
                     )),
                     CupertinoSliverNavigationBar(
-                      backgroundColor: Colors.white.withOpacity(0.8),
+                      backgroundColor: Colors.white,
                       padding: const EdgeInsetsDirectional.only(top: 5),
                       largeTitle: SizedBox(
                         height: 40,
@@ -52,8 +52,9 @@ class PageSearchPosition extends StatelessWidget with KeyboardManager {
                           padding: const EdgeInsets.only(right: 12.0),
                           child: CupertinoTextField(
                             placeholder: 'Pesquisar',
-                            onChanged: (value) =>
-                                positionController.searchPosition(value),
+                            onChanged: (value) => CustumPositionController
+                                .instance.controller
+                                .searchPosition(value),
                             prefix: const Padding(
                               padding: EdgeInsets.only(left: 10),
                               child: Icon(
@@ -70,21 +71,25 @@ class PageSearchPosition extends StatelessWidget with KeyboardManager {
                       ),
                       border: Border.all(color: Colors.transparent),
                     ),
+                    // SizedBox(width: 60, height: 20, child: TextFormField())
                   ];
                 },
                 body: Material(
                   type: MaterialType.transparency,
+                  color: Colors.transparent,
                   child: ListView.builder(
                       shrinkWrap: true,
-                      itemCount:
-                          positionController.searchResultPositions.isNotEmpty
-                              ? positionController.searchResultPositions.length
-                              : value.positions.length,
+                      itemCount: CustumPositionController.instance.controller
+                              .searchResultPositions.isNotEmpty
+                          ? CustumPositionController
+                              .instance.controller.searchResultPositions.length
+                          : value.positions.length,
                       physics: const NeverScrollableScrollPhysics(),
                       itemBuilder: (_, index) {
-                        final position = positionController
-                                .searchResultPositions.isNotEmpty
-                            ? positionController.searchResultPositions[index]
+                        final position = CustumPositionController.instance
+                                .controller.searchResultPositions.isNotEmpty
+                            ? CustumPositionController.instance.controller
+                                .searchResultPositions[index]
                             : value.positions[index];
                         return FadeAnimation(
                           delay: (1.0 + index) / 4,

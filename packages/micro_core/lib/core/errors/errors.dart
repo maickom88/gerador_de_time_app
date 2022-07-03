@@ -17,6 +17,11 @@ class UnexpectedError implements Failure {
   String get message => 'Ocorreu um error inesperado';
 }
 
+class ConnectTimeoutError implements Failure {
+  @override
+  String get message => 'Sua requisição demorou muito, tente novamente';
+}
+
 class Unauthorized implements Failure {
   @override
   String get message => 'Acesso não autorizado';

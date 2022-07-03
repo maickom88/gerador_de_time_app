@@ -2,20 +2,22 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:micro_commons/app/domain/usecases/update_device.dart';
-import 'package:micro_core/core/customs/custum_firebase_auth.dart';
 import 'package:micro_core/core/customs/custum_firebase_message.dart';
 import 'package:micro_core/core/customs/custum_remote_config.dart';
+import 'package:micro_core/core/theme/theme.dart';
 import 'package:micro_core/core/usecases/usecases.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../domain/entities/sport_entity.dart';
 import '../../domain/entities/user_entity.dart';
 import '../../domain/usecases/get_sports_usecase.dart';
+import '../../domain/usecases/logout_usecase.dart';
 import '../states/home_state.dart';
 
 class HomeController extends ValueNotifier<HomeState> {
   final GetSports _getSports;
   final UpdateDevice _updateDevice;
+  final Logout _logoutUsecase;
   final SharedPreferences _sharedPreferences;
 
   final ValueNotifier<List<SportEntity>> _searchResultSports =
@@ -29,21 +31,25 @@ class HomeController extends ValueNotifier<HomeState> {
   HomeController(
     this._getSports,
     this._updateDevice,
+    this._logoutUsecase,
     this._sharedPreferences,
   ) : super(InitialHomeState());
 
-  Future<void> getSports() async {
+  Future<void> getSports(BuildContext context) async {
     value = HomeLoandingState();
     if (_sharedPreferences.containsKey('user')) {
       userEntity = UserEntity.fromJson(_sharedPreferences.getString('user')!);
-
-      if (userEntity == null || userEntity?.guid == null) {
+      if (userEntity == null ||
+          userEntity?.guid == null ||
+          userEntity?.guid.isEmpty == true) {
+        await _sharedPreferences.remove('user');
         await CustumRemoteConfig.instance.forceFetch();
-        await CustumFirebaseAuth.logout();
+        logout(context);
       }
     } else {
+      await _sharedPreferences.remove('user');
       await CustumRemoteConfig.instance.forceFetch();
-      await CustumFirebaseAuth.logout();
+      logout(context);
     }
     final result = await _getSports.call(NoParams());
     result.fold((resultError) {
@@ -52,6 +58,15 @@ class HomeController extends ValueNotifier<HomeState> {
       updateDevice();
       await Future.delayed(const Duration(seconds: 2));
       value = HomeSuccessState(sports: resultSuccess);
+    });
+  }
+
+  Future<void> logout(BuildContext context) async {
+    final result = await _logoutUsecase.call(NoParams());
+    result.fold((resultError) {
+      value = HomeErrorState(error: resultError);
+    }, (resultSuccess) async {
+      AppDefault.navigateToRemoveAll(context, routeName: '/login');
     });
   }
 

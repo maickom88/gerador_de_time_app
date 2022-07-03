@@ -40,11 +40,13 @@ class RowDataTable extends StatelessWidget {
                     return ExtendedImage.network(
                       avatar!,
                       fit: BoxFit.cover,
+                      height: 32,
                       timeRetry: const Duration(days: 15),
                     );
                   }
                   return Image.asset(
                     ProfileImage.hand1,
+                    height: 32,
                     fit: BoxFit.cover,
                   );
                 },

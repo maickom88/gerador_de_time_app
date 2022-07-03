@@ -35,6 +35,10 @@ class CustomInterceptors extends Interceptor {
     if (err.response?.statusCode == 400) {
       err.error = UnexpectedError();
     }
+    if (err.message == "DioErrorType.connectTimeout" ||
+        err.message == "Connecting timed out [60000ms]") {
+      err.error = ConnectTimeoutError();
+    }
     AppLog.writeLog(
         'Error in path: ${err.requestOptions.path}, menssage: ${err.message}');
     super.onError(err, handler);

@@ -3,13 +3,13 @@ description: A new Flutter package project.
 version: 0.0.1
 
 environment:
-  sdk: ">=2.16.2 <3.0.0"
+  sdk: ">=2.17.5 <3.0.0"
   flutter: ">=1.17.0"
 
 dependencies:
   flutter:
     sdk: flutter
-  extended_image: ^4.1.0
+  extended_image: ^6.2.1
   lottie: ^1.1.0
   iconsax: ^0.0.8
   file_picker: ^4.6.1

@@ -1,12 +1,13 @@
 extension SplitConvertName on String {
   String splitConvertName() {
-    final listName = split(' ');
+    final listName = trim().split(' ');
     if (listName.isEmpty) {
       return '$this ';
     }
     if (listName.length == 1) {
       return "${listName.first[0].toUpperCase()}${substring(1).toLowerCase()}";
     }
+
     return '${listName[0].toCapitalized()} ${listName[1][0].toCapitalized()}.';
   }
 }

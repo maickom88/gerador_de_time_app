@@ -1,4 +1,6 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:timezone/data/latest_all.dart' as tz;
+import 'package:timezone/timezone.dart' as tz;
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 class CustumLocalNotification {
@@ -19,6 +21,8 @@ class CustumLocalNotification {
   factory CustumLocalNotification() => _singleton;
 
   Future<void> initialize() async {
+    tz.initializeTimeZones();
+    tz.setLocalLocation(tz.getLocation('America/Sao_Paulo'));
     const android = AndroidInitializationSettings('@mipmap/ic_launcher');
     const iOS = IOSInitializationSettings();
     flutterLocalNotificationsPlugin
@@ -64,7 +68,7 @@ class CustumLocalNotification {
         android: AndroidNotificationDetails(
             channel.id, channel.name, channel.description,
             importance: Importance.max,
-            icon: '@mipmap/launcher_icon',
+            // icon: '@mipmap/launcher_icon',
             sound: withCustumSound
                 ? const RawResourceAndroidNotificationSound('som_de_apito.mp3')
                 : null),
@@ -72,5 +76,30 @@ class CustumLocalNotification {
             sound: withCustumSound ? 'som_de_apito.aiff' : null),
       ),
     );
+  }
+
+  Future<void> registerNotification(Duration duration) async {
+    await flutterLocalNotificationsPlugin.zonedSchedule(
+      0,
+      '📣  Apita final de jogo',
+      'O tempo do jogo acabou, finalize a partida!',
+      tz.TZDateTime.now(tz.local).add(duration),
+      NotificationDetails(
+        android: AndroidNotificationDetails(
+          channel.id,
+          channel.name,
+          channel.description,
+          importance: Importance.max,
+          // icon: '@mipmap/launcher_icon',
+        ),
+      ),
+      androidAllowWhileIdle: true,
+      uiLocalNotificationDateInterpretation:
+          UILocalNotificationDateInterpretation.absoluteTime,
+    );
+  }
+
+  Future<void> cancel() async {
+    await flutterLocalNotificationsPlugin.cancel(0);
   }
 }

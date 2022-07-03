@@ -134,6 +134,7 @@ class _NavTeamState extends State<NavTeam> {
                           widget.positionController.name = null;
                           widget.positionController.positionEntity = null;
                           widget.positionController.skillEntity = null;
+                          widget.positionController.photo = null;
                         },
                         child: const Icon(
                           Iconsax.edit,

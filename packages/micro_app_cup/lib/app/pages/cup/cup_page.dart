@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -6,6 +8,7 @@ import 'package:micro_commons/app/components/card_player.dart';
 import 'package:micro_commons/app/components/error_page.dart';
 import 'package:micro_commons/app/domain/entities/skill_entity.dart';
 import 'package:micro_commons/app/domain/entities/user_entity.dart';
+import 'package:micro_commons/core/constants/local_image.dart';
 import 'package:micro_commons/utils/alert_util.dart';
 import 'package:micro_core/core/components/animation.dart';
 import 'package:micro_core/core/theme/theme.dart';
@@ -98,6 +101,43 @@ class _CupPageState extends State<CupPage> {
                   );
                 }
                 if (value is CupSuccessState) {
+                  if (value.players.isEmpty) {
+                    Future.delayed(const Duration(seconds: 1), () {
+                      showCupertinoModalBottomSheet(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return Container(
+                            padding: const EdgeInsets.only(top: 30),
+                            height: AppDefault.height(context).percent(40),
+                            child: Material(
+                              child: SingleChildScrollView(
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Image.asset(
+                                      LocalImage.emptyImage,
+                                      height: 140,
+                                    ).withBottomPadding(),
+                                    Text(
+                                      'Parece que sua lista de jogadores está vazia',
+                                      style: AppTypography.t14()
+                                          .copyWith(color: AppColor.textLight),
+                                    ),
+                                    Text(
+                                      'Para iniciar uma copinha adicione jogadores',
+                                      style: AppTypography.t14()
+                                          .copyWith(color: AppColor.textLight),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          );
+                        },
+                      );
+                    });
+                  }
                   return SingleChildScrollView(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -148,7 +188,7 @@ class _CupPageState extends State<CupPage> {
                                         },
                                       ),
                                       visible: widget
-                                              .cupController.userEntity?.role ==
+                                              .cupController.userEntity?.role !=
                                           RoleEnum.premium,
                                       child: CupertinoSwitch(
                                         value:

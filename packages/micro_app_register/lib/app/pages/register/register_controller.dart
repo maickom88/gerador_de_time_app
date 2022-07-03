@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:micro_core/core/customs/custum_firebase_auth.dart';
 import 'package:micro_core/core/theme/theme.dart';
 
 import '../../domain/usecases/notify_api.dart';
@@ -55,6 +56,7 @@ class RegisterController extends ValueNotifier {
         error = resultError.message;
       },
       (resultSuccess) async {
+        await CustumFirebaseAuth.logout();
         AppDefault.navigateToWidget(
           context,
           withReturn: false,

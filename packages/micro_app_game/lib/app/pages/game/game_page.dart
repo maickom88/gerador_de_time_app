@@ -26,12 +26,13 @@ class GamePage extends StatefulWidget {
   _GamePageState createState() => _GamePageState();
 }
 
-class _GamePageState extends State<GamePage> {
+class _GamePageState extends State<GamePage> with WidgetsBindingObserver {
   late ScrollController _controller;
   late bool _showOnlyIcon;
 
   @override
   void initState() {
+    WidgetsBinding.instance?.addObserver(this);
     _showOnlyIcon = false;
     _controller = ScrollController();
     super.initState();
@@ -39,6 +40,24 @@ class _GamePageState extends State<GamePage> {
       _showOnlyIcon = _controller.position.pixels >= 60;
       setState(() {});
     });
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    WidgetsBinding.instance?.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) async {
+    super.didChangeAppLifecycleState(state);
+    if (state == AppLifecycleState.inactive) {
+      CustumLocalNotification.instance
+          .registerNotification(Duration(seconds: widget.controller.time));
+    } else if (state == AppLifecycleState.resumed) {
+      CustumLocalNotification.instance.cancel();
+    }
   }
 
   @override
@@ -382,7 +401,7 @@ class _GamePageState extends State<GamePage> {
                               timeTextStyle: TextStyle(
                                   color: AppColor.textLight,
                                   fontSize: widget.controller.showAdditions
-                                      ? 14
+                                      ? 12
                                       : 16),
                               valueColor: AppColor.textTitle,
                               backgroundColor: AppColor.textLight,
@@ -391,13 +410,12 @@ class _GamePageState extends State<GamePage> {
                                       minutes: widget.controller.match.time)
                                   .inSeconds,
                               onComplete: () async {
+                                HapticFeedback.vibrate();
                                 if (widget.controller.timeAdditions == null ||
-                                    widget.controller.scoreboardHome !=
-                                        widget.controller.scoreboardOpposing) {
-                                  HapticFeedback.vibrate();
+                                    widget.controller.timeAdditions == 0) {
                                   await CustumLocalNotification.instance
                                       .showLocalNotification(
-                                    id: widget.hashCode,
+                                    id: 1,
                                     withCustumSound: true,
                                     title: "📣  Apita final de jogo",
                                     description:
@@ -405,17 +423,22 @@ class _GamePageState extends State<GamePage> {
                                   );
                                   return;
                                 }
-                                widget.controller.isPlay = false;
-                                widget.controller.isPause = true;
-                                widget.controller.countdownController.restart(
-                                  duration: Duration(
-                                          minutes:
-                                              widget.controller.timeAdditions!)
-                                      .inSeconds,
-                                  initialPosition: 0,
-                                );
-                                widget.controller.timeAdditions = null;
-                                widget.controller.showAdditions = true;
+                                if (widget.controller.timeAdditions != null &&
+                                    widget.controller.scoreboardHome ==
+                                        widget.controller.scoreboardOpposing) {
+                                  widget.controller.isPlay = false;
+                                  widget.controller.isPause = true;
+                                  widget.controller.countdownController.restart(
+                                    duration: Duration(
+                                            minutes: widget
+                                                .controller.timeAdditions!)
+                                        .inSeconds,
+                                    initialPosition: 0,
+                                  );
+                                  widget.controller.timeAdditions = null;
+                                  widget.controller.showAdditions = true;
+                                  return;
+                                }
                               },
                             ),
                           ),

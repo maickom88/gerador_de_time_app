@@ -7,20 +7,24 @@ import 'factories/build_historic_controller.dart';
 import 'factories/build_logout_controller.dart';
 import 'factories/build_nav_controller.dart';
 import 'factories/build_team_controller.dart';
+import 'pages/controllers/custum_position_controller.dart';
 import 'pages/nav/nav_page.dart';
 
 class MicroAppNavResolver implements MicroApp {
   @override
-  String get appName => 'Login';
+  String get appName => 'Nav';
 
   @override
   Map<String, WidgetBuildArgs> get routes => {
         '/nav': (_, args) => NavPage(
               controller: buildNavController(),
               logoutController: buildLoginController()..initialize(),
-              homeController: buildHomeController()..getSports(),
+              homeController: buildHomeController()..getSports(_),
               teamController: buildTeamController()..getPlayers(),
-              positionController: buildPositionController(),
+              positionController: CustumPositionController.instance
+                  .initialize(buildPositionController())
+                  .controller
+                ..getPositions(),
               historicController: buildHistoricController()..getHistorics(),
               notificationController: buildNotificationController()
                 ..getNotifications(),

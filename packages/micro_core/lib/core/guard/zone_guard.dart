@@ -16,6 +16,7 @@ class ZoneGuard {
     runZonedGuarded(
       () async {
         WidgetsFlutterBinding.ensureInitialized();
+
         await Firebase.initializeApp();
         await CustumRemoteConfig.instance.initialize();
         await CustumLocalStorage.instance.initialize();
@@ -24,6 +25,7 @@ class ZoneGuard {
         await CustumInAppPurchese.instance.initialize();
         await CustumDio.instance
             .initialize(CustumRemoteConfig.instance.apiBase, token: token);
+
         FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
         body.call();
       },
