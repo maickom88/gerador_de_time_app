@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
@@ -196,7 +197,7 @@ class _ModelBottomAddPlayerState extends State<ModelBottomAddPlayer> {
                                             await FilePicker.platform.pickFiles(
                                                 type: FileType.image);
                                         if (result != null) {
-                                          File file =
+                                          final file =
                                               File(result.files.single.path!);
                                           widget.positionController
                                               .uploadFile(file);
@@ -285,8 +286,6 @@ class _ModelBottomAddPlayerState extends State<ModelBottomAddPlayer> {
                     context: context,
                     expand: true,
                     builder: (context) => PageSearchPosition(
-                      positionController: widget.positionController
-                        ..getPositions(),
                       onPosition: (position) {
                         setState(() {
                           widget.positionController.positionEntity = position;

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:micro_core/core/customs/custum_firebase_auth.dart';
 import 'package:micro_core/core/theme/theme.dart';
 
 import '../../../core/enums/type_provider_enum.dart';
@@ -22,12 +23,13 @@ class LoginController extends ValueNotifier<LoginState> {
   Future<void> loginSocial(context, TypeProviderSocial provider) async {
     value = LoginLoandingState();
     final result = await _loginWithSocial.call(provider);
-    result.fold((resultError) {
+    result.fold((resultError) async {
       if (resultError is LoginCancel) {
         value = InitialLoginState();
       } else {
         value = LoginErrorState(error: resultError);
       }
+      await CustumFirebaseAuth.logout();
     }, (resultSuccess) async {
       await notify(context);
     });
@@ -51,8 +53,9 @@ class LoginController extends ValueNotifier<LoginState> {
   Future<void> notify(BuildContext context, {String? name}) async {
     final result = await _notifyApi.call(name);
     result.fold(
-      (resultError) {
+      (resultError) async {
         value = LoginErrorState(error: resultError);
+        await CustumFirebaseAuth.logout();
       },
       (resultSuccess) async {
         value = LoginSuccessState(success: resultSuccess);
