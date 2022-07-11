@@ -53,8 +53,10 @@ class _ModelBottomPerformanceState extends State<ModelBottomPerformance> {
   @override
   Widget build(BuildContext context) {
     return Material(
+      color: Colors.white,
       type: MaterialType.transparency,
       child: Container(
+        color: Colors.white,
         height: AppDefault.height(context).percent(doublePercente),
         padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 12),
         child: SingleChildScrollView(

@@ -5,6 +5,7 @@ import 'package:micro_core/core/customs/custum_dio.dart';
 import '../data/repositories/api.dart';
 import '../data/repositories/auth.dart';
 import '../domain/usecases/clear_notification.dart';
+import '../domain/usecases/delete_account.dart';
 import '../domain/usecases/get_cup_information_usecase.dart';
 import '../domain/usecases/get_cups_usecase.dart';
 import '../domain/usecases/get_notifications.dart';
@@ -24,6 +25,7 @@ final authFirebase =
     AuthFirebase(firebaseAuth: firebaseInstance, googleSignIn: googleSignIn);
 final authRepository = Auth(authDatasource: authFirebase);
 final logoutUsecase = Logout(authRepository: authRepository);
+final deleteAccount = DeleteAccount(apiRepository: apiRepository);
 final dio = CustumDio.instance;
 final apiDatasource = ApiExternal(dio);
 final apiRepository = Api(apiDatasource: apiDatasource);

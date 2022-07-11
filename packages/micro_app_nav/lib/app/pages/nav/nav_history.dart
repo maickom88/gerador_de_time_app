@@ -98,7 +98,7 @@ class _NavHistoricState extends State<NavHistoric> {
                         replacement: const FadeAnimation(
                           delay: 0.1,
                           child: WidgetEmptyData(
-                            title: 'Seu historico está vazio',
+                            title: 'Seu histórico está vazio',
                             description:
                                 'Você irá visualizar as copinhas finalizadas aqui',
                           ),

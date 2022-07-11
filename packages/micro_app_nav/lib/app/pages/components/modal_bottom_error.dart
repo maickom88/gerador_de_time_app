@@ -29,8 +29,10 @@ class _ModelBottomErrorState extends State<ModelBottomError> {
   @override
   Widget build(BuildContext context) {
     return Material(
+      color: Colors.white,
       type: MaterialType.transparency,
       child: Container(
+        color: Colors.white,
         padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 12),
         height: AppDefault.height(context).percent(45),
         child: SingleChildScrollView(

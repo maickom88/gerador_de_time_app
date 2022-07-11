@@ -74,8 +74,10 @@ class CupController extends ValueNotifier<CupState> {
         builder: (BuildContext context) {
           return Container(
             padding: const EdgeInsets.only(top: 30),
+            color: Colors.white,
             height: 380,
             child: Material(
+              color: Colors.white,
               child: ErrorComponent(
                 height: 60,
                 onLoad: () {

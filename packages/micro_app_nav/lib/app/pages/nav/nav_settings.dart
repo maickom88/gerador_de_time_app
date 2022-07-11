@@ -64,6 +64,14 @@ class _NavSettingsState extends State<NavSettings> {
   }
 
   @override
+  void dispose() {
+    // textEditingController.dispose();
+    // textFocusNode.dispose();
+    // widget.logoutController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return ValueListenableBuilder<LogoutState>(
         valueListenable: widget.logoutController,
@@ -323,15 +331,18 @@ class _NavSettingsState extends State<NavSettings> {
                                       context: context,
                                       builder: (BuildContext context) {
                                         return Container(
+                                          color: Colors.white,
                                           padding:
                                               const EdgeInsets.only(top: 30),
                                           height: AppDefault.height(context)
                                               .percent(70),
                                           child: Material(
+                                            color: Colors.white,
                                             child: DeleteAccount(
-                                              onLoad: () {
+                                              onLoad: () async {
                                                 AppDefault.close(context);
-                                                debugPrint('deletar');
+                                                await widget.logoutController
+                                                    .deleteAccout(context);
                                               },
                                             ),
                                           ),

@@ -107,9 +107,11 @@ class _CupPageState extends State<CupPage> {
                         context: context,
                         builder: (BuildContext context) {
                           return Container(
+                            color: Colors.white,
                             padding: const EdgeInsets.only(top: 30),
                             height: AppDefault.height(context).percent(40),
                             child: Material(
+                              color: Colors.white,
                               child: SingleChildScrollView(
                                 child: Column(
                                   mainAxisAlignment: MainAxisAlignment.center,
@@ -216,6 +218,7 @@ class _CupPageState extends State<CupPage> {
                                                 padding: const EdgeInsets.only(
                                                     top: 30),
                                                 height: 350,
+                                                color: Colors.white,
                                                 child: Material(
                                                   color: Colors.transparent,
                                                   child: Column(
@@ -263,7 +266,14 @@ class _CupPageState extends State<CupPage> {
                                                           itemExtent: 45,
                                                           children:
                                                               List.generate(
-                                                            10,
+                                                            widget
+                                                                        .cupController
+                                                                        .userEntity
+                                                                        ?.role ==
+                                                                    RoleEnum
+                                                                        .premium
+                                                                ? 20
+                                                                : 10,
                                                             (index) => Text(
                                                               (index + 2)
                                                                   .toString(),
@@ -315,7 +325,7 @@ class _CupPageState extends State<CupPage> {
                                 if (widget.cupController.playerSelected.length <
                                     8) {
                                   showAlert(context,
-                                      'É necessario 8 jogadores ou mais para realizar o sorteio');
+                                      'É necessário 8 jogadores ou mais para realizar o sorteio');
                                   return;
                                 }
                                 if ((widget.cupController.playerSelected

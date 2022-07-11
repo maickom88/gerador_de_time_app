@@ -14,6 +14,7 @@ import '../usecases/save_player_usecase.dart';
 
 abstract class ApiRepository {
   Future<Either<Failure, List<SportEntity>>> getSports();
+  Future<Either<Failure, void>> deleteAccount(String params);
   Future<Either<Failure, PurchaseEntity>> getPurchase(String params);
   Future<Either<Failure, void>> clearNotification(String params);
   Future<Either<Failure, List<NotificationEntity>>> getNotifications(

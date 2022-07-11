@@ -27,17 +27,19 @@ class NotificationController extends ValueNotifier<NotificationState> {
       userEntity = UserEntity.fromJson(_sharedPreferences.getString('user')!);
     }
     value = NotificationLoandingState();
-    final result = await _getNotifications.call(userEntity!.guid);
-    result.fold((resultError) {
-      value = NotificationErrorState(error: resultError);
-    }, (resultSuccess) async {
-      await Future.delayed(const Duration(seconds: 2));
-      resultSuccess.sort((b, a) {
-        return a.createdAt.compareTo(b.createdAt);
-      });
+    if (userEntity != null) {
+      final result = await _getNotifications.call(userEntity!.guid);
+      result.fold((resultError) {
+        value = NotificationErrorState(error: resultError);
+      }, (resultSuccess) async {
+        await Future.delayed(const Duration(seconds: 2));
+        resultSuccess.sort((b, a) {
+          return a.createdAt.compareTo(b.createdAt);
+        });
 
-      value = NotificationSuccessState(notifications: resultSuccess);
-    });
+        value = NotificationSuccessState(notifications: resultSuccess);
+      });
+    }
   }
 
   Future<void> clearNotification() async {

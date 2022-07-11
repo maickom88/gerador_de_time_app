@@ -5,12 +5,15 @@ import 'package:micro_commons/app/components/error_page.dart';
 import 'package:micro_commons/app/components/loading_sport.dart';
 import 'package:micro_commons/app/domain/usecases/upload_file.dart';
 import 'package:micro_commons/customs/file_picker_custum.dart';
+import 'package:micro_core/core/customs/custum_firebase_auth.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:micro_core/core/theme/theme.dart';
 import 'package:micro_core/core/usecases/usecases.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../domain/entities/user_entity.dart';
+import '../../domain/usecases/delete_account.dart';
 import '../../domain/usecases/logout_usecase.dart';
 import '../../domain/usecases/update_user.dart';
 import '../states/logout_state.dart';
@@ -19,11 +22,13 @@ class LogoutController extends ValueNotifier<LogoutState> {
   final Logout _logoutUsecase;
   final UpdateUser _updateUser;
   final UploadFile _uploadFile;
+  final DeleteAccount _deleteAccount;
   final SharedPreferences _sharedPreferences;
 
   LogoutController(
     this._logoutUsecase,
     this._updateUser,
+    this._deleteAccount,
     this._uploadFile,
     this._sharedPreferences,
   ) : super(InitialLogoutState());
@@ -54,16 +59,37 @@ class LogoutController extends ValueNotifier<LogoutState> {
   }
 
   Future<void> logout(context) async {
+    AppDefault.showDefaultLoad(
+        context,
+        const LoadingSport(
+          message: 'Saindo da conta...',
+        ));
     final result = await _logoutUsecase.call(NoParams());
     result.fold((resultError) {
+      AppDefault.close(context);
       value = LogoutErrorState(error: resultError);
     }, (resultSuccess) async {
-      AppDefault.showDefaultLoad(
-          context,
-          const LoadingSport(
-            message: 'Saindo da conta...',
-          ));
       await Future.delayed(const Duration(seconds: 2));
+      AppDefault.close(context);
+      AppDefault.navigateToRemoveAll(context, routeName: '/login');
+    });
+  }
+
+  Future<void> deleteAccout(context) async {
+    AppDefault.showDefaultLoad(
+        context,
+        const LoadingSport(
+          message: 'Deletando conta...',
+        ));
+    final result = await _deleteAccount.call(userEntity!.guid);
+    result.fold((resultError) {
+      AppDefault.close(context);
+      value = LogoutErrorState(error: resultError);
+    }, (resultSuccess) async {
+      AppDefault.close(context);
+      await CustumFirebaseAuth.logout();
+      final googleSignIn = GoogleSignIn();
+      await googleSignIn.signOut();
       AppDefault.navigateToRemoveAll(context, routeName: '/login');
     });
   }
@@ -81,9 +107,11 @@ class LogoutController extends ValueNotifier<LogoutState> {
         context: context,
         builder: (BuildContext context) {
           return Container(
+            color: Colors.white,
             padding: const EdgeInsets.only(top: 30),
             height: 380,
             child: Material(
+              color: Colors.white,
               child: ErrorComponent(
                 height: 60,
                 onLoad: () {

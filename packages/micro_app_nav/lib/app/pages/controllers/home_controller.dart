@@ -45,11 +45,13 @@ class HomeController extends ValueNotifier<HomeState> {
         await _sharedPreferences.remove('user');
         await CustumRemoteConfig.instance.forceFetch();
         logout(context);
+        return;
       }
     } else {
       await _sharedPreferences.remove('user');
       await CustumRemoteConfig.instance.forceFetch();
       logout(context);
+      return;
     }
     final result = await _getSports.call(NoParams());
     result.fold((resultError) {

@@ -40,7 +40,7 @@ class _ModalViewCardTeamState extends State<ModalViewCardTeam> {
   Widget build(BuildContext context) {
     return Material(
       type: MaterialType.transparency,
-      color: Colors.transparent,
+      color: Colors.white,
       child: Container(
         height: AppDefault.height(context).percent(55),
         padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 12),

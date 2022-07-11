@@ -52,9 +52,11 @@ class _ModelBottomAddPlayerState extends State<ModelBottomAddPlayer> {
   Widget build(BuildContext context) {
     return Material(
       type: MaterialType.transparency,
+      color: Colors.white,
       child: Container(
         padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 12),
         height: AppDefault.height(context).percent(80),
+        color: Colors.white,
         child: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,

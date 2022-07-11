@@ -82,7 +82,7 @@ class _HelpPageState extends State<HelpPage> {
                                 context: context,
                                 builder: (_) {
                                   return Material(
-                                    color: Colors.transparent,
+                                    color: Colors.white,
                                     child: SizedBox(
                                       height: AppDefault.height(context)
                                           .percent(70),
@@ -116,7 +116,7 @@ de cada jogador.''',
                                 context: context,
                                 builder: (_) {
                                   return Material(
-                                    color: Colors.transparent,
+                                    color: Colors.white,
                                     child: SizedBox(
                                       height: AppDefault.height(context)
                                           .percent(45),
@@ -200,7 +200,7 @@ As notificações são uma maneira de visualizar com o dispositivo em segundo pl
                                 context: context,
                                 builder: (_) {
                                   return Material(
-                                    color: Colors.transparent,
+                                    color: Colors.white,
                                     child: SizedBox(
                                       height: AppDefault.height(context)
                                           .percent(45),
