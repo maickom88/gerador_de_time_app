@@ -6,9 +6,8 @@ import '../firebase/remote_config.dart';
 
 class CustumRemoteConfig implements IFirebaseRemoteConfig {
   late FirebaseRemoteConfig _firebaseRemoteConfig;
-  String get apiBase => "http://192.168.1.3:8080";
-  // String get apiBase =>
-  //     getValueOrDefault<String>(key: 'DEV_API', defaultValue: '');
+  String get apiBase =>
+      getValueOrDefault<String>(key: 'DEV_API', defaultValue: '');
 
   CustumRemoteConfig._run();
   static final CustumRemoteConfig _singleton = CustumRemoteConfig._run();

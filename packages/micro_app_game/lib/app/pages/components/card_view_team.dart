@@ -36,9 +36,10 @@ class _ModalViewCardTeamState extends State<ModalViewCardTeam> {
   Widget build(BuildContext context) {
     return Material(
       type: MaterialType.transparency,
-      color: Colors.transparent,
+      color: Colors.white,
       child: Container(
         height: 360,
+        color: Colors.white,
         padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 12),
         child: SingleChildScrollView(
           child: Column(

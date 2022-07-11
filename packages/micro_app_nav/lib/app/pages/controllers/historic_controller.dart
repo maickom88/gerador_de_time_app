@@ -30,16 +30,18 @@ class HistoricController extends ValueNotifier<HistoricState> {
       userEntity = UserEntity.fromJson(_sharedPreferences.getString('user')!);
     }
     value = HistoricLoandingState();
-    final result = await _getCups.call(userEntity!.email);
-    result.fold((resultError) {
-      value = HistoricErrorState(error: resultError);
-    }, (resultSuccess) async {
-      await Future.delayed(const Duration(seconds: 2));
-      resultSuccess.sort((b, a) {
-        return a.date.compareTo(b.date);
+    if (userEntity != null) {
+      final result = await _getCups.call(userEntity!.email);
+      result.fold((resultError) {
+        value = HistoricErrorState(error: resultError);
+      }, (resultSuccess) async {
+        await Future.delayed(const Duration(seconds: 2));
+        resultSuccess.sort((b, a) {
+          return a.date.compareTo(b.date);
+        });
+        value = HistoricSuccessState(cups: resultSuccess);
       });
-      value = HistoricSuccessState(cups: resultSuccess);
-    });
+    }
   }
 
   void searchHistoric(String search) {

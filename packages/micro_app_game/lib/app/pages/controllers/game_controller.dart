@@ -84,9 +84,11 @@ class GameController extends ValueNotifier {
         context: context,
         builder: (BuildContext context) {
           return Container(
+            color: Colors.white,
             padding: const EdgeInsets.only(top: 30),
             height: 380,
             child: Material(
+              color: Colors.white,
               child: ErrorComponent(
                 height: 60,
                 onLoad: () {
@@ -143,9 +145,11 @@ class GameController extends ValueNotifier {
         context: context,
         builder: (BuildContext context) {
           return Container(
+            color: Colors.white,
             padding: const EdgeInsets.only(top: 30),
             height: 380,
             child: Material(
+              color: Colors.white,
               child: ErrorComponent(
                 height: 60,
                 onLoad: () {

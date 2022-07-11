@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../utils/core_utils.dart';
+
 class AppDefault {
   static const double hPadding = 12;
   static const double vPadding = 16;
@@ -33,7 +35,7 @@ class AppDefault {
       ];
 
   static void close<T extends Object?>(BuildContext context, [T? result]) =>
-      Navigator.pop(context, result);
+      navigatorKey.currentState?.pop(result);
 
   static double height(BuildContext context) =>
       MediaQuery.of(context).size.height;
@@ -51,20 +53,22 @@ class AppDefault {
         .pushReplacementNamed(routeName, arguments: arguments);
   }
 
-  static Future<T?> navigateToRemoveAll<T extends Object?>(BuildContext context,
+  static Future<T?>? navigateToRemoveAll<T extends Object?>(
+      BuildContext context,
       {required String routeName}) {
-    return Navigator.of(context)
-        .pushNamedAndRemoveUntil<T>(routeName, (Route<dynamic> route) => false);
+    return navigatorKey.currentState?.pushNamedAndRemoveUntil<T>(
+        routeName, (Route<dynamic> route) => false);
   }
 
-  static Future<T?> showDefaultLoad<T>(BuildContext context, Widget widget) =>
-      showDialog<T>(
-        context: context,
-        builder: (context) => widget,
-        barrierColor: Colors.white.withOpacity(0.6),
-        useSafeArea: false,
-        barrierDismissible: false,
-      );
+  static Future<T?> showDefaultLoad<T>(BuildContext context, Widget widget) {
+    return showDialog<T>(
+      context: context,
+      builder: (context) => widget,
+      barrierColor: Colors.white.withOpacity(0.6),
+      useSafeArea: false,
+      barrierDismissible: false,
+    );
+  }
 
   static Future<T?> navigateToWidget<T extends Object?>(BuildContext context,
       {required Widget widget, Object? arguments, bool withReturn = true}) {

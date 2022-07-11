@@ -18,11 +18,11 @@ class ZoneGuard {
         WidgetsFlutterBinding.ensureInitialized();
 
         await Firebase.initializeApp();
+        await CustumInAppPurchese.instance.initialize();
         await CustumRemoteConfig.instance.initialize();
         await CustumLocalStorage.instance.initialize();
         final token = await CustumFirebaseAuth.getToken();
         await CustumFirebaseMessage.instance.initialize();
-        await CustumInAppPurchese.instance.initialize();
         await CustumDio.instance
             .initialize(CustumRemoteConfig.instance.apiBase, token: token);
 

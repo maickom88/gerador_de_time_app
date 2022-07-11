@@ -76,7 +76,7 @@ class PageSearchPosition extends StatelessWidget with KeyboardManager {
                 },
                 body: Material(
                   type: MaterialType.transparency,
-                  color: Colors.transparent,
+                  color: Colors.white,
                   child: ListView.builder(
                       shrinkWrap: true,
                       itemCount: CustumPositionController.instance.controller

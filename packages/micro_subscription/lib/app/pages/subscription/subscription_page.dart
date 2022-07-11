@@ -34,7 +34,8 @@ class _SubscriptionPageState extends State<SubscriptionPage>
   void initState() {
     CustumInAppPurchese.instance.onBuy.listen(
         (event) {
-          widget.controller.saveBuy(4.99, 25.66);
+          widget.controller.saveBuy(
+              4.99, CustumInAppPurchese.instance.products.single.rawPrice);
         },
         onDone: () {},
         onError: (error) {
@@ -42,10 +43,11 @@ class _SubscriptionPageState extends State<SubscriptionPage>
               context: context,
               builder: (BuildContext context) {
                 return Material(
-                  color: Colors.transparent,
+                  color: Colors.white,
                   child: Container(
                     padding: const EdgeInsets.only(top: 30),
                     height: 300,
+                    color: Colors.white,
                     child: ErrorMessage(
                       description: error.message,
                       height: 120,
@@ -55,12 +57,7 @@ class _SubscriptionPageState extends State<SubscriptionPage>
               });
         });
 
-    getProducts();
     super.initState();
-  }
-
-  Future<void> getProducts() async {
-    await CustumInAppPurchese.instance.getProducts();
   }
 
   @override
@@ -326,14 +323,15 @@ class CardSubscription extends StatelessWidget {
                   .copyWith(color: Colors.white),
             ),
           ).withBottomPadding(bottomPadding: 8),
-          Center(
-            child: Text(
-              'R\$25,66',
-              textAlign: TextAlign.center,
-              style: AppTypography.t14(fontName: 'Inter')
-                  .copyWith(color: Colors.white.withOpacity(0.5)),
+          if (CustumInAppPurchese.instance.products.isNotEmpty)
+            Center(
+              child: Text(
+                CustumInAppPurchese.instance.products.single.price,
+                textAlign: TextAlign.center,
+                style: AppTypography.t14(fontName: 'Inter')
+                    .copyWith(color: Colors.white.withOpacity(0.5)),
+              ),
             ),
-          ),
         ],
       ),
     );

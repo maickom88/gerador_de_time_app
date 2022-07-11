@@ -12,6 +12,7 @@ import '../../domain/usecases/save_player_usecase.dart';
 
 abstract class ApiDatasource {
   Future<List<SportEntity>> getSports();
+  Future<void> deleteAccount(String params);
   Future<PurchaseEntity> getPurchase(String params);
   Future<List<NotificationEntity>> getNotifications(String params);
   Future<void> clearNotification(String params);

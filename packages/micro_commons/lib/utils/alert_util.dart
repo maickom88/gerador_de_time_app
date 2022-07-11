@@ -5,7 +5,10 @@ import 'package:micro_core/core/theme/theme.dart';
 Future<T?> showAlert<T>(BuildContext context, String description) =>
     showAdaptiveActionSheet<T>(
       context: context,
-      title: Text(description),
+      title: Text(
+        description,
+        textAlign: TextAlign.center,
+      ),
       actions: <BottomSheetAction>[
         BottomSheetAction(
           title: Text('Sim, entendi',

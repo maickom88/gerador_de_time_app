@@ -36,3 +36,8 @@ class FailedRestored implements Failure {
   @override
   String get message => 'Falha ao tentar restaurar compra';
 }
+
+class FailedPurchase implements Failure {
+  @override
+  String get message => 'Houve uma falha ao efetuar assinatura';
+}

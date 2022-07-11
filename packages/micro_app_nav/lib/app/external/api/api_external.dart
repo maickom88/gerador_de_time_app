@@ -167,4 +167,15 @@ class ApiExternal implements ApiDatasource {
       throw ServerError();
     }
   }
+
+  @override
+  Future<void> deleteAccount(String params) async {
+    try {
+      await _dio.http.delete('/user/$params');
+    } on DioError catch (error) {
+      throw error.error;
+    } on Exception catch (_) {
+      throw ServerError();
+    }
+  }
 }

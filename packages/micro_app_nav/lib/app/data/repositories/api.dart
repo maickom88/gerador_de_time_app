@@ -120,4 +120,13 @@ class Api implements ApiRepository {
       return Left(error);
     }
   }
+
+  @override
+  Future<Either<Failure, void>> deleteAccount(String params) async {
+    try {
+      return Right(await apiDatasource.deleteAccount(params));
+    } on Failure catch (error) {
+      return Left(error);
+    }
+  }
 }
