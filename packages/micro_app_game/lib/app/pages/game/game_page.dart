@@ -32,7 +32,7 @@ class _GamePageState extends State<GamePage> with WidgetsBindingObserver {
 
   @override
   void initState() {
-    WidgetsBinding.instance?.addObserver(this);
+    WidgetsBinding.instance.addObserver(this);
     _showOnlyIcon = false;
     _controller = ScrollController();
     super.initState();
@@ -45,18 +45,19 @@ class _GamePageState extends State<GamePage> with WidgetsBindingObserver {
   @override
   void dispose() {
     _controller.dispose();
-    WidgetsBinding.instance?.removeObserver(this);
+    WidgetsBinding.instance.removeObserver(this);
     super.dispose();
   }
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) async {
     super.didChangeAppLifecycleState(state);
-    if (state == AppLifecycleState.inactive) {
-      CustumLocalNotification.instance
+    if (state == AppLifecycleState.inactive ||
+        state == AppLifecycleState.paused) {
+      await CustumLocalNotification.instance
           .registerNotification(Duration(seconds: widget.controller.time));
     } else if (state == AppLifecycleState.resumed) {
-      CustumLocalNotification.instance.cancel();
+      await CustumLocalNotification.instance.cancel();
     }
   }
 
