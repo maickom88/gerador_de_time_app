@@ -190,7 +190,7 @@ class _CupPageState extends State<CupPage> {
                                         },
                                       ),
                                       visible: widget
-                                              .cupController.userEntity?.role !=
+                                              .cupController.userEntity?.role ==
                                           RoleEnum.premium,
                                       child: CupertinoSwitch(
                                         value:
