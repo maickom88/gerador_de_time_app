@@ -9,6 +9,7 @@ import '../data/errors/server_error.dart';
 import '../domain/entities/performace_entity.dart';
 import '../domain/entities/player_entity.dart';
 import '../domain/entities/skill_entity.dart';
+import '../domain/entities/user_entity.dart';
 import '../domain/usecases/update_device.dart';
 
 class ApiExternal implements ApiDatasource {
@@ -100,6 +101,20 @@ class ApiExternal implements ApiDatasource {
       await _dio.http
           .post<Map<String, dynamic>>('/device', data: params.toMap());
       return;
+    } on DioError catch (error) {
+      throw error.error;
+    } on Exception catch (_) {
+      throw ServerError();
+    }
+  }
+
+  @override
+  Future<UserEntity> getInfoUser(String params) async {
+    try {
+      final result = await _dio.http.get<Map<String, dynamic>>(
+        '/user/$params',
+      );
+      return UserEntity.fromMap(result.data!);
     } on DioError catch (error) {
       throw error.error;
     } on Exception catch (_) {

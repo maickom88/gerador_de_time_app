@@ -7,6 +7,7 @@ import 'package:in_app_review/in_app_review.dart';
 import 'package:loading_indicator/loading_indicator.dart';
 import 'package:micro_commons/app/components/delete_account.dart';
 import 'package:micro_commons/app/components/settings_details.dart';
+import 'package:micro_commons/app/domain/entities/user_entity.dart';
 import 'package:micro_commons/customs/file_picker_custum.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:file_picker/file_picker.dart';
@@ -230,21 +231,26 @@ class _NavSettingsState extends State<NavSettings> {
                                   value: true,
                                 ),
                               ),
-                              SettingsDetails(
-                                icon: Iconsax.medal,
-                                label: 'Ser premium',
-                                widget: GestureDetector(
-                                  onTap: () {
-                                    SystemSound.play(SystemSoundType.click);
-                                    AppDefault.navigateTo(context,
-                                        routeName: '/subscription');
-                                  },
-                                  child: const Icon(
-                                    Iconsax.arrow_circle_right,
-                                    size: 25,
-                                    color: Color(0xffACACAC),
-                                  ).withRightPadding(rightPadding: 20),
+                              Visibility(
+                                child: SettingsDetails(
+                                  icon: Iconsax.medal,
+                                  label: 'Ser premium',
+                                  widget: GestureDetector(
+                                    onTap: () {
+                                      SystemSound.play(SystemSoundType.click);
+                                      AppDefault.navigateTo(context,
+                                          routeName: '/subscription');
+                                    },
+                                    child: const Icon(
+                                      Iconsax.arrow_circle_right,
+                                      size: 25,
+                                      color: Color(0xffACACAC),
+                                    ).withRightPadding(rightPadding: 20),
+                                  ),
                                 ),
+                                visible:
+                                    widget.logoutController.userEntity?.role ==
+                                        RoleEnum.premium,
                               ),
                             ],
                           ),

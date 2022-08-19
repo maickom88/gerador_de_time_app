@@ -7,7 +7,7 @@ import '../firebase/remote_config.dart';
 class CustumRemoteConfig implements IFirebaseRemoteConfig {
   late FirebaseRemoteConfig _firebaseRemoteConfig;
   String get apiBase =>
-      getValueOrDefault<String>(key: 'PROD_API', defaultValue: '');
+      getValueOrDefault<String>(key: 'DEV_API', defaultValue: '');
 
   CustumRemoteConfig._run();
   static final CustumRemoteConfig _singleton = CustumRemoteConfig._run();

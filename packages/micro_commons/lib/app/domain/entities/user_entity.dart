@@ -6,7 +6,7 @@ class UserEntity {
   final String name;
   final bool firstAccess;
   final String photo;
-  final RoleEnum role;
+  RoleEnum role;
   UserEntity({
     required this.guid,
     required this.email,

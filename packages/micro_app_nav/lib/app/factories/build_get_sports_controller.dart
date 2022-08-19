@@ -6,6 +6,7 @@ import 'build_resources.dart';
 HomeController buildHomeController() => HomeController(
       getSportsUsecase,
       uploadDeviceUsecase,
+      getInfoUserUsecase,
       logoutUsecase,
       storage,
     );

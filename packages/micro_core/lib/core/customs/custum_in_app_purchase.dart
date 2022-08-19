@@ -12,9 +12,8 @@ class CustumInAppPurchese {
       _purchaseController.stream.asBroadcastStream();
   InAppPurchase get inAppPurchase => InAppPurchase.instance;
 
-  String get productId => 'gerador_de_times';
+  Set<String> get productId => {'gerador_de_times'};
   List<ProductDetails> products = [];
-  set productId(String newProductId) => productId = newProductId;
 
   CustumInAppPurchese._run();
   static final CustumInAppPurchese _singleton = CustumInAppPurchese._run();
@@ -39,7 +38,7 @@ class CustumInAppPurchese {
 
   Future<void> getProducts() async {
     final ProductDetailsResponse productDetailResponse =
-        await inAppPurchase.queryProductDetails({productId}.toSet());
+        await inAppPurchase.queryProductDetails(productId);
     if (productDetailResponse.error == null) {
       products = productDetailResponse.productDetails;
     }
@@ -98,8 +97,7 @@ class CustumInAppPurchese {
       _purchaseController.addError(NotAvailable());
       return;
     }
-    final response =
-        await inAppPurchase.queryProductDetails({productId}.toSet());
+    final response = await inAppPurchase.queryProductDetails(productId);
     if (response.error != null) {
       _purchaseController.addError(UnexpectedError());
       return;
@@ -109,11 +107,8 @@ class CustumInAppPurchese {
       return;
     }
     final productDetails = response.productDetails.single;
+    products = response.productDetails;
     final purchaseParam = PurchaseParam(productDetails: productDetails);
-    final result =
-        await inAppPurchase.buyNonConsumable(purchaseParam: purchaseParam);
-    if (result) {
-      _purchaseController.addError(FailedPurchase());
-    }
+    await inAppPurchase.buyNonConsumable(purchaseParam: purchaseParam);
   }
 }

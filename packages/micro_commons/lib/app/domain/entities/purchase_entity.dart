@@ -24,13 +24,13 @@ class PurchaseEntity {
     return PurchaseEntity(
       guid: map['guid'] ?? '',
       user: UserEntity.fromMap(map['user']),
-      datePurchase: DateTime.fromMillisecondsSinceEpoch(map['datePurchase']),
-      dateExpiredPurchase:
-          DateTime.fromMillisecondsSinceEpoch(map['dateExpiredPurchase']),
-      priceBr: map['priceBr']?.toDouble(),
-      priceUsd: map['priceUsd']?.toDouble(),
-      platform:
-          map['platform'] != null ? map["platform"].toPlatformMobile() : null,
+      datePurchase: DateTime.parse(map['date_purchase']),
+      dateExpiredPurchase: DateTime.parse(map['date_expired_purchase']),
+      priceBr: map['price_br']?.toDouble(),
+      priceUsd: map['price_usd']?.toDouble(),
+      platform: map['platform'] != null
+          ? (map["platform"] as String).toPlatformMobile()
+          : null,
     );
   }
 

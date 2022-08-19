@@ -18,15 +18,15 @@ class ZoneGuard {
         WidgetsFlutterBinding.ensureInitialized();
 
         await Firebase.initializeApp();
-        await CustumInAppPurchese.instance.initialize();
         await CustumRemoteConfig.instance.initialize();
         await CustumLocalStorage.instance.initialize();
         final token = await CustumFirebaseAuth.getToken();
         await CustumFirebaseMessage.instance.initialize();
         await CustumDio.instance
-            .initialize(CustumRemoteConfig.instance.apiBase, token: token);
+            .initialize('http://192.168.1.5:8080', token: token);
 
         FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
+        await CustumInAppPurchese.instance.initialize();
         body.call();
       },
       ((error, stack) =>
