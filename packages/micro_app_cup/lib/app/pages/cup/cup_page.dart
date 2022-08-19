@@ -184,9 +184,10 @@ class _CupPageState extends State<CupPage> {
                                     Visibility(
                                       replacement: CupertinoSwitch(
                                         value: false,
-                                        onChanged: (value) {
-                                          AppDefault.navigateTo(context,
+                                        onChanged: (value) async {
+                                          await AppDefault.navigateTo(context,
                                               routeName: '/subscription');
+                                          widget.cupController.loadUser();
                                         },
                                       ),
                                       visible: widget

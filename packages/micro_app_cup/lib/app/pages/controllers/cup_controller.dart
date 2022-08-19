@@ -111,6 +111,13 @@ class CupController extends ValueNotifier<CupState> {
     }
   }
 
+  void loadUser() {
+    if (_sharedPreferences.containsKey('user')) {
+      userEntity = UserEntity.fromJson(_sharedPreferences.getString('user')!);
+      notifyListeners();
+    }
+  }
+
   void selectedAllPlayers(List<PlayerEntity> players) {
     playerSelected = players;
     notifyListeners();

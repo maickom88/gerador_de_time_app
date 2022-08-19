@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -28,6 +30,15 @@ class NavHome extends StatefulWidget {
 class _NavHomeState extends State<NavHome> {
   @override
   void initState() {
+    if (Platform.isAndroid) {
+      setState(() {
+        SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
+          systemNavigationBarColor: Colors.black,
+          statusBarIconBrightness: Brightness.dark,
+          statusBarColor: Colors.transparent,
+        ));
+      });
+    }
     CustumFilePicker.instance.onProgress.listen((event) {}).onDone(() async {
       widget.homeController.getUser();
     });

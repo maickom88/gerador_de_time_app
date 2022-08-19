@@ -35,7 +35,11 @@ class SubscriptionController extends ValueNotifier<SubscriptionState> {
     final result = await _registerPurchase.call(params);
     result.fold((resultError) {
       value = SubscriptionErrorState(error: resultError);
-    }, (resultSuccess) async {});
+    }, (resultSuccess) async {
+      userEntity?.role = RoleEnum.premium;
+      await _sharedPreferences.setString('user', userEntity!.toJson());
+      value = SubscriptionSuccessState();
+    });
   }
 
   void setLoading() {

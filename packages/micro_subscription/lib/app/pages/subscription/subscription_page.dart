@@ -180,6 +180,36 @@ class _SubscriptionPageState extends State<SubscriptionPage>
                                                 ),
                                               ),
                                             ).withBottomPadding();
+                                          } else if (value
+                                              is SubscriptionSuccessState) {
+                                            Future.delayed(
+                                                const Duration(seconds: 3), () {
+                                              AppDefault.close(context);
+                                            });
+                                            return FadeAnimation(
+                                              delay: 0.3,
+                                              child: SizedBox(
+                                                width: double.infinity,
+                                                height: 66,
+                                                child: ElevatedButton(
+                                                  style: ButtonStyle(
+                                                    backgroundColor:
+                                                        MaterialStateProperty
+                                                            .all(Colors.green),
+                                                  ),
+                                                  onPressed: () async {
+                                                    AppDefault.close(context);
+                                                  },
+                                                  child: Text(
+                                                    'Assinatura feita com sucesso!',
+                                                    style: AppTypography.t16()
+                                                        .copyWith(
+                                                            color:
+                                                                Colors.white),
+                                                  ),
+                                                ),
+                                              ).withBottomPadding(),
+                                            );
                                           }
                                           return FadeAnimation(
                                             delay: 0.3,
