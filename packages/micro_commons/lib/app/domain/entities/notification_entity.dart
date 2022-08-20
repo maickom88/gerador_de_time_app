@@ -25,7 +25,7 @@ class NotificationEntity {
       description: map['description'] ?? '',
       navigateTo: map['navigateTo'],
       isRead: map['isRead'] ?? false,
-      data: Map<String, dynamic>.from(map['data']),
+      data: map['data'] != null ? Map<String, dynamic>.from(map['data']) : null,
       createdAt: DateTime.parse(map['created_at']),
     );
   }

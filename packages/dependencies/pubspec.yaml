@@ -23,6 +23,7 @@ dependencies:
   cached_network_image: ^3.2.0
   animated_toggle_switch: ^0.5.2
   uuid: ^3.0.6
+  wakelock: ^0.6.2
   
 dev_dependencies:
   flutter_test:

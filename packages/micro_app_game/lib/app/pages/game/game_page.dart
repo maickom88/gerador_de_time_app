@@ -9,6 +9,7 @@ import 'package:micro_commons/utils/alert_util.dart';
 import 'package:micro_core/core/customs/custum_local_notification.dart';
 import 'package:micro_core/core/theme/theme.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
+import 'package:wakelock/wakelock.dart';
 
 import '../components/card_view_team.dart';
 import '../components/row_data_table.dart';
@@ -40,6 +41,7 @@ class _GamePageState extends State<GamePage> with WidgetsBindingObserver {
       _showOnlyIcon = _controller.position.pixels >= 60;
       setState(() {});
     });
+    Wakelock.enable();
   }
 
   @override

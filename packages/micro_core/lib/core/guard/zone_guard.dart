@@ -23,7 +23,7 @@ class ZoneGuard {
         final token = await CustumFirebaseAuth.getToken();
         await CustumFirebaseMessage.instance.initialize();
         await CustumDio.instance
-            .initialize('http://192.168.1.5:8080', token: token);
+            .initialize(CustumRemoteConfig.instance.apiBase, token: token);
 
         FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
         await CustumInAppPurchese.instance.initialize();

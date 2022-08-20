@@ -61,7 +61,6 @@ class HomeController extends ValueNotifier<HomeState> {
     result.fold((resultError) {
       value = HomeErrorState(error: resultError);
     }, (resultSuccess) async {
-      updateDevice();
       await Future.delayed(const Duration(seconds: 2));
       value = HomeSuccessState(sports: resultSuccess);
     });
@@ -82,6 +81,7 @@ class HomeController extends ValueNotifier<HomeState> {
       value = HomeErrorState(error: resultError);
     }, (resultSuccess) async {
       userEntity = resultSuccess;
+      updateDevice();
     });
   }
 

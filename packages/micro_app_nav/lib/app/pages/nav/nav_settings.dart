@@ -7,7 +7,6 @@ import 'package:in_app_review/in_app_review.dart';
 import 'package:loading_indicator/loading_indicator.dart';
 import 'package:micro_commons/app/components/delete_account.dart';
 import 'package:micro_commons/app/components/settings_details.dart';
-import 'package:micro_commons/app/domain/entities/user_entity.dart';
 import 'package:micro_commons/customs/file_picker_custum.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:file_picker/file_picker.dart';
@@ -20,6 +19,7 @@ import 'package:micro_core/core/components/animation.dart';
 import 'package:micro_core/core/theme/theme.dart';
 
 import '../../../core/constants/local_image.dart';
+import '../../domain/entities/user_entity.dart';
 import '../controllers/logout_controller.dart';
 import '../states/logout_state.dart';
 
@@ -232,6 +232,9 @@ class _NavSettingsState extends State<NavSettings> {
                                 ),
                               ),
                               Visibility(
+                                visible:
+                                    widget.logoutController.userEntity?.role ==
+                                        RoleEnum.free,
                                 child: SettingsDetails(
                                   icon: Iconsax.medal,
                                   label: 'Ser premium',
@@ -248,9 +251,6 @@ class _NavSettingsState extends State<NavSettings> {
                                     ).withRightPadding(rightPadding: 20),
                                   ),
                                 ),
-                                visible:
-                                    widget.logoutController.userEntity?.role ==
-                                        RoleEnum.premium,
                               ),
                             ],
                           ),
